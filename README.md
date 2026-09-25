@@ -1,16 +1,19 @@
-# React + Vite
+Nombre del equipo : Los Androides
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Cristobal Aguilera --> cri.aguileraa@duouc.cl
 
-Currently, two official plugins are available:
+Franco Fuentealba Arce --> fr.fuentealbaa@duocuc.cl
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Aaron Hernandez --> aa.hernandezn@duocuc.cl
 
-## React Compiler
+Caso: Sonido vivo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Descripción del caso: Sitio web que vende instrumentos y accesorios musicales para músicos y profesionales. La plataforma soluciona la dificultad de encontrar instrumentos en un solo sitio. La plataforma ofrece un catálogo con filtros por categoría, un carrito de compras y una pasarela de pago segura. La plataforma mejora la experiencia del cliente y la gestión de inventario del negocio.
 
-## Expanding the Oxlint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+
+Tecnologías utilizadas: React, Vite, React Bootstrap, React Router DOM
+
+Cómo ejecutar el proyecto:npm install y npm run dev.
+
+Material complementario: un enlace a una carpeta de Google Drive pública, donde van a subir los documentos que se pidan durante el semestre (por ejemplo, la ERS).
