@@ -5,7 +5,7 @@ export const SubmitButton = ({ text }) => {
     return (
         <Button
             type="submit"
-            className="w-100 mt-3 fw-bold"
+            className="w-100 mt-3 fw-bold btn-audiomax"
             >
             {text}
         </Button>
