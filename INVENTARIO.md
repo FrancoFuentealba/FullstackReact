@@ -2,7 +2,31 @@
 
 ---
 
-## 1. Detalle del Inventario de Componentes
+## 1. Distribución de Componentes por Integrante
+
+Para garantizar que todos los integrantes trabajen en todos los niveles de la arquitectura Atomic Design, los componentes se reparten de la siguiente manera:
+
+### Integrante 1: Cristóbal
+* **Átomos:** `Button`, `Input`
+* **Moléculas:** `SearchBar`
+* **Organismos:** `Navbar`
+* **Plantillas / Páginas:** `MainLayout`, `Home`
+
+### Integrante 2: Aaron
+* **Átomos:** `Badge`, `Typography`
+* **Moléculas:** `ProductCard`, `NavItem`
+* **Organismos:** `ProductGrid`, `HeroSection`
+* **Plantillas / Páginas:** `Catalogo`
+
+### Integrante 3: Franco
+* **Átomos:** `Image`
+* **Moléculas:** `FormField`, `CartSummaryItem`
+* **Organismos:** `Footer`, `LoginForm` / `RegisterForm`
+* **Plantillas / Páginas:** `AuthLayout`
+
+---
+
+## 2. Detalle del Inventario de Componentes
 
 ### Átomos (`src/components/atoms/`)
 * **`Button`**: Botones reutilizables (de compra, envío de formularios, navegación).
