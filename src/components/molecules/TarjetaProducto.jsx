@@ -3,7 +3,8 @@ import { Card, card } from 'react-bootstrap';
 import { BotonAgregar } from '../atoms/BotonAgregar.jsx';
 
 export const TarjetaProducto = ({ producto }) => {
-    <Card className="h-100">
+    return(
+        <Card className="h-100">
         <div className="ratio ratio-1x1">
             <Card.Img
                 variant="top"
@@ -25,4 +26,5 @@ export const TarjetaProducto = ({ producto }) => {
             </div>
         </Card.Body>
     </Card>
+    )
 }

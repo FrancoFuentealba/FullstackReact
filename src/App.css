@@ -58,3 +58,124 @@
 .enlace-volver:hover {
     text-decoration: underline;
 }
+
+
+/* ESTILOS: TARJETA DE PRODUCTO (CATÁLOGO) */
+
+/* Estructura principal de la tarjeta */
+.tarjeta-audiomax {
+    background-color: #1E1E1E !important; /* Fondo gris oscuro */
+    border: 1px solid #333 !important; /* Borde para separar del fondo principal */
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto hover: La tarjeta "salta" ligeramente al pasar el mouse */
+.tarjeta-audiomax:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2); /* Sombra naranja */
+}
+
+/* Contenedor de la foto */
+.contenedor-imagen {
+    background-color: #FFFFFF; /* fondo blanco aquí para que resalten las fotos de los instrumentos */
+    padding: 10px;
+    border-bottom: 2px solid #333;
+}
+
+/* Ajuste de la foto para que no se deforme */
+.imagen-producto {
+    object-fit: contain; 
+}
+
+/* Textos de la tarjeta */
+.cuerpo-tarjeta {
+    padding: 20px !important;
+}
+
+.titulo-producto {
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.marca-producto {
+    color: #B3B3B3 !important; /* Gris claro para la marca y modelo */
+    font-size: 0.9rem;
+}
+
+/* Precio destacado */
+.precio-producto {
+    color: #00E5FF !important; 
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+/* ESTILOS: NAVBAR (BARRA DE NAVEGACIÓN) */
+
+/* Contenedor principal del Navbar */
+.navbar-audiomax {
+    background-color: #121212 !important; /* Fondo ultra oscuro */
+    border-bottom: 2px solid #FF6B00; /* Línea naranja divisoria */
+    padding: 15px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Sombra para separar del contenido */
+}
+
+/* Logotipo de AudioMax */
+.brand-audiomax {
+    color: #FF6B00 !important;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: transform 0.2s ease;
+}
+
+.brand-audiomax:hover {
+    transform: scale(1.05);
+}
+
+/* Enlaces normales (Inicio, Catálogo) */
+.nav-link-audiomax {
+    color: #E0E0E0 !important;
+    font-weight: 500;
+    margin: 0 10px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+/* Efecto al pasar el mouse por los enlaces */
+.nav-link-audiomax:hover {
+    color: #FF6B00 !important; /* Cambia a naranja */
+}
+
+/* Enlace de Login destacado como botón */
+.nav-link-login {
+    color: #FFFFFF !important;
+    background-color: #FF6B00;
+    padding: 8px 20px !important;
+    border-radius: 25px; /* Bordes redondeados */
+    font-weight: bold;
+    margin-left: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover del botón de login */
+.nav-link-login:hover {
+    background-color: #E05E00; /* Naranja más oscuro */
+    transform: scale(1.05);
+}
+
+/* Ajuste para pantallas pequeñas (celulares) */
+@media (max-width: 991px) {
+    .nav-link-login {
+        margin-left: 0;
+        margin-top: 15px;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    .nav-link-audiomax {
+        margin: 10px 0;
+    }
+}
