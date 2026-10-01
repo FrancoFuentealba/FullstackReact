@@ -28,6 +28,7 @@ export const productosData = [
         stock: 0, //  agotado
         precio: 439000,
         imagen: "/img/bateriaelectronica.jpg"
+<<<<<<< HEAD
     },
     {
         codigo: "GAC-001",
@@ -105,4 +106,7 @@ export const productosData = [
     precio: 249900,
     imagen: "/img/interfazaudio.jpg"
   }
+=======
+    }
+>>>>>>> d1100eb703d0a399d03a2a05c6b65a8716013eab
 ]
