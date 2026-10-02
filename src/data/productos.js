@@ -28,8 +28,8 @@ export const productosData = [
         stock: 0, //  agotado
         precio: 439000,
         imagen: "/img/bateriaelectronica.jpg"
-<<<<<<< HEAD
-    },
+
+         },
     {
         codigo: "GAC-001",
         categoria: "Guitarras Acústicas",
@@ -40,22 +40,9 @@ export const productosData = [
         precio: 189900,
         imagen: "/img/Guitarraacústica.jpg"
 
-    }
-
-
-
-
-
-    {
-    codigo: "BAJ-001",
-    categoria: "Bajos",
-    nombre: "Bajo Eléctrico 4 Cuerdas",
-    marca: "Ibanez",
-    modelo: "GSR200",
-    stock: 8,
-    precio: 279900,
-    imagen: "/img/bajoelectrico.jpg"
-  },
+    },
+    
+      
   {
     codigo: "TEC-001",
     categoria: "Teclados y Pianos",
@@ -106,7 +93,5 @@ export const productosData = [
     precio: 249900,
     imagen: "/img/interfazaudio.jpg"
   }
-=======
-    }
->>>>>>> d1100eb703d0a399d03a2a05c6b65a8716013eab
+    
 ]

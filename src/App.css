@@ -178,51 +178,101 @@
     .nav-link-audiomax {
         margin: 10px 0;
     }
+/* ESTILOS: VISTA CATÁLOGO */
+
+.catalogo-contenedor {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-/* ESTILOS: PÁGINA CATÁLOGO */
-
-/* Contenedor principal para empujar el footer hacia abajo si hay pocos productos */
-.contenedor-catalogo {
-    min-height: 80vh; 
-    padding-top: 20px;
+.catalogo-header {
+  margin-bottom: 1rem;
 }
 
-/* Estilo del título principal del catálogo */
-.titulo-catalogo {
-    color: #FF6B00; /* Naranja AudioMax */
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-size: 2rem;
-    border-bottom: 2px solid #333; /* Línea separadora sutil */
-    padding-bottom: 15px;
-    margin-bottom: 40px !important; /* Más espacio antes de las tarjetas */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para darle profundidad */
+.catalogo-titulo {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #e9e9e9;
 }
 
-/* ESTILOS GLOBALES Y CONTENEDOR PRINCIPAL */
+/* ESTILOS: VISTA INICIO */
 
-/* Reseteo general para evitar márgenes blancos en los bordes de la pantalla */
-body, html {
-    margin: 0;
-    padding: 0;
-    background-color: #121212; /* Fondo base en caso de que algo falle */
+.inicio-contenedor {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
-/* Contenedor maestro que envuelve toda la aplicación */
-.app-container {
-    background-color: #121212; /* Modo oscuro profundo */
-    min-height: 100vh; /* Obliga a que siempre ocupe el 100% de la altura de la pantalla */
-    color: #FFFFFF; /* Todo el texto por defecto será blanco */
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+/* Banner Principal */
+.hero-banner {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 40px 20px;
+  margin-bottom: 3rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Envoltorio específico para centrar el formulario de login en la pantalla */
-.login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Centrado vertical perfecto */
-    padding: 20px;
+.hero-titulo {
+  color: #ff6b00;
+  font-weight: 800;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitulo {
+  color: #b3b3b3;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-boton {
+  padding: 10px 25px;
+  font-weight: bold;
+}
+
+/* Sección Destacados */
+.seccion-destacados {
+  margin-top: 2rem;
+}
+
+.seccion-titulo {
+  color: #ffffff;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+}
+
+/* ESTILOS: PIE DE PÁGINA */
+
+.footer-audiomax {
+    background-color: #121212; /* Mismo fondo oscuro del Navbar */
+    border-top: 2px solid #FF6B00; /* Línea divisoria superior naranja */
+    color: #B3B3B3; /* Texto gris claro para que no brille tanto como el blanco */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4); /* Pequeña sombra hacia arriba */
+}
+
+/* Clase reutilizable para pintar textos del naranja oficial */
+.texto-naranja {
+    color: #FF6B00 !important;
+}
+
+/* ESTILOS: BOTÓN VOLVER (CATÁLOGO) */
+
+.btn-volver-audiomax {
+    background-color: transparent !important;
+    color: #FF6B00 !important;
+    border: 2px solid #FF6B00 !important;
+    border-radius: 25px !important; 
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-volver-audiomax:hover {
+    background-color: #FF6B00 !important;
+    color: #FFFFFF !important;
+    transform: translateX(-5px); 
+    box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3) !important;
 }

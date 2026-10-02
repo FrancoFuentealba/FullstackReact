@@ -8,6 +8,8 @@ import { Inicio } from './pages/Inicio.jsx';
 import { Catalogo } from './pages/Catalogo.jsx';
 import { LoginForm } from './components/organisms/LoginForm.jsx'; 
 
+;
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,16 +17,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/catalogo" element={<Catalogo />} />
-          
-          <Route path="/login" element={
-            <div className="login-wrapper">
-              <LoginForm />
-            </div>
-          } />
         </Routes>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
 export default App;
