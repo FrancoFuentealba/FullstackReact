@@ -179,3 +179,50 @@
         margin: 10px 0;
     }
 }
+
+/* ESTILOS: PÁGINA CATÁLOGO */
+
+/* Contenedor principal para empujar el footer hacia abajo si hay pocos productos */
+.contenedor-catalogo {
+    min-height: 80vh; 
+    padding-top: 20px;
+}
+
+/* Estilo del título principal del catálogo */
+.titulo-catalogo {
+    color: #FF6B00; /* Naranja AudioMax */
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 2rem;
+    border-bottom: 2px solid #333; /* Línea separadora sutil */
+    padding-bottom: 15px;
+    margin-bottom: 40px !important; /* Más espacio antes de las tarjetas */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para darle profundidad */
+}
+
+/* ESTILOS GLOBALES Y CONTENEDOR PRINCIPAL */
+
+/* Reseteo general para evitar márgenes blancos en los bordes de la pantalla */
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Fondo base en caso de que algo falle */
+}
+
+/* Contenedor maestro que envuelve toda la aplicación */
+.app-container {
+    background-color: #121212; /* Modo oscuro profundo */
+    min-height: 100vh; /* Obliga a que siempre ocupe el 100% de la altura de la pantalla */
+    color: #FFFFFF; /* Todo el texto por defecto será blanco */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Envoltorio específico para centrar el formulario de login en la pantalla */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Centrado vertical perfecto */
+    padding: 20px;
+}
