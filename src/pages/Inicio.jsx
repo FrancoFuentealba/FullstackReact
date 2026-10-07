@@ -23,11 +23,7 @@ function Inicio(props) {
           <Row>
             {productosDestacados.map((producto) => (
               <Col key={producto.codigo} xs={12} sm={6} md={4} lg={3} className="mb-4">
-                <TarjetaProducto
-                nombre={producto.nombre}
-                descripcion={producto.descripcion}
-                precio={producto.precio}
-                onAgregar={() => alAgregar(producto.nombre)}/>
+                <TarjetaProducto producto={producto} />
               </Col>
             ))}
           </Row>

@@ -181,18 +181,29 @@
 /* ESTILOS: VISTA CATÁLOGO */
 
 .catalogo-contenedor {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .catalogo-header {
-  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #6c757d;
 }
 
 .catalogo-titulo {
   font-weight: bold;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   color: #e9e9e9;
+}
+
+/* Espacio entre tarjetas (equivale al g-4 de Bootstrap) */
+.catalogo-grilla {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 1.5rem;
 }
 
 /* ESTILOS: VISTA INICIO */
@@ -260,6 +271,7 @@
 /* ESTILOS: BOTÓN VOLVER (CATÁLOGO) */
 
 .btn-volver-audiomax {
+    display: inline-block;
     background-color: transparent !important;
     color: #FF6B00 !important;
     border: 2px solid #FF6B00 !important;
@@ -275,4 +287,28 @@
     color: #FFFFFF !important;
     transform: translateX(-5px); 
     box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3) !important;
+}
+
+/* Botón "Agregar al carrito" de la tarjeta de producto */
+.boton-agregar {
+    width: 100%;
+    padding: 8px 16px;
+    background-color: #FF6B00;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-agregar:hover {
+    background-color: #E05E00;
+}
+
+/* Producto agotado: botón deshabilitado */
+.boton-agregar:disabled {
+    background-color: #555555;
+    color: #B3B3B3;
+    cursor: not-allowed;
 }
