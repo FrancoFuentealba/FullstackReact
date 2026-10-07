@@ -60,219 +60,143 @@
 }
 
 
-/* ESTILOS: TARJETA DE PRODUCTO (CATÁLOGO) */
-
-/* Estructura principal de la tarjeta */
-.tarjeta-audiomax {
-    background-color: #1E1E1E !important; /* Fondo gris oscuro */
-    border: 1px solid #333 !important; /* Borde para separar del fondo principal */
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Efecto hover: La tarjeta "salta" ligeramente al pasar el mouse */
-.tarjeta-audiomax:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2); /* Sombra naranja */
-}
-
-/* Contenedor de la foto */
-.contenedor-imagen {
-    background-color: #FFFFFF; /* fondo blanco aquí para que resalten las fotos de los instrumentos */
-    padding: 10px;
-    border-bottom: 2px solid #333;
-}
-
-/* Ajuste de la foto para que no se deforme */
-.imagen-producto {
-    object-fit: contain; 
-}
-
-/* Textos de la tarjeta */
-.cuerpo-tarjeta {
-    padding: 20px !important;
-}
-
-.titulo-producto {
-    color: #FFFFFF;
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
-
-.marca-producto {
-    color: #B3B3B3 !important; /* Gris claro para la marca y modelo */
-    font-size: 0.9rem;
-}
-
-/* Precio destacado */
-.precio-producto {
-    color: #00E5FF !important; 
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-}
-
-/* ESTILOS: NAVBAR (BARRA DE NAVEGACIÓN) */
-
-/* Contenedor principal del Navbar */
-.navbar-audiomax {
-    background-color: #121212 !important; /* Fondo ultra oscuro */
-    border-bottom: 2px solid #FF6B00; /* Línea naranja divisoria */
-    padding: 15px 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Sombra para separar del contenido */
-}
-
-/* Logotipo de AudioMax */
-.brand-audiomax {
-    color: #FF6B00 !important;
-    font-size: 1.8rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    transition: transform 0.2s ease;
-}
-
-.brand-audiomax:hover {
-    transform: scale(1.05);
-}
-
-/* Enlaces normales (Inicio, Catálogo) */
-.nav-link-audiomax {
-    color: #E0E0E0 !important;
-    font-weight: 500;
-    margin: 0 10px;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-}
-
-/* Efecto al pasar el mouse por los enlaces */
-.nav-link-audiomax:hover {
-    color: #FF6B00 !important; /* Cambia a naranja */
-}
-
-/* Enlace de Login destacado como botón */
-.nav-link-login {
-    color: #FFFFFF !important;
-    background-color: #FF6B00;
-    padding: 8px 20px !important;
-    border-radius: 25px; /* Bordes redondeados */
+/* Clase base para todos los BADGES de AudioMax */
+.badge-audiomax {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
     font-weight: bold;
-    margin-left: 15px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Hover del botón de login */
-.nav-link-login:hover {
-    background-color: #E05E00; /* Naranja más oscuro */
-    transform: scale(1.05);
+/* Clases para las variantes de color */
+.badge-primario {
+    background-color: #007bff; /* Azul de tu marca */
+    color: white;
 }
 
-/* Ajuste para pantallas pequeñas (celulares) */
-@media (max-width: 991px) {
-    .nav-link-login {
-        margin-left: 0;
-        margin-top: 15px;
-        text-align: center;
-        display: inline-block;
-    }
-    
-    .nav-link-audiomax {
-        margin: 10px 0;
-    }
-/* ESTILOS: VISTA CATÁLOGO */
-
-.catalogo-contenedor {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+.badge-alerta {
+    background-color: #dc3545; /* Rojo para agotado */
+    color: white;
 }
 
-.catalogo-header {
-  margin-bottom: 1rem;
+
+/* Base estructural del BUTTON */
+.btn-audiomax {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-.catalogo-titulo {
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #e9e9e9;
+/* Efecto sutil al hacer clic */
+.btn-audiomax:active {
+    transform: scale(0.98);
 }
 
-/* ESTILOS: VISTA INICIO */
-
-.inicio-contenedor {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+/* Variantes de color */
+.btn-primario {
+    background-color: #000000; /* Reemplaza por tu color principal */
+    color: #ffffff;
 }
 
-/* Banner Principal */
-.hero-banner {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 40px 20px;
-  margin-bottom: 3rem;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+.btn-primario:hover {
+    background-color: #333333;
 }
 
-.hero-titulo {
-  color: #ff6b00;
-  font-weight: 800;
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
+.btn-alerta {
+    background-color: #e63946;
+    color: #ffffff;
 }
 
-.hero-subtitulo {
-  color: #b3b3b3;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
+/* Estado visual cuando está deshabilitado */
+.btn-audiomax:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    transform: none; /* Quitamos el efecto de clic */
 }
 
-.hero-boton {
-  padding: 10px 25px;
-  font-weight: bold;
+
+/* Base estructural de la IMAGE */
+.img-audiomax {
+    display: block; /* Elimina un pequeño margen fantasma que los navegadores le ponen abajo a las imágenes */
+    object-fit: cover; /* Evita que la imagen se deforme o aplaste, recortando el sobrante si es necesario */
 }
 
-/* Sección Destacados */
-.seccion-destacados {
-  margin-top: 2rem;
+/* Variante por defecto para las tarjetas del catálogo */
+.img-fluida {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; /* Un ligero borde redondeado para que se vea más moderno */
 }
 
-.seccion-titulo {
-  color: #ffffff;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-}
-}
-
-/* ESTILOS: PIE DE PÁGINA */
-
-.footer-audiomax {
-    background-color: #121212; /* Mismo fondo oscuro del Navbar */
-    border-top: 2px solid #FF6B00; /* Línea divisoria superior naranja */
-    color: #B3B3B3; /* Texto gris claro para que no brille tanto como el blanco */
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4); /* Pequeña sombra hacia arriba */
+/* Variante para fotos de perfil en el futuro (cuando el usuario inicie sesión) */
+.img-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Hace que la imagen sea un círculo perfecto */
 }
 
-/* Clase reutilizable para pintar textos del naranja oficial */
-.texto-naranja {
-    color: #FF6B00 !important;
+
+/* Base estructural del INPUT*/
+.input-audiomax {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
 }
 
-/* ESTILOS: BOTÓN VOLVER (CATÁLOGO) */
-
-.btn-volver-audiomax {
-    background-color: transparent !important;
-    color: #FF6B00 !important;
-    border: 2px solid #FF6B00 !important;
-    border-radius: 25px !important; 
-    padding: 8px 20px !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease !important;
+/* Efecto cuando el usuario hace clic para escribir (foco) */
+.input-audiomax:focus {
+    border-color: #000000; /* Color de tu marca */
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25); /* Sombreado elegante */
 }
 
-.btn-volver-audiomax:hover {
-    background-color: #FF6B00 !important;
-    color: #FFFFFF !important;
-    transform: translateX(-5px); 
-    box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3) !important;
+/* Efecto cuando el input está deshabilitado */
+.input-audiomax:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+
+/* Base estructural de toda la TIPOGRAFIA de AudioMax */
+.texto-audiomax {
+    font-family: 'Inter', 'Segoe UI', sans-serif; /* Cambia esto por tu fuente preferida */
+    margin-top: 0;
+    /* Eliminamos el margen inferior por defecto para controlarlo con el className (ej. mb-3) */
+    margin-bottom: 0; 
+}
+
+/* Colores estandarizados de tu marca */
+.texto-negro {
+    color: #212529; /* Casi negro, mejor para la lectura que el negro puro */
+}
+
+.texto-claro {
+    color: #ffffff; /* Para textos sobre fondos oscuros */
+}
+
+.texto-primario {
+    color: #007bff; /* Color principal de AudioMax */
+}
+
+.texto-alerta {
+    color: #dc3545; /* Rojo para errores o precios con descuento */
+}
+
+.texto-gris {
+    color: #6c757d; /* Para descripciones secundarias */
 }
