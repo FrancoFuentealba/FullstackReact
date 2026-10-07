@@ -1,9 +1,4 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import TarjetaProducto from "../components/molecules/TarjetaProducto.jsx";
-import { HeroSection } from "../components/organisms/HeroSection.jsx";
-import { PlantillaPublica } from "../components/templates/PlantillaPublica.jsx";
-import React from "react";
 import { Container } from "react-bootstrap";
 import { HeroSection } from "../components/organisms/HeroSection.jsx";
 import { ProductGrid } from "../components/organisms/ProductGrid.jsx";
