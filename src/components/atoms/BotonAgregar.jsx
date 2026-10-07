@@ -1,14 +1,11 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
 
-export const BotonAgregar = ({ texto, deshabilitado, onClick}) => {
+function BotonAgregar(props) {
+    const variante = props.variante || "primary";
     return (
-        <Button
-            className = "w-100 fw-bold btn-audiomax"
-            disabled = {deshabilitado}
-            onClick = {onClick}
-        >
-            {texto}
-        </Button>
+        <button className={`btn btn-${variante}`} onClick={props.onClick}>
+            {props.texto}
+        </button>
     )
 }
+
+export default BotonAgregar;
