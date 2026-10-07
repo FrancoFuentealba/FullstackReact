@@ -1,43 +1,58 @@
-import React from 'react';
-import { SectionTitle } from "../atoms/SectionTitle.jsx";
-import { SubmitButton } from "../atoms/SubmitButton.jsx";
-import { FormGroupField } from "../molecules/FormGroupField.jsx";
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-export const LoginForm = () => {
+function LoginForm() {
+    const [correo, setCorreo] = useState('');
+    const [clave, setClave] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // TODO: conectar con el login real
+        console.log({ correo, clave });
+    };
+
     return (
-        <Container className="mt-5">
+        <Container className="py-5">
             <Row className="justify-content-center">
-                <Col xs={12} md={8} lg="4">
-                    <div className="login-card">
-                        <SectionTitle title="Iniciar sesion" subtitle="Ingrese sus credenciales" />
+                <Col md={8} lg={4}>
+                    <h2 className="login-title">Iniciar sesion</h2>
+                    <p className="login-subtitle">Ingrese sus credenciales</p>
 
-                        <Form noValidate>{/*solucionar la validacion*/}
-                            {/*Moleculas*/}
-                            <FormGroupField
-                                controlId="emailLogin"
-                                label="Correo electronico"
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="correo">
+                            <Form.Label>Correo</Form.Label>
+                            <Form.Control
                                 type="email"
-                                placeholder="Ingrese su correo electronico"
+                                value={correo}
+                                onChange={(e) => setCorreo(e.target.value)}
+                                required
                             />
-                            <FormGroupField
-                                controlId="passwordLogin"
-                                label="Contraseña"
-                                type="password"
-                                placeholder="Ingrese su contraseña"
-                            />
-                            {/*Atomo*/}
-                            <SubmitButton text="Iniciar sesion" />
-                        </Form>
+                        </Form.Group>
 
-                        <div className="text-center mt-3">
-                            <a href="/">← Volver a la pagina principal</a>
-                        </div>
+                        <Form.Group className="mb-3" controlId="clave">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control
+                                type="password"
+                                value={clave}
+                                onChange={(e) => setClave(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Button type="submit" className="w-100">Iniciar sesion</Button>
+                    </Form>
+
+                    <div className="mt-3 text-center">
+                        <Link to="/">Volver al inicio</Link>
                     </div>
                 </Col>
             </Row>
         </Container>
     );
 }
+
+export default LoginForm;
+
                     
                         

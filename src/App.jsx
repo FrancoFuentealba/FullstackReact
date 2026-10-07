@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import  Inicio  from './pages/Inicio.jsx';
 import { Catalogo } from './pages/Catalogo.jsx';
-import { LoginForm } from './components/organisms/LoginForm.jsx'; 
+import LoginForm from "./components/organisms/LoginForm.jsx";
 
 const productos = [
   {codigo: "GTR-001", 
