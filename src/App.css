@@ -318,3 +318,143 @@
     color: #B3B3B3;
     cursor: not-allowed;
 }
+/* Clase base para todos los BADGES de AudioMax */
+.badge-audiomax {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Clases para las variantes de color */
+.badge-primario {
+    background-color: #007bff; /* Azul de tu marca */
+    color: white;
+}
+
+.badge-alerta {
+    background-color: #dc3545; /* Rojo para agotado */
+    color: white;
+}
+
+
+/* Base estructural del BUTTON */
+.btn-audiomax {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+/* Efecto sutil al hacer clic */
+.btn-audiomax:active {
+    transform: scale(0.98);
+}
+
+/* Variantes de color */
+.btn-primario {
+    background-color: #000000; /* Reemplaza por tu color principal */
+    color: #ffffff;
+}
+
+.btn-primario:hover {
+    background-color: #333333;
+}
+
+.btn-alerta {
+    background-color: #e63946;
+    color: #ffffff;
+}
+
+/* Estado visual cuando está deshabilitado */
+.btn-audiomax:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    transform: none; /* Quitamos el efecto de clic */
+}
+
+
+/* Base estructural de la IMAGE */
+.img-audiomax {
+    display: block; /* Elimina un pequeño margen fantasma que los navegadores le ponen abajo a las imágenes */
+    object-fit: cover; /* Evita que la imagen se deforme o aplaste, recortando el sobrante si es necesario */
+}
+
+/* Variante por defecto para las tarjetas del catálogo */
+.img-fluida {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; /* Un ligero borde redondeado para que se vea más moderno */
+}
+
+/* Variante para fotos de perfil en el futuro (cuando el usuario inicie sesión) */
+.img-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Hace que la imagen sea un círculo perfecto */
+}
+
+
+/* Base estructural del INPUT*/
+.input-audiomax {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+}
+
+/* Efecto cuando el usuario hace clic para escribir (foco) */
+.input-audiomax:focus {
+    border-color: #000000; /* Color de tu marca */
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25); /* Sombreado elegante */
+}
+
+/* Efecto cuando el input está deshabilitado */
+.input-audiomax:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+
+/* Base estructural de toda la TIPOGRAFIA de AudioMax */
+.texto-audiomax {
+    font-family: 'Inter', 'Segoe UI', sans-serif; /* Cambia esto por tu fuente preferida */
+    margin-top: 0;
+    /* Eliminamos el margen inferior por defecto para controlarlo con el className (ej. mb-3) */
+    margin-bottom: 0; 
+}
+
+/* Colores estandarizados de tu marca */
+.texto-negro {
+    color: #212529; /* Casi negro, mejor para la lectura que el negro puro */
+}
+
+.texto-claro {
+    color: #ffffff; /* Para textos sobre fondos oscuros */
+}
+
+.texto-primario {
+    color: #007bff; /* Color principal de AudioMax */
+}
+
+.texto-alerta {
+    color: #dc3545; /* Rojo para errores o precios con descuento */
+}
+
+.texto-gris {
+    color: #6c757d; /* Para descripciones secundarias */
+}
