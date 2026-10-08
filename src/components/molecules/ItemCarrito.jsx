@@ -1,6 +1,6 @@
 import Image from '../atoms/Image.jsx';
 import Precio from '../atoms/Precio.jsx';
-import ContadorFinal from '../atoms/ContadorFinal.jsx';
+import ContadorCantidad from '../atoms/ContadorCantidad.jsx';
 import Boton from '../atoms/Boton.jsx';
 
 function ItemCarrito(props) {
@@ -17,10 +17,10 @@ function ItemCarrito(props) {
                 <Precio valor={precio} />
             </div>
 
-            <ContadorFinal
+            <ContadorCantidad
                 valor={cantidad}
-                alSumar={props.alSumar}
-                alRestar={props.alRestar}
+                onSumar={props.alSumar}
+                onRestar={props.alRestar}
                 className="item-carrito-contador"
             />
 
