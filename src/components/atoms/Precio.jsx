@@ -8,7 +8,7 @@ function Precio(props) {
 
     return (
         <span className={`precio-audiomax precio-${variante} ${className}`}>
-            {moneda}{props.valor}
+            {moneda}{valorFormateado}
         </span>
     )
 }
