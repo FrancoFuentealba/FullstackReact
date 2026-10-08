@@ -1,5 +1,5 @@
 
-function ContadorFinal(props) {
+function ContadorCantidad(props) {
     const valor = props.valor || 0;
     const className = props.className || "";
 
@@ -8,7 +8,8 @@ function ContadorFinal(props) {
             <button
                 type="button"
                 className="btn btn-outline-secondary"
-                onClick={props.alRestar}
+                onClick={props.onRestar}
+                aria-label="Restar uno"
             >
                 -
             </button>
@@ -23,7 +24,8 @@ function ContadorFinal(props) {
             <button
                 type="button"
                 className="btn btn-outline-secondary"
-                onClick={props.alSumar}
+                onClick={props.onSumar}
+                aria-label="Sumar uno"
             >
                 +
             </button>
@@ -31,4 +33,4 @@ function ContadorFinal(props) {
     )
 }
 
-export default ContadorFinal;
+export default ContadorCantidad;
