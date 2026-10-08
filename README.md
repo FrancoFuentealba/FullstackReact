@@ -23,3 +23,4 @@ Cómo ejecutar el proyecto:npm install y npm run dev.
 
 
 Material complementario: un enlace a una carpeta de Google Drive pública, donde van a subir los documentos que se pidan durante el semestre (por ejemplo, la ERS).
+ubuntu es Cristobal Aguilera por baneo de cuenta anterior
