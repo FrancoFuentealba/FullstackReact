@@ -416,3 +416,33 @@
 .texto-gris {
     color: #6c757d;
 }
+
+
+/* NUEVOOOOO */
+/* Base estructural compartida para todas las etiquetas de stock */
+.etiqueta-audiomax {
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+/* Colores según el estado del inventario */
+.stock-disponible {
+    background-color: #198754; /* Verde de éxito */
+    color: white;
+}
+
+.stock-agotado {
+    background-color: #dc3545; /* Rojo de alerta */
+    color: white;
+}
+
+.stock-escaso {
+    background-color: #ffc107; /* Amarillo/Naranja de advertencia */
+    color: #000000; /* Texto oscuro para contrastar con el amarillo */
+}
