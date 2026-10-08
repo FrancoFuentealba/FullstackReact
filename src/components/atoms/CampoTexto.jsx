@@ -7,14 +7,14 @@ function CampoTexto(props) {
     
     return(
         <input
-            type={props.tipo || "text"}
-            className={`campotexto-audiomax ${props.className || ""}`}
-            placeholder={props.placeholder || ""}
+            type={tipo}
+            className={`form-control campotexto-audiomax ${className}`}
+            placeholder={placeholder}
             value={props.valor}
             onChange={props.onChange}
             name={props.name}
             id={props.id}
-            required={props.requerido || false}
+            required={requerido}
             />
     )
 }

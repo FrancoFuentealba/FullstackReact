@@ -276,79 +276,6 @@
 
 /* ===== ÁTOMOS (Franco) ===== */
 
-/* BADGE */
-.badge-audiomax {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.badge-primario {
-    background-color: #007bff;
-    color: white;
-}
-
-.badge-alerta {
-    background-color: #dc3545;
-    color: white;
-}
-
-.badge-nuevo {
-    background-color: #00E5FF;
-    color: #121212;
-}
-
-/* Para posicionar el badge sobre la imagen de la tarjeta */
-.badge-tarjeta {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 0.25rem 0.7rem;
-    font-size: 0.7rem;
-}
-
-/* BUTTON */
-.btn-audiomax {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-family: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.btn-audiomax:active {
-    transform: scale(0.98);
-}
-
-.btn-primario {
-    background-color: #000000;
-    color: #ffffff;
-}
-
-.btn-primario:hover {
-    background-color: #333333;
-}
-
-.btn-alerta {
-    background-color: #e63946;
-    color: #ffffff;
-}
-
-.btn-audiomax:disabled {
-    background-color: #cccccc;
-    color: #666666;
-    cursor: not-allowed;
-    transform: none;
-}
 
 /* IMAGE */
 .img-audiomax {
@@ -418,7 +345,7 @@
 }
 
 
-/* NUEVOOOOO */
+/* NUEVOOOOO--------------------------------------------------------------- */
 /* Base estructural compartida para todas las etiquetas de stock */
 .etiqueta-audiomax {
     display: inline-block;
@@ -445,4 +372,106 @@
 .stock-escaso {
     background-color: #ffc107; /* Amarillo/Naranja de advertencia */
     color: #000000; /* Texto oscuro para contrastar con el amarillo */
+}
+
+
+/* BUTTON */
+.btn-audiomax {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-audiomax:active {
+    transform: scale(0.98);
+}
+
+.btn-primario {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.btn-primario:hover {
+    background-color: #333333;
+}
+
+.btn-alerta {
+    background-color: #e63946;
+    color: #ffffff;
+}
+
+.btn-audiomax:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Estructura base para todos los precios */
+.precio-audiomax {
+    display: inline-block;
+    font-weight: 700; /* Negrita para destacar que es dinero */
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.5px; /* Junta un poco los números para un look más moderno */
+}
+
+/* Precio estándar */
+.precio-normal {
+    color: #212529; /* Oscuro */
+    font-size: 1.2rem;
+}
+
+/* Precio destacado por estar en rebaja */
+.precio-oferta {
+    color: #dc3545; /* Rojo vibrante */
+    font-size: 1.35rem; /* Ligeramente más grande que el normal */
+}
+
+/* Precio antiguo tachado (antes de la oferta) */
+.precio-tachado {
+    color: #6c757d; /* Gris apagado */
+    text-decoration: line-through; /* Línea que tacha el número */
+    font-size: 0.95rem; /* Más pequeño para restar jerarquía */
+    font-weight: 400; /* Se quita la negrita */
+}
+
+/* Base estructural del input */
+.campotexto-audiomax {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #d1d5db; /* Borde gris claro elegante */
+    border-radius: 6px; /* Esquinas ligeramente redondeadas */
+    font-family: 'Inter', sans-serif; /* Reemplaza por la fuente de tu proyecto */
+    font-size: 1rem;
+    color: #212529;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none; /* Quita el borde azul automático del navegador */
+}
+
+/* Diseño del texto fantasma (Placeholder) */
+.campotexto-audiomax::placeholder {
+    color: #9ca3af;
+    font-style: italic; /* Opcional: le da un toque distintivo al texto de ayuda */
+}
+
+/* Efecto cuando el usuario hace clic adentro para escribir (Focus) */
+.campotexto-audiomax:focus {
+    border-color: #000000; /* Borde negro estilo AudioMax */
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1); /* Sombra suave para resaltar el campo */
+}
+
+/* Efecto visual si el campo está deshabilitado */
+.campotexto-audiomax:disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+    border-color: #e5e7eb;
 }
