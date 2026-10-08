@@ -1,14 +1,15 @@
 import React from 'react';
+import Badge from '../atoms/Badge.jsx';
 
-
-// Recibe el producto completo (ver src/data/productos.js).
 function TarjetaProducto({ producto }) {
-    const { nombre, marca, modelo, precio, stock, imagen } = producto;
+    const { nombre, marca, modelo, precio, stock, imagen, nuevo } = producto;
     const agotado = stock === 0;
 
     return (
         <div className="tarjeta-audiomax">
             <div className="contenedor-imagen">
+                {agotado && <Badge texto="Agotado" variante="alerta" className="badge-tarjeta" />}
+                {!agotado && nuevo && <Badge texto="Nuevo" variante="nuevo" className="badge-tarjeta" />}
                 <img src={imagen} alt={nombre} className="imagen-producto" />
             </div>
 
@@ -17,7 +18,7 @@ function TarjetaProducto({ producto }) {
                 <p className="marca-producto">{marca} · {modelo}</p>
                 <h6 className="precio-producto">${precio.toLocaleString('es-CL')}</h6>
                 <p className={`stock-producto ${agotado ? 'stock-agotado' : ''}`}>
-                    {agotado ? 'Agotado' : `Stock: ${stock}`}
+                    {agotado ? 'Sin stock' : `Stock: ${stock}`}
                 </p>
             </div>
         </div>
