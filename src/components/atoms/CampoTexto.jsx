@@ -1,16 +1,16 @@
 
-function Input(props) {
+function CampoTexto(props) {
     const tipo = props.tipo || "text";
-    const className = props.className || "";
     const placeholder = props.placeholder || "";
+    const className = props.className || "";
     const requerido = props.requerido || false;
-
-    return (
+    
+    return(
         <input
             type={tipo}
-            className={`input-audiomax ${className}`}
+            className={`form-control campotexto-audiomax ${className}`}
             placeholder={placeholder}
-            value={props.value}
+            value={props.valor}
             onChange={props.onChange}
             name={props.name}
             id={props.id}
@@ -19,4 +19,4 @@ function Input(props) {
     )
 }
 
-export default Input;
+export default CampoTexto;

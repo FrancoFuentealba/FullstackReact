@@ -1,14 +1,14 @@
 
-function Button(props) {
+function Boton(props) {
     const tipo = props.tipo || "button";
-    const variante = props.variante || "primario";
+    const variante = props.variante || "primary";
     const className = props.className || "";
     const deshabilitado = props.deshabilitado || false;
 
     return (
         <button
             type={tipo}
-            className={`btn-audiomax btn-${variante} ${className}`}
+            className={`btn btn-${variante} ${className}`}
             onClick={props.onClick}
             disabled={deshabilitado}
         >
@@ -17,4 +17,4 @@ function Button(props) {
     )
 }
 
-export default Button;
+export default Boton;

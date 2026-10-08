@@ -1,11 +1,12 @@
 
 function Image(props) {
-    const variante = props.variante || "fluida";
+    const variante = props.variante || "fluid";
     const className = props.className || "";
+    const alt = props.alt || "";
 
     return (
         <img src={props.src}
-        alt={props.alt}
+        alt={alt}
         className={`img-audiomax img-${variante} ${className}`} 
         />
     )
