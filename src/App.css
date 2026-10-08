@@ -65,10 +65,15 @@
 
 .tarjeta-audiomax {
     background-color: #1E1E1E !important;
-    border: 1px solid #333 !important;
+    border: 1px solid #313030 !important;
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.precio-normal {
+    color: #212529;   /* oscuro */
+    font-size: 1.2rem;
 }
 
 .tarjeta-audiomax:hover {
@@ -474,4 +479,160 @@
     color: #6b7280;
     cursor: not-allowed;
     border-color: #e5e7eb;
+}
+
+
+.tarjeta-audiomax .imagen-producto {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 0;
+}
+
+.badge-tarjeta {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 1;
+}
+
+/* CampoFormulario */
+.campo-formulario-etiqueta {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.campo-formulario-error {
+    margin: 4px 0 0;
+    color: #dc3545;
+    font-size: 0.85rem;
+}
+
+/* FiltroCategoria */
+.filtro-categoria {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 280px;
+}
+
+.filtro-categoria-etiqueta {
+    color: #B3B3B3;
+    font-size: 0.85rem;
+}
+
+/* ItemCarrito */
+.item-carrito {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    background-color: #1E1E1E;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    color: #FFFFFF;
+}
+
+.item-carrito .item-carrito-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.item-carrito-info {
+    flex: 1 1 160px;
+}
+
+.item-carrito-nombre {
+    margin: 0 0 2px;
+}
+
+.item-carrito-detalle {
+    margin: 0 0 4px;
+    color: #B3B3B3;
+    font-size: 0.85rem;
+}
+
+.item-carrito-contador {
+    width: 130px;
+}
+
+.item-carrito-subtotal {
+    display: flex;
+    flex-direction: column;
+    min-width: 90px;
+    text-align: right;
+}
+
+.item-carrito-subtotal-titulo {
+    color: #B3B3B3;
+    font-size: 0.75rem;
+}
+
+.item-carrito .precio-normal {
+    color: #00E5FF;
+}
+
+/* EstadoPedido */
+.estado-pedido {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.estado-pedido-etapa {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: #B3B3B3;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.estado-pedido-punto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #555;
+    font-weight: bold;
+}
+
+.estado-pedido-etapa.completada .estado-pedido-punto {
+    background-color: #198754;
+    border-color: #198754;
+    color: #FFFFFF;
+}
+
+.estado-pedido-etapa.actual {
+    color: #FF6B00;
+    font-weight: bold;
+}
+
+.estado-pedido-etapa.actual .estado-pedido-punto {
+    border-color: #FF6B00;
+    color: #FF6B00;
+}
+
+.stock-producto-agotado {
+    color: #ff6b6b;
+    font-weight: 600;
+}
+
+.tarjeta-audiomax .precio-normal {
+    color: #FF6B00;
+    font-size: 1.4rem;
 }
