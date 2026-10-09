@@ -1,8 +1,11 @@
 import React from 'react';
 import { Navbar, Nav, Container, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useCarrito } from '../../context/CarritoContext.jsx';
 
 export const NavbarAudioMax = () => {
+    const { cantidadTotal } = useCarrito();
+
     return (
         <Navbar variant="dark" expand="lg" className="navbar-audiomax">
             <Container>
@@ -13,6 +16,12 @@ export const NavbarAudioMax = () => {
                     <Nav className="ms-auto">
                         <Nav.Link as={Link} to="/" className="nav-link-audiomax">Inicio</Nav.Link>
                         <Nav.Link as={Link} to="/catalogo" className="nav-link-audiomax">Catálogo</Nav.Link>
+                        <Nav.Link as={Link} to="/carrito" className="nav-link-audiomax">
+                            Carrito
+                            {cantidadTotal > 0 && (
+                                <Badge className="badge-carrito">{cantidadTotal}</Badge>
+                            )}
+                        </Nav.Link>
                         <Nav.Link as={Link} to="/login" className="nav-link-login">Iniciar sesion</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

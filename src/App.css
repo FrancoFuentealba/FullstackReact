@@ -647,3 +647,44 @@
     font-size: 0.85rem;
     margin-bottom: 16px;
 }
+
+
+/* --------------------------Carrito-------------------------- */
+.carrito-contenedor {
+    margin-top: 3rem;
+}
+
+.carrito-titulo {
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+}
+
+.carrito-vacio {
+    text-align: center;
+    color: #B3B3B3;
+    padding: 3rem 0;
+}
+
+.carrito-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding: 16px;
+    border-top: 2px solid #FF6B00;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.carrito-total .precio-normal {
+    color: #00E5FF;
+    font-size: 1.5rem;
+}
+.badge-carrito {
+    background-color: #FF6B00 !important;
+    color: #FFFFFF;
+    margin-left: 6px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}

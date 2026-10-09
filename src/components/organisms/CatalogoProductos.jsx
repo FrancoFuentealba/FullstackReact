@@ -22,7 +22,9 @@ function CatalogoProductos(props) {
                 alCambiar={setCategoria}
             />
 
-            <p className="catalogo-cantidad">{productosVisibles.length} productos</p>
+            <p className="catalogo-cantidad">
+                {productosVisibles.length} {productosVisibles.length === 1 ? 'producto' : 'productos'}
+            </p>
 
             <Row xs={1} sm={2} md={3} lg={4} className="productos-grilla">
                 {productosVisibles.map((producto) => (

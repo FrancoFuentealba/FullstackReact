@@ -1,10 +1,16 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import CatalogoProductos from "../components/organisms/CatalogoProductos.jsx";import { productosData } from "../data/productos.js";
+import CatalogoProductos from "../components/organisms/CatalogoProductos.jsx"; 
+import { productosData } from "../data/productos.js";
+import { useCarrito } from "../context/CarritoContext.jsx";
 import { PlantillaPublica } from "../components/templates/PlantillaPublica.jsx";
 
+
 export const Catalogo = () => {
+  const { agregar, cantidadTotal } = useCarrito();
+
+
   return (
     <PlantillaPublica>
       <Container className="catalogo-contenedor">
@@ -16,7 +22,9 @@ export const Catalogo = () => {
           </Link>
         </div>
 
-        <CatalogoProductos productos={productosData} />
+        <p className="catalogo-cantidad">🛒 {cantidadTotal} en el carrito</p>
+
+        <CatalogoProductos productos={productosData} onAgregar={agregar} />
       </Container>
     </PlantillaPublica>
   );

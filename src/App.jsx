@@ -1,34 +1,29 @@
-
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import PaginaCarrito from './pages/Carrito.jsx';
 
-import  Inicio  from './pages/Inicio.jsx';
+import { CarritoProvider } from './context/CarritoContext.jsx';
+import Inicio from './pages/Inicio.jsx';
 import { Catalogo } from './pages/Catalogo.jsx';
-import LoginForm from "./components/organisms/LoginForm.jsx";
-
-const productos = [
-  {codigo: "GTR-001", 
-    categoria: "Guitarras",
-        nombre: "Guitarra Eléctrica Stratocaster",
-        marca: "Fender",
-        modelo: "Player Strat",
-        stock: 5,
-        precio: 450000,
-        imagen: "/img/guitarra.jpg"}
-]
+import LoginForm from './components/organisms/LoginForm.jsx';
+import { productosData } from './data/productos.js';
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="app-container">
-        <Routes>
-          <Route path="/" element={<Inicio productos={productos} />} />
-          <Route path="/catalogo" element={<Catalogo />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <CarritoProvider>
+      <BrowserRouter>
+        <div className="app-container">
+          <Routes>
+            <Route path="/" element={<Inicio productos={productosData} />} />
+            <Route path="/catalogo" element={<Catalogo />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/carrito" element={<PaginaCarrito />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </CarritoProvider>
   );
 }
 
