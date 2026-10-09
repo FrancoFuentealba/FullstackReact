@@ -1,8 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { ProductGrid } from "../components/organisms/ProductGrid.jsx";
-import { productosData } from "../data/productos.js";
+import CatalogoProductos from "../components/organisms/CatalogoProductos.jsx";import { productosData } from "../data/productos.js";
 import { PlantillaPublica } from "../components/templates/PlantillaPublica.jsx";
 
 export const Catalogo = () => {
@@ -17,7 +16,7 @@ export const Catalogo = () => {
           </Link>
         </div>
 
-        <ProductGrid productos={productosData} />
+        <CatalogoProductos productos={productosData} />
       </Container>
     </PlantillaPublica>
   );

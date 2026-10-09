@@ -636,3 +636,14 @@
     color: #FF6B00;
     font-size: 1.4rem;
 }
+
+
+.catalogo-productos .filtro-categoria {
+    margin-bottom: 12px;
+}
+
+.catalogo-cantidad {
+    color: #B3B3B3;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
