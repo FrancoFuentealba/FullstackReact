@@ -1,11 +1,11 @@
-import CampoTexto from '../atoms/CampoTexto.jsx';
+import CampoTexto from '../atoms/CampoTexto';
 
 function CampoFormulario(props) {
     const hayError = Boolean(props.error);
 
     return (
         <div className="campo-formulario">
-            <label htmlFor={props.id} className="campo-formulario-etiqueta">
+            <label htmlFor={props.id} className="form-label campo-formulario-etiqueta">
                 {props.etiqueta}
             </label>
 
@@ -17,10 +17,11 @@ function CampoFormulario(props) {
                 onChange={props.onChange}
                 placeholder={props.placeholder}
                 requerido={props.requerido}
-                className={hayError ? 'is-invalid' : ''}
+                invalido={hayError}
             />
 
-            {hayError && <p className="campo-formulario-error">{props.error}</p>}
+            {hayError && (
+                <p className="campo-formulario-error text-danger">{props.error}</p>)}
         </div>
     );
 }

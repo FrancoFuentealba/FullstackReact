@@ -1,12 +1,16 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import { HeroSection } from "../components/organisms/HeroSection.jsx";
-import { ProductGrid } from "../components/organisms/ProductGrid.jsx";
-import { PlantillaPublica } from "../components/templates/PlantillaPublica.jsx";
+import HeroSection from '../components/organisms/HeroSection';
+import ProductGrid from '../components/organisms/ProductGrid';
+import PlantillaPublica from '../components/templates/PlantillaPublica';
+import { useCarrito } from '../context/CarritoContext';
+import { productosData } from '../data/productos.js';
 
-function Inicio(props) {
+function Inicio() {
+  const navigate = useNavigate();
+  const { agregar } = useCarrito();
 
-  const productosDestacados = props.productos ? props.productos.slice(0, 4) : [];
+  const productosDestacados = productosData.slice(0, 4);
 
   return (
     <PlantillaPublica>
@@ -15,13 +19,12 @@ function Inicio(props) {
           titulo="Bienvenido a AudioMax"
           subtitulo="Equipamiento musical y audio profesional de calidad."
           textoBoton="Explorar catálogo"
-          rutaBoton="/catalogo"
+          onBoton={() => navigate('/catalogo')}
         />
 
-        {/* Sección de Productos Destacados */}
         <section className="seccion-destacados">
           <h2 className="seccion-titulo">Productos Destacados</h2>
-          <ProductGrid productos={productosDestacados} />
+          <ProductGrid productos={productosDestacados} onAgregar={agregar} />
         </section>
       </Container>
     </PlantillaPublica>

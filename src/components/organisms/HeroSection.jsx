@@ -1,12 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 
-export const HeroSection = ({ titulo, subtitulo, textoBoton, rutaBoton }) => {
+import Boton from '../atoms/Boton';
+
+function HeroSection(props){
     return (
         <div className="hero-banner">
-            <h1 className="hero-titulo">{titulo}</h1>
-            <p className="hero-subtitulo">{subtitulo}</p>
-            <Link to={rutaBoton} className="btn-audiomax hero-boton">{textoBoton}</Link>
+            <h1 className="hero-titulo">{props.titulo}</h1>
+            <p className="hero-subtitulo">{props.subtitulo}</p>
+            <Boton texto={props.textoBoton} className="hero-boton" onClick={props.onBoton} />
         </div>
     );
 };
+
+export default HeroSection;

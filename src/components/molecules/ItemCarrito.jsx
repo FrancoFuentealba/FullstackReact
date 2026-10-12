@@ -1,11 +1,11 @@
-import Image from '../atoms/Image.jsx';
-import Precio from '../atoms/Precio.jsx';
-import ContadorCantidad from '../atoms/ContadorCantidad.jsx';
-import Boton from '../atoms/Boton.jsx';
+import Image from '../atoms/Image';
+import Precio from '../atoms/Precio';
+import ContadorCantidad from '../atoms/ContadorCantidad';
+import Boton from '../atoms/Boton';
 
 function ItemCarrito(props) {
     const { nombre, marca, modelo, precio, imagen } = props.producto;
-    const cantidad = props.cantidad || 1;
+    const cantidad = props.cantidad ?? 1;
 
     return (
         <div className="item-carrito">
@@ -19,8 +19,8 @@ function ItemCarrito(props) {
 
             <ContadorCantidad
                 valor={cantidad}
-                onSumar={props.alSumar}
-                onRestar={props.alRestar}
+                onSumar={props.onSumar}
+                onRestar={props.onRestar}
                 className="item-carrito-contador"
             />
 
@@ -32,7 +32,7 @@ function ItemCarrito(props) {
             <Boton
                 texto="Quitar"
                 variante="outline-danger"
-                onClick={props.alEliminar}
+                onClick={props.onEliminar}
             />
         </div>
     );

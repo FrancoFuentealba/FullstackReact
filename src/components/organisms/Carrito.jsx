@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import ItemCarrito from '../molecules/ItemCarrito.jsx';
-import Precio from '../atoms/Precio.jsx';
+import Boton from '../atoms/Boton';
+import ItemCarrito from '../molecules/ItemCarrito';
+import Precio from '../atoms/Precio';
 
 function Carrito(props) {
     const items = props.items || [];
@@ -10,9 +10,7 @@ function Carrito(props) {
             <section className="carrito-vacio">
                 <h2 className="carrito-titulo">Tu carrito está vacío</h2>
                 <p>Agrega productos desde el catálogo.</p>
-                <Link to="/catalogo" className="btn-volver-audiomax">
-                    Ir al catálogo
-                </Link>
+                <Boton texto="Ir al catálogo" onClick={props.onIrAlCatalogo} />
             </section>
         );
     }
@@ -26,9 +24,9 @@ function Carrito(props) {
                     key={item.producto.codigo}
                     producto={item.producto}
                     cantidad={item.cantidad}
-                    alSumar={() => props.alSumar(item.producto.codigo)}
-                    alRestar={() => props.alRestar(item.producto.codigo)}
-                    alEliminar={() => props.alQuitar(item.producto.codigo)}
+                    onSumar={() => props.onSumar(item.producto.codigo)}
+                    onRestar={() => props.onRestar(item.producto.codigo)}
+                    onEliminar={() => props.onQuitar(item.producto.codigo)}
                 />
             ))}
 

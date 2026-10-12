@@ -1,16 +1,20 @@
-import React from 'react';
+
 import { Row, Col } from 'react-bootstrap';
-import TarjetaProducto from '../molecules/TarjetaProducto.jsx';
+import TarjetaProducto from '../molecules/TarjetaProducto';
 
 // Recibe una lista de productos y muestra una tarjeta por cada uno.
-export const ProductGrid = ({ productos }) => {
+function ProductGrid(props) {
+    const productos = props.productos || [];
+
     return (
         <Row xs={1} sm={2} md={3} lg={4} className="productos-grilla">
             {productos.map((producto) => (
                 <Col key={producto.codigo}>
-                    <TarjetaProducto producto={producto} />
+                    <TarjetaProducto producto={producto} onAgregar={props.onAgregar} />
                 </Col>
             ))}
         </Row>
     );
-};
+}
+
+export default ProductGrid;

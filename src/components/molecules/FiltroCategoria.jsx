@@ -1,7 +1,8 @@
-import Selector from '../atoms/Selector.jsx';
+import Selector from '../atoms/Selector';
 
 function FiltroCategoria(props) {
     const categorias = props.categorias || [];
+    const id = props.id || "filtro-categoria";
 
     const opciones = [
         { valor: 'todas', texto: 'Todas las categorías' },
@@ -9,14 +10,14 @@ function FiltroCategoria(props) {
     ];
 
     function alCambiarSeleccion(evento) {
-        if (props.alCambiar) {
-            props.alCambiar(evento.target.value);
+        if (props.onCambiar) {
+            props.onCambiar(evento.target.value);
         }
     }
 
     return (
         <div className="filtro-categoria">
-            <label htmlFor="filtro-categoria" className="filtro-categoria-etiqueta">
+            <label id={id} className="form-label filtro-categoria-etiqueta">
                 Categoría
             </label>
             <Selector

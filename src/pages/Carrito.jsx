@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import Carrito from '../components/organisms/Carrito.jsx';
-import { useCarrito } from '../context/CarritoContext.jsx';
-import { PlantillaPublica } from '../components/templates/PlantillaPublica.jsx';
+import Carrito from '../components/organisms/Carrito';
+import { useCarrito } from '../context/CarritoContext';
+import PlantillaPublica from '../components/templates/PlantillaPublica';
 
 function PaginaCarrito() {
+    const navigate = useNavigate();
     const { items, total, sumar, restar, quitar } = useCarrito();
 
     return (
@@ -12,9 +14,10 @@ function PaginaCarrito() {
                 <Carrito
                     items={items}
                     total={total}
-                    alSumar={sumar}
-                    alRestar={restar}
-                    alQuitar={quitar}
+                    onSumar={sumar}
+                    onRestar={restar}
+                    onQuitar={quitar}
+                    onIrAlCatalogo={() => navigate('/catalogo')}
                 />
             </Container>
         </PlantillaPublica>

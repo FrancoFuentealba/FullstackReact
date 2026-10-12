@@ -1,11 +1,12 @@
-import Image from '../atoms/Image.jsx';
-import EtiquetaStock from '../atoms/EtiquetaStock.jsx';
-import Precio from '../atoms/Precio.jsx';
-import Boton from '../atoms/Boton.jsx';
+import Image from '../atoms/Image';
+import EtiquetaStock from '../atoms/EtiquetaStock';
+import Precio from '../atoms/Precio';
+import Boton from '../atoms/Boton';
+import { hayStock } from '../../utils/stock';
 
 function TarjetaProducto(props) {
     const { nombre, marca, modelo, precio, stock, imagen } = props.producto;
-    const disponible = stock > 0;
+    const disponible = hayStock(props.producto);
 
     function alAgregar() {
         if (props.onAgregar) {

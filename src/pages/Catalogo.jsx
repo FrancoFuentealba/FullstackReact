@@ -1,10 +1,10 @@
-import React from "react";
+
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import CatalogoProductos from "../components/organisms/CatalogoProductos.jsx"; 
+import CatalogoProductos from "../components/organisms/CatalogoProductos"; 
 import { productosData } from "../data/productos.js";
-import { useCarrito } from "../context/CarritoContext.jsx";
-import { PlantillaPublica } from "../components/templates/PlantillaPublica.jsx";
+import { useCarrito } from "../context/CarritoContext";
+import PlantillaPublica from '../components/templates/PlantillaPublica';
 
 
 export const Catalogo = () => {

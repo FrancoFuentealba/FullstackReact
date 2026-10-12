@@ -3,8 +3,11 @@
 .app-container {
     background-color: #121212;
     min-height: 100vh;
-    padding: 40px 20px;
     color: #FFFFFF;
+}
+
+.contenido {
+    padding: 40px 20px;
 }
 
 /* Estilo de la caja central del login */

@@ -1,14 +1,9 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import PaginaCarrito from './pages/Carrito.jsx';
-
-import { CarritoProvider } from './context/CarritoContext.jsx';
-import Inicio from './pages/Inicio.jsx';
-import { Catalogo } from './pages/Catalogo.jsx';
-import LoginForm from './components/organisms/LoginForm.jsx';
-import { productosData } from './data/productos.js';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { CarritoProvider } from './context/CarritoContext';
+import Inicio from './pages/Inicio';
+import { Catalogo } from './pages/Catalogo';
+import PaginaCarrito from './pages/Carrito';
+import PaginaLogin from './pages/Login';
 
 function App() {
   return (
@@ -16,10 +11,11 @@ function App() {
       <BrowserRouter>
         <div className="app-container">
           <Routes>
-            <Route path="/" element={<Inicio productos={productosData} />} />
+            <Route path="/" element={<Inicio />} />
             <Route path="/catalogo" element={<Catalogo />} />
-            <Route path="/login" element={<LoginForm />} />
             <Route path="/carrito" element={<PaginaCarrito />} />
+            <Route path="/login" element={<PaginaLogin />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
       </BrowserRouter>

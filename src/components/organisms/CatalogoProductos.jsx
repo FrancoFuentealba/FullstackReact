@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import FiltroCategoria from '../molecules/FiltroCategoria.jsx';
-import TarjetaProducto from '../molecules/TarjetaProducto.jsx';
+import FiltroCategoria from '../molecules/FiltroCategoria';
+import ProductGrid from './ProductGrid';
 
 function CatalogoProductos(props) {
     const productos = props.productos || [];
@@ -19,20 +18,14 @@ function CatalogoProductos(props) {
             <FiltroCategoria
                 categorias={categorias}
                 valor={categoria}
-                alCambiar={setCategoria}
+                onCambiar={setCategoria}
             />
 
             <p className="catalogo-cantidad">
                 {productosVisibles.length} {productosVisibles.length === 1 ? 'producto' : 'productos'}
             </p>
 
-            <Row xs={1} sm={2} md={3} lg={4} className="productos-grilla">
-                {productosVisibles.map((producto) => (
-                    <Col key={producto.codigo}>
-                        <TarjetaProducto producto={producto} onAgregar={props.onAgregar} />
-                    </Col>
-                ))}
-            </Row>
+            <ProductGrid productos={productosVisibles} onAgregar={props.onAgregar} />
         </section>
     );
 }

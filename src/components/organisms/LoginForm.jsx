@@ -1,58 +1,56 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
-function LoginForm() {
-    const [correo, setCorreo] = useState('');
+import { useState } from 'react';
+import { Form } from 'react-bootstrap';
+import CampoFormulario from '../molecules/CampoFormulario';
+import Boton from '../atoms/Boton';
+import { validarEmail, validarClave } from '../../utils/validaciones';
+
+function LoginForm(props) {
+    const [email, setEmail] = useState('');
     const [clave, setClave] = useState('');
+    const [errores, setErrores] = useState({ email: '', clave: '' });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // TODO: conectar con el login real
-        console.log({ correo, clave });
-    };
+    function alEnviar(evento) {
+        evento.preventDefault();
+
+      
+        const nuevos = {
+            email: validarEmail(email),
+            clave: validarClave(clave),
+        };
+        setErrores(nuevos);
+
+        if (nuevos.email === '' && nuevos.clave === '' && props.onEnviar) {
+            props.onEnviar({ email, clave });
+        }
+    }
 
     return (
-        <Container className="py-5">
-            <Row className="justify-content-center">
-                <Col md={8} lg={4}>
-                    <h2 className="login-title">Iniciar sesion</h2>
-                    <p className="login-subtitle">Ingrese sus credenciales</p>
+        <Form onSubmit={alEnviar} noValidate>
+            <h2 className="login-title">Iniciar sesión</h2>
+            <p className="login-subtitle">Ingrese sus credenciales</p>
 
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3" controlId="correo">
-                            <Form.Label>Correo</Form.Label>
-                            <Form.Control
-                                type="email"
-                                value={correo}
-                                onChange={(e) => setCorreo(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
+            <CampoFormulario
+                id="correo"
+                etiqueta="Correo"
+                tipo="email"
+                valor={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={errores.email}
+            />
 
-                        <Form.Group className="mb-3" controlId="clave">
-                            <Form.Label>Contraseña</Form.Label>
-                            <Form.Control
-                                type="password"
-                                value={clave}
-                                onChange={(e) => setClave(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
+            <CampoFormulario
+                id="clave"
+                etiqueta="Contraseña"
+                tipo="password"
+                valor={clave}
+                onChange={(e) => setClave(e.target.value)}
+                error={errores.clave}
+            />
 
-                        <Button type="submit" className="w-100">Iniciar sesion</Button>
-                    </Form>
-
-                    <div className="mt-3 text-center">
-                        <Link to="/">Volver al inicio</Link>
-                    </div>
-                </Col>
-            </Row>
-        </Container>
+            <Boton tipo="submit" texto="Iniciar sesión" className="w-100" />
+        </Form>
     );
 }
 
 export default LoginForm;
-
-                    
-                        

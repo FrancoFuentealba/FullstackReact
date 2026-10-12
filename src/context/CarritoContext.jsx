@@ -54,5 +54,7 @@ export function CarritoProvider({ children }) {
 }
 
 export function useCarrito() {
-    return useContext(CarritoContext);
+    const contexto = useContext(CarritoContext);
+    if (!contexto) throw new Error('useCarrito debe usarse dentro de <CarritoProvider>');
+    return contexto;
 }

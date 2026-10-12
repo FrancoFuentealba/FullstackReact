@@ -7,7 +7,7 @@ export const productosData = [
         modelo: "Player Strat",
         stock: 5,
         precio: 450000,
-        imagen: "/img/guitarra.jpg" //verficar rutaa
+        imagen: "/img/guitarra.jpg" 
     },
     {
         codigo: "MIC-001",
