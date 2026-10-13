@@ -2,13 +2,14 @@
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import CatalogoProductos from "../components/organisms/CatalogoProductos"; 
-import { productosData } from "../data/productos.js";
+import { useProductos } from "../context/ProductosContext";
 import { useCarrito } from "../context/CarritoContext";
 import PlantillaPublica from '../components/templates/PlantillaPublica';
 
 
 export const Catalogo = () => {
   const { agregar, cantidadTotal } = useCarrito();
+  const { productos} = useProductos();
 
 
   return (
@@ -24,7 +25,7 @@ export const Catalogo = () => {
 
         <p className="catalogo-cantidad">🛒 {cantidadTotal} en el carrito</p>
 
-        <CatalogoProductos productos={productosData} onAgregar={agregar} />
+        <CatalogoProductos productos={productos} onAgregar={agregar} />
       </Container>
     </PlantillaPublica>
   );

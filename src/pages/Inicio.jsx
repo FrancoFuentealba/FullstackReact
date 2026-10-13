@@ -4,13 +4,14 @@ import HeroSection from '../components/organisms/HeroSection';
 import ProductGrid from '../components/organisms/ProductGrid';
 import PlantillaPublica from '../components/templates/PlantillaPublica';
 import { useCarrito } from '../context/CarritoContext';
-import { productosData } from '../data/productos.js';
+import { useProductos } from '../context/ProductosContext';
 
 function Inicio() {
   const navigate = useNavigate();
   const { agregar } = useCarrito();
+  const { productos } = useProductos();
 
-  const productosDestacados = productosData.slice(0, 4);
+  const productosDestacados = productos.slice(0, 4);
 
   return (
     <PlantillaPublica>
