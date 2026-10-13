@@ -691,3 +691,61 @@
     border-radius: 10px;
     font-size: 0.75rem;
 }
+
+
+/*revisarr*/
+.btn-primary {
+    background-color: #FF6B00;
+    border-color: #FF6B00;
+    color: #FFFFFF;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #E05E00;
+    border-color: #E05E00;
+    color: #FFFFFF;
+}
+.btn-primary:disabled {
+    background-color: #555555;
+    border-color: #555555;
+    color: #CCCCCC;
+}
+
+/* 2) Separación entre campos de formulario (CampoFormulario y CampoSelector).
+      Tu reset "* { margin: 0 }" de index.css la quita, y las moléculas no la ponen. */
+.campo-formulario {
+    margin-bottom: 1rem;
+}
+
+/* 3) HeroSection: tenía estilos solo para .hero-boton */
+.hero-banner {
+    text-align: center;
+    padding: 4rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #1E1E1E;
+    border: 1px solid #333333;
+    border-radius: 12px;
+}
+.hero-titulo {
+    color: #FF6B00;
+    font-weight: bold;
+}
+.hero-subtitulo {
+    color: #B3B3B3;
+    margin-bottom: 1.5rem;
+}
+
+/* 4) Footer */
+.footer-audiomax {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-top: 1px solid #333333;
+    color: #B3B3B3;
+}
+.footer-texto {
+    margin: 0;
+}
+.texto-naranja {
+    color: #FF6B00;
+    font-weight: 600;
+}

@@ -4,6 +4,7 @@ import Inicio from './pages/Inicio';
 import { Catalogo } from './pages/Catalogo';
 import PaginaCarrito from './pages/Carrito';
 import PaginaLogin from './pages/Login';
+import NoEncontrado from './pages/NoEncontrado';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
             <Route path="/catalogo" element={<Catalogo />} />
             <Route path="/carrito" element={<PaginaCarrito />} />
             <Route path="/login" element={<PaginaLogin />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NoEncontrado />} />
           </Routes>
         </div>
       </BrowserRouter>

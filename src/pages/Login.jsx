@@ -6,9 +6,8 @@ import PlantillaPublica from '../components/templates/PlantillaPublica';
 function PaginaLogin() {
     const navigate = useNavigate();
 
-    // Todavía no hay backend: al validar correctamente se vuelve al inicio.
-    function alIniciarSesion(credenciales) {
-        console.log('Inicio de sesión:', credenciales.email);
+    // Todavía no hay backend
+    function alIniciarSesion() {
         navigate('/');
     }
 

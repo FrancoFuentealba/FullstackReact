@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react';
+import { hayStock } from '../utils/stock';
 
 const CarritoContext = createContext(null);
 
@@ -14,7 +15,7 @@ export function CarritoProvider({ children }) {
     }
 
     function agregar(producto) {
-        if (producto.stock <= 0) return;
+        if (!hayStock(producto)) return;
 
         const yaEsta = items.some((item) => item.producto.codigo === producto.codigo);
 
@@ -55,6 +56,8 @@ export function CarritoProvider({ children }) {
 
 export function useCarrito() {
     const contexto = useContext(CarritoContext);
-    if (!contexto) throw new Error('useCarrito debe usarse dentro de <CarritoProvider>');
+    if (!contexto) {
+        throw new Error('useCarrito debe usarse dentro de un CarritoProvider');
+    }
     return contexto;
 }

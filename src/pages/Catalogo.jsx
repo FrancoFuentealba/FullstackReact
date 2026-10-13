@@ -28,4 +28,6 @@ export const Catalogo = () => {
       </Container>
     </PlantillaPublica>
   );
-};
+}
+
+export default Catalogo;

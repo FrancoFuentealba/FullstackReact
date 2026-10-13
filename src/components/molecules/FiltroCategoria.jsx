@@ -17,11 +17,11 @@ function FiltroCategoria(props) {
 
     return (
         <div className="filtro-categoria">
-            <label id={id} className="form-label filtro-categoria-etiqueta">
+            <label htmlFor={id} className="form-label filtro-categoria-etiqueta">
                 Categoría
             </label>
             <Selector
-                id="filtro-categoria"
+                id={id}
                 name="categoria"
                 opciones={opciones}
                 valor={props.valor || 'todas'}
