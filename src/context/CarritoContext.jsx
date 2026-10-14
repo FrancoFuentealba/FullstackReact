@@ -1,10 +1,33 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { hayStock } from '../utils/stock';
 
 const CarritoContext = createContext(null);
 
+// Nombre de la caja de localStorage
+const CLAVE = 'carrito';
+
+// Lee el carrito guardado. Si no hay nada parte con el carro vacio
+function leerCarrito() {
+    try {
+        const guardado = localStorage.getItem(CLAVE);
+        const lista = guardado === null ? [] : JSON.parse(guardado);
+        if (!Array.isArray(lista)) return [];
+        return lista.filter(
+            (item) => item && item.producto && item.producto.codigo && Number.isInteger(item.cantidad) && item.cantidad > 0
+        );
+    } catch {
+        return [];
+    }
+}
+
 export function CarritoProvider({ children }) {
-    const [items, setItems] = useState([]);
+    // La función lee el localStorage solo la primera vez
+    const [items, setItems] = useState(leerCarrito);
+
+    // Cada vez que cambian los items, se guardan. useEffect corre despues de cargar la pantalla
+    useEffect(() => {
+        localStorage.setItem(CLAVE, JSON.stringify(items));
+    }, [items]);
 
     function sumar(codigo) {
         setItems(items.map((item) =>
@@ -15,6 +38,7 @@ export function CarritoProvider({ children }) {
     }
 
     function agregar(producto) {
+        // un producto sin stock no se puede agregar
         if (!hayStock(producto)) return;
 
         const yaEsta = items.some((item) => item.producto.codigo === producto.codigo);
@@ -54,6 +78,7 @@ export function CarritoProvider({ children }) {
     );
 }
 
+// useCarrito es un hook propio
 export function useCarrito() {
     const contexto = useContext(CarritoContext);
     if (!contexto) {
