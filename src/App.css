@@ -579,7 +579,7 @@
 }
 
 .item-carrito .precio-normal {
-    color: #00E5FF;
+    color: #f18e0b;
 }
 
 /* EstadoPedido */
@@ -681,7 +681,7 @@
 }
 
 .carrito-total .precio-normal {
-    color: #00E5FF;
+    color: #e78709;
     font-size: 1.5rem;
 }
 .badge-carrito {
