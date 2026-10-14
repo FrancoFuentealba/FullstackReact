@@ -2,8 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import LoginForm from '../components/organisms/LoginForm';
 import PlantillaPublica from '../components/templates/PlantillaPublica';
+import { useTituloPagina } from '../hooks/useTitulopagina';
 
 function PaginaLogin() {
+    useTituloPagina('Iniciar Sesion')
     const navigate = useNavigate();
 
     // Todavía no hay backend

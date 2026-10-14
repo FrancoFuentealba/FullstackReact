@@ -1,73 +1,46 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { hayStock } from '../utils/stock';
+import {
+    agregarItem,
+    calcularCantidadTotal,
+    calcularTotal,
+    limpiarCarrito,
+    quitarItem,
+    restarItem,
+    sumarItem,
+} from '../utils/carrito';
 
 const CarritoContext = createContext(null);
 
-// Nombre de la caja de localStorage
+// Nombre de la caja de localStorage donde se guarda el carrito
 const CLAVE = 'carrito';
 
-// Lee el carrito guardado. Si no hay nada parte con el carro vacio
+// Lee el carrito guardado. Si no hay nada, parte con el carrito vacío
 function leerCarrito() {
     try {
         const guardado = localStorage.getItem(CLAVE);
-        const lista = guardado === null ? [] : JSON.parse(guardado);
-        if (!Array.isArray(lista)) return [];
-        return lista.filter(
-            (item) => item && item.producto && item.producto.codigo && Number.isInteger(item.cantidad) && item.cantidad > 0
-        );
+        return limpiarCarrito(guardado === null ? [] : JSON.parse(guardado));
     } catch {
         return [];
     }
 }
 
+// cada función le pide el resultado a utils/carrito.js y lo guarda
 export function CarritoProvider({ children }) {
-    // La función lee el localStorage solo la primera vez
+    // hace que el carrito se lea de localStorage solo la primera vez
     const [items, setItems] = useState(leerCarrito);
 
-    // Cada vez que cambian los items, se guardan. useEffect corre despues de cargar la pantalla
+    // Cada vez que cambian los items, se guardan. useeffect corre despues de crear la pantalla
     useEffect(() => {
         localStorage.setItem(CLAVE, JSON.stringify(items));
     }, [items]);
 
-    function sumar(codigo) {
-        setItems(items.map((item) =>
-            item.producto.codigo === codigo && item.cantidad < item.producto.stock
-                ? { ...item, cantidad: item.cantidad + 1 }
-                : item
-        ));
-    }
+    const agregar = (producto) => setItems((prev) => agregarItem(prev, producto));
+    const sumar = (codigo) => setItems((prev) => sumarItem(prev, codigo));
+    const restar = (codigo) => setItems((prev) => restarItem(prev, codigo));
+    const quitar = (codigo) => setItems((prev) => quitarItem(prev, codigo));
 
-    function agregar(producto) {
-        // un producto sin stock no se puede agregar
-        if (!hayStock(producto)) return;
-
-        const yaEsta = items.some((item) => item.producto.codigo === producto.codigo);
-
-        if (yaEsta) {
-            sumar(producto.codigo);
-        } else {
-            setItems([...items, { producto, cantidad: 1 }]);
-        }
-    }
-
-    function restar(codigo) {
-        setItems(
-            items
-                .map((item) =>
-                    item.producto.codigo === codigo
-                        ? { ...item, cantidad: item.cantidad - 1 }
-                        : item
-                )
-                .filter((item) => item.cantidad > 0)
-        );
-    }
-
-    function quitar(codigo) {
-        setItems(items.filter((item) => item.producto.codigo !== codigo));
-    }
-
-    const total = items.reduce((suma, item) => suma + item.producto.precio * item.cantidad, 0);
-    const cantidadTotal = items.reduce((suma, item) => suma + item.cantidad, 0);
+    const total = calcularTotal(items);
+    const cantidadTotal = calcularCantidadTotal(items);
 
     const valor = { items, agregar, sumar, restar, quitar, total, cantidadTotal };
 
@@ -86,3 +59,4 @@ export function useCarrito() {
     }
     return contexto;
 }
+

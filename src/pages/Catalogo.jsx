@@ -5,9 +5,11 @@ import CatalogoProductos from "../components/organisms/CatalogoProductos";
 import { useProductos } from "../context/ProductosContext";
 import { useCarrito } from "../context/CarritoContext";
 import PlantillaPublica from '../components/templates/PlantillaPublica';
+import { useTituloPagina } from "../hooks/useTitulopagina";
 
 
 export const Catalogo = () => {
+  useTituloPagina('Catalogo')
   const { agregar, cantidadTotal } = useCarrito();
   const { productos} = useProductos();
 

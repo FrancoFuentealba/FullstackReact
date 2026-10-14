@@ -5,8 +5,10 @@ import ProductGrid from '../components/organisms/ProductGrid';
 import PlantillaPublica from '../components/templates/PlantillaPublica';
 import { useCarrito } from '../context/CarritoContext';
 import { useProductos } from '../context/ProductosContext';
+import { useTituloPagina } from "../hooks/useTitulopagina";
 
 function Inicio() {
+  useTituloPagina('Inicio')
   const navigate = useNavigate();
   const { agregar } = useCarrito();
   const { productos } = useProductos();
