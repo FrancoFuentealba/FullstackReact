@@ -38,11 +38,12 @@ export function CarritoProvider({ children }) {
     const sumar = (codigo) => setItems((prev) => sumarItem(prev, codigo));
     const restar = (codigo) => setItems((prev) => restarItem(prev, codigo));
     const quitar = (codigo) => setItems((prev) => quitarItem(prev, codigo));
+    const vaciar = () => setItems([]); // se usa al confirmar una compra
 
     const total = calcularTotal(items);
     const cantidadTotal = calcularCantidadTotal(items);
 
-    const valor = { items, agregar, sumar, restar, quitar, total, cantidadTotal };
+    const valor = { items, agregar, sumar, restar, quitar, vaciar, total, cantidadTotal };
 
     return (
         <CarritoContext.Provider value={valor}>

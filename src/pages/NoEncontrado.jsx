@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import PlantillaPublica from '../components/templates/PlantillaPublica';
 import Boton from '../components/atoms/Boton';
-import { useTituloPagina } from '../hooks/useTitulopagina';
+import { useTituloPagina } from '../hooks/useTituloPagina';
 
 function NoEncontrado() {
     useTituloPagina('Pagina no encontrada')

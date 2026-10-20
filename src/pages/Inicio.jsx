@@ -5,7 +5,7 @@ import ProductGrid from '../components/organisms/ProductGrid';
 import PlantillaPublica from '../components/templates/PlantillaPublica';
 import { useCarrito } from '../context/CarritoContext';
 import { useProductos } from '../context/ProductosContext';
-import { useTituloPagina } from "../hooks/useTitulopagina";
+import { useTituloPagina } from "../hooks/useTituloPagina";
 
 function Inicio() {
   useTituloPagina('Inicio')

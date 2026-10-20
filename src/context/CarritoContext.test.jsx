@@ -46,6 +46,16 @@ describe('CarritoContext', () => {
         expect(result.current.items).toEqual([]);
     });
 
+    it('vacía el carrito completo (se usa al confirmar una compra)', () => {
+        const { result } = renderHook(() => useCarrito(), { wrapper });
+        act(() => result.current.agregar(pedal));
+
+        act(() => result.current.vaciar());
+
+        expect(result.current.items).toEqual([]);
+        expect(JSON.parse(localStorage.getItem('carrito'))).toEqual([]);
+    });
+
     it('falla con un mensaje claro si se usa fuera del CarritoProvider', () => {
         vi.spyOn(console, 'error').mockImplementation(() => {}); // React avisa del error en consola; se silencia
 
