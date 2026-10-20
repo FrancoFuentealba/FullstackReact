@@ -117,4 +117,7 @@ describe('validarDatosProducto y sinErrores', () => {
 
         expect(errores.codigo).toBe('');
     });
+
+    
 });
+

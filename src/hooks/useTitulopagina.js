@@ -1,14 +1,16 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-//hook propio que cambia el titulo de la pestana del navegador segun la pagina
+// Hook propio: cambia el título de la pestaña del navegador (document.title) según la página.
+// Se usa al comienzo de cada página:   useTituloPagina('Catálogo');
+// Resultado en la pestaña:             "Catálogo | AudioMax"
 export function useTituloPagina(titulo) {
     useEffect(() => {
         const tituloAnterior = document.title;
         document.title = `${titulo} | AudioMax`;
 
-        // al salir de la pagina se devuelve el titulo anterior
+        // Al salir de la página se restaura el título anterior (la limpieza del efecto).
         return () => {
             document.title = tituloAnterior;
-        }
+        };
     }, [titulo]);
 }
