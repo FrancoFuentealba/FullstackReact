@@ -1,4 +1,5 @@
 import { hayStock } from './stock';
+import { precioFinal } from './ofertas';
 
 // Sube en 1 la cantidad del producto, sin pasar del stock disponible
 export function sumarItem(items, codigo) {
@@ -35,12 +36,12 @@ export function quitarItem(items, codigo) {
     return items.filter((item) => item.producto.codigo !== codigo);
 }
 
-// Suma precio × cantidad de todos los items
+// Suma el precio final (con descuento si hay oferta) × cantidad de todos los items
 export function calcularTotal(items) {
-    return items.reduce((suma, item) => suma + item.producto.precio * item.cantidad, 0);
+    return items.reduce((suma, item) => suma + precioFinal(item.producto) * item.cantidad, 0);
 }
 
-// Cuenta las unidades del carrito 
+// Cuenta las unidades del carrito
 export function calcularCantidadTotal(items) {
     return items.reduce((suma, item) => suma + item.cantidad, 0);
 }

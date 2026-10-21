@@ -7,9 +7,17 @@ function PlantillaPublica(props) {
     const navigate = useNavigate();
     const { cantidadTotal } = useCarrito();
 
+    function buscar(texto) {
+        navigate(`/buscar?q=${encodeURIComponent(texto)}`);
+    }
+
     return (
         <div className="d-flex flex-column min-vh-100">
-            <NavbarAudioMax onNavegar={navigate} cantidadCarrito={cantidadTotal} />
+            <NavbarAudioMax
+                onNavegar={navigate}
+                onBuscar={buscar}
+                cantidadCarrito={cantidadTotal}
+            />
             <main className="contenido flex-grow-1">{props.children}</main>
             <Footer />
         </div>
@@ -17,4 +25,3 @@ function PlantillaPublica(props) {
 }
 
 export default PlantillaPublica;
-

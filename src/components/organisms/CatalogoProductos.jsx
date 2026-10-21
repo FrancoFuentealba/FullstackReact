@@ -25,7 +25,11 @@ function CatalogoProductos(props) {
                 {productosVisibles.length} {productosVisibles.length === 1 ? 'producto' : 'productos'}
             </p>
 
-            <ProductGrid productos={productosVisibles} onAgregar={props.onAgregar} />
+            <ProductGrid
+                productos={productosVisibles}
+                onAgregar={props.onAgregar}
+                onVerDetalle={props.onVerDetalle}
+            />
         </section>
     );
 }

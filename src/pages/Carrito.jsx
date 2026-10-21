@@ -6,7 +6,7 @@ import PlantillaPublica from '../components/templates/PlantillaPublica';
 import { useTituloPagina } from '../hooks/useTituloPagina';
 
 function PaginaCarrito() {
-    useTituloPagina('CArrito')
+    useTituloPagina('Carrito')
     const navigate = useNavigate();
     const { items, total, sumar, restar, quitar } = useCarrito();
 

@@ -1,13 +1,13 @@
 
 import { Navbar, Nav, Container, Badge } from 'react-bootstrap';
-
+import BarraBusqueda from '../molecules/BarraBusqueda';
 
 function NavbarAudioMax(props) {
     const cantidad = props.cantidadCarrito ?? 0;
 
     function ir(evento, ruta) {
         evento.preventDefault();
-        if (props.onNavegar){
+        if (props.onNavegar) {
             props.onNavegar(ruta);
         }
     }
@@ -15,13 +15,16 @@ function NavbarAudioMax(props) {
     return (
         <Navbar variant="dark" expand="lg" className="navbar-audiomax">
             <Container>
-                
+
                 <Navbar.Brand href="/" onClick={(e) => ir(e, '/')} className="brand-audiomax">AudioMax</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbar-nav" />
                 <Navbar.Collapse id="navbar-nav">
+                    <BarraBusqueda onBuscar={props.onBuscar} />
                     <Nav className="ms-auto">
                         <Nav.Link href="/" onClick={(e) => ir(e, '/')} className="nav-link-audiomax">Inicio</Nav.Link>
                         <Nav.Link href="/catalogo" onClick={(e) => ir(e, '/catalogo')} className="nav-link-audiomax">Catálogo</Nav.Link>
+                        <Nav.Link href="/ofertas" onClick={(e) => ir(e, '/ofertas')} className="nav-link-audiomax">Ofertas</Nav.Link>
+                        <Nav.Link href="/categorias" onClick={(e) => ir(e, '/categorias')} className="nav-link-audiomax">Categorías</Nav.Link>
                         <Nav.Link href="/carrito" onClick={(e) => ir(e, '/carrito')} className="nav-link-audiomax">
                             Carrito
                             {cantidad > 0 && (

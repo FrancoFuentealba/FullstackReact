@@ -1,7 +1,6 @@
-
 import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import CatalogoProductos from "../components/organisms/CatalogoProductos"; 
+import { Link, useNavigate } from "react-router-dom";          
+import CatalogoProductos from "../components/organisms/CatalogoProductos";
 import { useProductos } from "../context/ProductosContext";
 import { useCarrito } from "../context/CarritoContext";
 import PlantillaPublica from '../components/templates/PlantillaPublica';
@@ -10,14 +9,18 @@ import { useTituloPagina } from "../hooks/useTituloPagina";
 
 export const Catalogo = () => {
   useTituloPagina('Catalogo')
+  const navigate = useNavigate();                               
   const { agregar, cantidadTotal } = useCarrito();
-  const { productos} = useProductos();
+  const { productos } = useProductos();
 
+
+  function verDetalle(producto) {
+    navigate(`/producto/${producto.codigo}`);
+  }
 
   return (
     <PlantillaPublica>
       <Container className="catalogo-contenedor">
-        {/* Encabezado: título a la izquierda y botón volver a la derecha */}
         <div className="catalogo-header">
           <h2 className="catalogo-titulo">Catálogo de Productos</h2>
           <Link to="/" className="btn-volver-audiomax">
@@ -27,7 +30,11 @@ export const Catalogo = () => {
 
         <p className="catalogo-cantidad">🛒 {cantidadTotal} en el carrito</p>
 
-        <CatalogoProductos productos={productos} onAgregar={agregar} />
+        <CatalogoProductos
+          productos={productos}
+          onAgregar={agregar}
+          onVerDetalle={verDetalle}                              
+        />
       </Container>
     </PlantillaPublica>
   );

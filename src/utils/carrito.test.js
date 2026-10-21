@@ -91,6 +91,10 @@ describe('calcularTotal y calcularCantidadTotal', () => {
     it('cuenta las unidades de todos los productos', () => {
         expect(calcularCantidadTotal(carrito)).toBe(5);
     });
+    it('cobra el precio con descuento', () => {
+        const items = [{ producto: { codigo: 'A', precio: 100000, descuento: 10, stock: 5 }, cantidad: 2 }];
+        expect(calcularTotal(items)).toBe(180000);
+    });
 });
 
 describe('limpiarCarrito', () => {

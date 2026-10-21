@@ -15,6 +15,11 @@ function Inicio() {
 
   const productosDestacados = productos.slice(0, 4);
 
+
+  function verDetalle(producto) {
+    navigate(`/producto/${producto.codigo}`);
+  }
+
   return (
     <PlantillaPublica>
       <Container className="inicio-contenedor">
@@ -27,7 +32,11 @@ function Inicio() {
 
         <section className="seccion-destacados">
           <h2 className="seccion-titulo">Productos Destacados</h2>
-          <ProductGrid productos={productosDestacados} onAgregar={agregar} />
+          <ProductGrid
+            productos={productosDestacados}
+            onAgregar={agregar}
+            onVerDetalle={verDetalle}                            
+          />
         </section>
       </Container>
     </PlantillaPublica>

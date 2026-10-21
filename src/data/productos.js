@@ -7,6 +7,7 @@ export const productosData = [
         modelo: "Player Strat",
         stock: 5,
         precio: 450000,
+        descuento: 15,
         imagen: "/img/guitarra.jpg" 
     },
     {
@@ -51,6 +52,7 @@ export const productosData = [
     modelo: "CT-X700",
     stock: 6,
     precio: 219900,
+    descuento : 20,
     imagen: "/img/tecladosensitivo.jpg"
   },
   {
@@ -61,6 +63,7 @@ export const productosData = [
     modelo: "Katana 50 MkII",
     stock: 4,
     precio: 329900,
+    descuento : 25,
     imagen: "/img/amplificadorguitarra.jpg"
   },
   {
@@ -71,6 +74,7 @@ export const productosData = [
     modelo: "Tube Screamer TS9",
     stock: 10,
     precio: 149900,
+    descuento : 10,
     imagen: "/img/pedal.jpg"
   },
   {

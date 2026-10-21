@@ -280,6 +280,25 @@
     color: #B3B3B3;
     cursor: not-allowed;
 }
+/* Botón "Ver detalle" de la tarjeta de producto */
+.btn.boton-ver-detalle {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 16px;
+    background-color: #2A2A2A;
+    color: #FFFFFF;
+    border: 1px solid #FF6B00;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn.boton-ver-detalle:hover {
+    background-color: #FF6B00;
+    color: #FFFFFF;
+    border-color: #FF6B00;
+}
 
 
 /* ===== ÁTOMOS (Franco) ===== */
@@ -748,4 +767,163 @@
 .texto-naranja {
     color: #FF6B00;
     font-weight: 600;
+}
+/* -------------------------- Detalle de producto -------------------------- */
+.detalle-contenedor {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.detalle-producto {
+    background-color: #1E1E1E;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    padding: 24px;
+    row-gap: 24px;
+}
+
+.detalle-imagen-contenedor {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.detalle-imagen {
+    display: block;
+    width: 100%;
+    max-height: 380px;
+    object-fit: contain;
+}
+
+.detalle-categoria {
+    color: #B3B3B3;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.detalle-titulo {
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.detalle-codigo {
+    color: #B3B3B3;
+    font-size: 0.85rem;
+}
+
+.detalle-producto .precio-normal {
+    color: #FF6B00;
+    font-size: 2rem;
+}
+
+.detalle-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+/* -------------------------- Categorías -------------------------- */
+/* -------------------------- Categorías -------------------------- */
+.categorias-grilla {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 1.5rem;
+}
+
+.tarjeta-categoria {
+    height: 100%;                      /* todas las tarjetas de la fila miden igual */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1E1E1E;
+    border: 1px solid #313030;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta-categoria:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2);
+}
+
+.tarjeta-categoria-nombre {
+    min-height: 3rem;                  /* espacio de 2 líneas, aunque el nombre tenga 1 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.tarjeta-categoria-cantidad {
+    color: #B3B3B3;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.tarjeta-categoria .btn {
+    margin-top: auto;                  /* empuja el botón siempre al fondo */
+}
+/* -------------------------- Ofertas -------------------------- */
+.etiqueta-oferta {
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+    border-radius: 4px;
+    background-color: #FF6B00;
+    color: #FFFFFF;
+}
+
+.badge-oferta {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
+}
+
+.precio-producto .precio-tachado {
+    color: #B3B3B3;
+}
+
+.detalle-producto .precio-oferta {
+    font-size: 2rem;
+}
+
+.detalle-producto .precio-tachado {
+    font-size: 1.1rem;
+    color: #B3B3B3;
+}
+/* -------------------------- Buscador -------------------------- */
+.barra-busqueda {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 16px;
+}
+
+.barra-busqueda .campotexto-audiomax {
+    min-width: 220px;
+    padding: 0.4rem 0.9rem;
+}
+
+.barra-busqueda .btn {
+    white-space: nowrap;
+}
+
+@media (max-width: 991px) {
+    .barra-busqueda {
+        margin: 12px 0;
+    }
+
+    .barra-busqueda .campotexto-audiomax {
+        min-width: 0;
+    }
 }

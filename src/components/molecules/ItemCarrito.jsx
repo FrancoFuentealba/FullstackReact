@@ -2,9 +2,11 @@ import Image from '../atoms/Image';
 import Precio from '../atoms/Precio';
 import ContadorCantidad from '../atoms/ContadorCantidad';
 import Boton from '../atoms/Boton';
+import { precioFinal } from '../../utils/ofertas';
 
 function ItemCarrito(props) {
     const { nombre, marca, modelo, precio, imagen } = props.producto;
+    const precioUnitario = precioFinal(props.producto);
     const cantidad = props.cantidad ?? 1;
 
     return (
@@ -14,7 +16,7 @@ function ItemCarrito(props) {
             <div className="item-carrito-info">
                 <h6 className="item-carrito-nombre">{nombre}</h6>
                 <p className="item-carrito-detalle">{marca} · {modelo}</p>
-                <Precio valor={precio} />
+                <Precio valor={precioUnitario} />
             </div>
 
             <ContadorCantidad
@@ -26,7 +28,7 @@ function ItemCarrito(props) {
 
             <div className="item-carrito-subtotal">
                 <span className="item-carrito-subtotal-titulo">Subtotal</span>
-                <Precio valor={precio * cantidad} />
+                <Precio valor={precioUnitario * cantidad} />
             </div>
 
             <Boton

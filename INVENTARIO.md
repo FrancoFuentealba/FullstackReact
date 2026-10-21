@@ -54,5 +54,8 @@ Para garantizar que todos los integrantes trabajen en todos los niveles de la ar
 * **`AuthLayout`**: Maquetación centrada para Login / Registro.
 
 ### Páginas (`src/pages/`)
-* **`Home` (`home.jsx`)**: Vista principal estructurada con `MainLayout`.
-* **`Catalogo` (`catalogo.jsx`)**: Vista de exploración de productos.
+* **`Categorias`** (`/categorias`): Lista de categorías con su cantidad de productos.
+* **`ProductosCategoria`** (`/categorias/:nombre`): Productos de una categoría.
+* **`Ofertas`** (`/ofertas`): Productos con descuento, del mayor al menor.
+* **`DetalleProducto`** (`/producto/:id`): Detalle de un producto.
+* **`Buscar`** (`/buscar?q=`): Resultados de la búsqueda.

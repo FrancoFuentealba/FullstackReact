@@ -1,5 +1,5 @@
 // Lógica de los pedidos como FUNCIONES PURAS (sin React ni localStorage): se prueban solas.
-
+import { precioFinal } from './ofertas';
 // Etapas de un pedido, en orden. Coinciden con las claves de la molécula EstadoPedido.
 export const ESTADOS_PEDIDO = ['preparacion', 'despachado', 'entregado'];
 
@@ -24,12 +24,13 @@ export function revisarItems(items, productos) {
             const cuantas = actual.stock === 1 ? 'solo queda 1 unidad' : `solo quedan ${actual.stock} unidades`;
             problemas.push(`${actual.nombre}: ${cuantas}`);
         } else {
+            const precio = precioFinal(actual);
             lineas.push({
                 codigo: actual.codigo,
                 nombre: actual.nombre,
-                precio: actual.precio,
+                precio: precio,
                 cantidad: item.cantidad,
-                subtotal: actual.precio * item.cantidad,
+                subtotal: precio * item.cantidad,
             });
         }
     }
