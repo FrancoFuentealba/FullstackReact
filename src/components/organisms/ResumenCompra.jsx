@@ -1,5 +1,6 @@
 import { Card, ListGroup } from "react-bootstrap";
 import Precio from "../atoms/Precio";
+import { precioFinal } from "../../utils/ofertas";
 
 function ResumenCompra(props) {
     const items = props.items || [];
@@ -19,7 +20,7 @@ function ResumenCompra(props) {
                             <small className="text-muted">Cant: {item.cantidad}</small>
                         </div>
                         <span className="text-muted">
-                            <Precio valor={item.producto.precio * item.cantidad} />
+                            <Precio valor={precioFinal(item.producto) * item.cantidad} />
                         </span>
                     </ListGroup.Item>
                 ))}

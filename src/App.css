@@ -927,3 +927,48 @@
         min-width: 0;
     }
 }
+
+/* -------------------------- Login y registro -------------------------- */
+.login-pie {
+    text-align: center;
+    color: #B3B3B3;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+/* -------------------------- Navbar con sesión -------------------------- */
+.navbar-saludo {
+    color: #B3B3B3;
+    font-size: 0.95rem;
+    margin: 0 10px;
+    align-self: center;
+}
+
+.nav-link-salir {
+    color: #FF6B00 !important;
+    border: 2px solid #FF6B00;
+    border-radius: 25px;
+    padding: 6px 18px !important;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link-salir:hover {
+    background-color: #FF6B00;
+    color: #FFFFFF !important;
+}
+
+@media (max-width: 991px) {
+    .nav-link-salir {
+        margin-top: 15px;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .navbar-saludo {
+        margin: 10px 0;
+    }
+}

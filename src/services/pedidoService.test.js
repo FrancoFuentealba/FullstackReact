@@ -3,7 +3,7 @@ import { obtenerProducto } from './productoService';
 import { crearPedido, listarPedidos, obtenerPedido, actualizarEstadoPedido } from './pedidoService';
 
 // Pruebas de integración: pedidoService + productoService + localStorage real.
-// GTR-001 (Guitarra, $450.000) parte con stock 5; BAT-001 está agotada.
+// GTR-001 (Guitarra, $450.000 con 15% de descuento = $382.500) parte con stock 5; BAT-001 está agotada.
 describe('pedidoService', () => {
     beforeEach(() => {
         localStorage.clear();
@@ -17,7 +17,7 @@ describe('pedidoService', () => {
         const pedido = crearPedido({ items: carritoCon(guitarra(), 2), cliente, usuario: 'ana@correo.cl' });
 
         expect(pedido.id).toBe('PED-0001');
-        expect(pedido.total).toBe(900000);
+        expect(pedido.total).toBe(765000);
         expect(pedido.estado).toBe('preparacion');
         expect(pedido.usuario).toBe('ana@correo.cl');
         expect(obtenerPedido('PED-0001')).toEqual(pedido);
@@ -64,7 +64,7 @@ describe('pedidoService', () => {
 
         const pedido = crearPedido({ items: carritoCon(copiaVieja, 1), cliente });
 
-        expect(pedido.total).toBe(450000);
+        expect(pedido.total).toBe(382500);
     });
 
     it('cambia el estado de un pedido', () => {

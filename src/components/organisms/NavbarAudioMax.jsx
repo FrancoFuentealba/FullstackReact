@@ -1,14 +1,23 @@
-
 import { Navbar, Nav, Container, Badge } from 'react-bootstrap';
 import BarraBusqueda from '../molecules/BarraBusqueda';
 
 function NavbarAudioMax(props) {
     const cantidad = props.cantidadCarrito ?? 0;
+    const usuario = props.usuario || null;
+    const esAdmin = usuario?.rol === 'admin';
+    const primerNombre = usuario ? usuario.nombre.split(' ')[0] : '';
 
     function ir(evento, ruta) {
         evento.preventDefault();
         if (props.onNavegar) {
             props.onNavegar(ruta);
+        }
+    }
+
+    function alCerrarSesion(evento) {
+        evento.preventDefault();
+        if (props.onCerrarSesion) {
+            props.onCerrarSesion();
         }
     }
 
@@ -31,7 +40,22 @@ function NavbarAudioMax(props) {
                                 <Badge className="badge-carrito">{cantidad}</Badge>
                             )}
                         </Nav.Link>
-                        <Nav.Link href="/login" onClick={(e) => ir(e, '/login')} className="nav-link-login">Iniciar sesion</Nav.Link>
+
+                        {usuario ? (
+                            <>
+                                <span className="navbar-saludo">Hola, {primerNombre}</span>
+
+                                {esAdmin ? (
+                                    <Nav.Link href="/admin/productos" onClick={(e) => ir(e, '/admin/productos')} className="nav-link-audiomax">Admin</Nav.Link>
+                                ) : (
+                                    <Nav.Link href="/mis-pedidos" onClick={(e) => ir(e, '/mis-pedidos')} className="nav-link-audiomax">Mis pedidos</Nav.Link>
+                                )}
+
+                                <Nav.Link href="/" onClick={alCerrarSesion} className="nav-link-salir">Cerrar sesión</Nav.Link>
+                            </>
+                        ) : (
+                            <Nav.Link href="/login" onClick={(e) => ir(e, '/login')} className="nav-link-login">Iniciar sesion</Nav.Link>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

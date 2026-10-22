@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import Precio from '../atoms/Precio';
 import Boton from '../atoms/Boton';
-import { precioFinal } from "../../utils/ofertas";
+
 
 function TablaProductos(props) {
     const productos = props.productos || [];
@@ -33,7 +33,7 @@ function TablaProductos(props) {
                         <td>{p.nombre}</td>
                         <td>{p.categoria}</td>
                         <td>{p.stock}</td>
-                        <td><Precio valor={precioFinal(item.producto) * item.cantidad} /></td>
+                        <td><Precio valor={p.precio} /></td>
                         <td>
                             <Boton texto="Editar" variante="warning" className="me-2 btn-sm" onClick={() => alEditar(p)} />
                             <Boton texto="Eliminar" variante="danger" className="btn-sm" onClick={() => alEliminar(p)} />
