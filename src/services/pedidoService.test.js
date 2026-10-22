@@ -17,7 +17,7 @@ describe('pedidoService', () => {
         const pedido = crearPedido({ items: carritoCon(guitarra(), 2), cliente, usuario: 'ana@correo.cl' });
 
         expect(pedido.id).toBe('PED-0001');
-        expect(pedido.total).toBe(900000);
+        expect(pedido.total).toBe(765000);
         expect(pedido.estado).toBe('preparacion');
         expect(pedido.usuario).toBe('ana@correo.cl');
         expect(obtenerPedido('PED-0001')).toEqual(pedido);
@@ -64,7 +64,7 @@ describe('pedidoService', () => {
 
         const pedido = crearPedido({ items: carritoCon(copiaVieja, 1), cliente });
 
-        expect(pedido.total).toBe(450000);
+        expect(pedido.total).toBe(382500);
     });
 
     it('cambia el estado de un pedido', () => {

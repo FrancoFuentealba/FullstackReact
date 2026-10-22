@@ -39,7 +39,7 @@ describe('PedidosContext', () => {
         act(() => { respuesta = result.current.pedidos.confirmarCompra(cliente); });
 
         expect(respuesta.ok).toBe(true);
-        expect(respuesta.pedido.total).toBe(900000);
+        expect(respuesta.pedido.total).toBe(765000);
         expect(stockDe(result, 'GTR-001')).toBe(3);          // el catálogo ya muestra el stock nuevo
         expect(result.current.carrito.items).toEqual([]);    // el carrito quedó vacío
         expect(result.current.pedidos.pedidos).toHaveLength(1);

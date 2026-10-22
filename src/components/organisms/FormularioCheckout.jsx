@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import CampoFormulario from "../molecules/CampoFormulario";
 import Boton from "../atoms/Boton";
-import { validarDatosCheckout } from "../../utils/validaciones";
+import { validarDatosCheckout, sinErrores } from "../../utils/validaciones";
 
 const DATOS_VACIOS = { nombre: '', direccion: '', tarjeta: '' };
 

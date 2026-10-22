@@ -39,7 +39,7 @@ export const productosData = [
         modelo: "F310",
         stock: 12, //  
         precio: 189900,
-        imagen: "/img/Guitarraacústica.jpg"
+        imagen: "/img/Guitarraacustica.jpg"
 
     },
     
@@ -96,6 +96,15 @@ export const productosData = [
     stock: 7,
     precio: 249900,
     imagen: "/img/interfazaudio.jpg"
-  }
-    
+  },
+  {
+  codigo: "BAJ-001",
+  categoria: "Bajos",
+  nombre: "Bajo Eléctrico 4 Cuerdas",
+  marca: "Cort",
+  modelo: "GB Modern 4",
+  stock: 8,
+  precio: 289900,
+  imagen: "/img/bajoelectrico.jpg"
+}
 ]
