@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import LoginForm from '../components/organisms/LoginForm';
 import PlantillaPublica from '../components/templates/PlantillaPublica';
@@ -9,6 +9,8 @@ import { useTituloPagina } from '../hooks/useTituloPagina';
 function PaginaLogin() {
     useTituloPagina('Iniciar Sesion')
     const navigate = useNavigate();
+    const { state } = useLocation();
+    const aviso = state?.aviso;
     const { iniciar } = useAuth();
     const [error, setError] = useState('');
 
@@ -30,6 +32,7 @@ function PaginaLogin() {
                 <Row className="justify-content-center">
                     <Col md={8} lg={5}>
                         <div className="login-card">
+                            {aviso && <p className="login-aviso-permiso">{aviso}</p>}
                             <LoginForm onEnviar={alIniciarSesion} error={error} />
                             <p className="login-pie">
                                 ¿No tienes cuenta?{' '}

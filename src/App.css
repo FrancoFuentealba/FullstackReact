@@ -1060,3 +1060,111 @@
     gap: 12px;
     margin-top: 16px;
 }
+/* -------------------------- Mis pedidos -------------------------- */
+.mis-pedidos-contenedor {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.mis-pedidos-titulo {
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+}
+
+.mis-pedidos-aviso {
+    color: #B3B3B3;
+    margin-bottom: 1rem;
+}
+
+.pedido-tarjeta {
+    background-color: #1E1E1E;
+    border: 1px solid #FF6B00;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+}
+
+.pedido-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #2A2A2A;
+    border-bottom: 1px solid #333333;
+}
+
+.pedido-numero {
+    color: #FF6B00;
+}
+
+.pedido-fecha {
+    color: #B3B3B3;
+    font-size: 0.9rem;
+}
+
+.pedido-cuerpo {
+    padding: 20px;
+}
+
+.pedido-lineas {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.pedido-linea {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #FFFFFF;
+    border-bottom: 1px solid #2A2A2A;
+}
+
+.pedido-total {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0 0;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.pedido-total .precio-normal {
+    color: #FF6B00;
+}
+/* -------------------------- Panel de administración -------------------------- */
+.admin-contenedor {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.admin-titulo-panel {
+    color: #FF6B00;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #333333;
+}
+
+.admin-contenido {
+    color: #FFFFFF;
+}
+
+.admin-titulo-seccion {
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.admin-aviso {
+    color: #B3B3B3;
+}
+/* -------------------------- Aviso de permiso en el login -------------------------- */
+.login-aviso-permiso {
+    margin-bottom: 1rem;
+    padding: 10px 14px;
+    color: #FFFFFF;
+    background-color: rgba(220, 53, 69, 0.2);
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}

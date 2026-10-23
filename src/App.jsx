@@ -17,7 +17,8 @@ import PaginaRegistro from './pages/Registro';
 import PaginaCheckout from './pages/Checkout';
 import PaginaCompraExitosa from './pages/CompraExitosa';
 import PaginaCompraFallida from './pages/CompraFallida';
-
+import PaginaMisPedidos from './pages/MisPedidos';
+import PaginaAdminProductos from './pages/AdminProductos';
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
                   <Route path="/carrito" element={<PaginaCarrito />} />
                   <Route path="/login" element={<PaginaLogin />} />
                   <Route path="/registro" element={<PaginaRegistro />} />
+                  <Route path="/mis-pedidos" element={<PaginaMisPedidos />} />
+                  <Route path="/admin/productos" element={<PaginaAdminProductos />} />
                   <Route path="*" element={<NoEncontrado />} />
                 </Routes>
               </div>
