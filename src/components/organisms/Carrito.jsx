@@ -34,6 +34,10 @@ function Carrito(props) {
                 <span>Total</span>
                 <Precio valor={props.total} />
             </div>
+
+            {props.onIrAPagar && (
+                <Boton texto="Ir a pagar" className="w-100 mt-3" onClick={props.onIrAPagar} />
+            )}
         </section>
     );
 }

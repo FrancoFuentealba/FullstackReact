@@ -14,6 +14,10 @@ import PaginaBuscar from './pages/Buscar';
 import { AuthProvider } from './context/AuthContext';
 import { PedidosProvider } from './context/PedidosContext';
 import PaginaRegistro from './pages/Registro';
+import PaginaCheckout from './pages/Checkout';
+import PaginaCompraExitosa from './pages/CompraExitosa';
+import PaginaCompraFallida from './pages/CompraFallida';
+
 
 function App() {
   return (
@@ -31,9 +35,12 @@ function App() {
                   <Route path="/buscar" element={<PaginaBuscar />} />
                   <Route path="/ofertas" element={<PaginaOfertas />} />
                   <Route path="/producto/:id" element={<PaginaDetalleProducto />} />
+                  <Route path="/checkout" element={<PaginaCheckout />} />
+                  <Route path="/compra-exitosa" element={<PaginaCompraExitosa />} />
+                  <Route path="/compra-fallida" element={<PaginaCompraFallida />} />
                   <Route path="/carrito" element={<PaginaCarrito />} />
                   <Route path="/login" element={<PaginaLogin />} />
-                  <Route path="/registro" element={<PaginaRegistro />} />  
+                  <Route path="/registro" element={<PaginaRegistro />} />
                   <Route path="*" element={<NoEncontrado />} />
                 </Routes>
               </div>

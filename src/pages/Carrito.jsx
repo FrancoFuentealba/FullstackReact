@@ -20,6 +20,7 @@ function PaginaCarrito() {
                     onRestar={restar}
                     onQuitar={quitar}
                     onIrAlCatalogo={() => navigate('/catalogo')}
+                    onIrAPagar={() => navigate('/checkout')}
                 />
             </Container>
         </PlantillaPublica>
