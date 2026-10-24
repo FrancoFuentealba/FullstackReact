@@ -2,7 +2,6 @@ import { Table } from 'react-bootstrap';
 import Precio from '../atoms/Precio';
 import Boton from '../atoms/Boton';
 
-
 function TablaProductos(props) {
     const productos = props.productos || [];
 
@@ -33,11 +32,7 @@ function TablaProductos(props) {
                         <td>{p.nombre}</td>
                         <td>{p.categoria}</td>
                         <td>{p.stock}</td>
-<<<<<<< HEAD
-                        <td><Precio valor={precioFinal(p)} /></td>
-=======
                         <td><Precio valor={p.precio} /></td>
->>>>>>> 4009b18caadbd7560059a70d652971113810f3ca
                         <td>
                             <Boton texto="Editar" variante="warning" className="me-2 btn-sm" onClick={() => alEditar(p)} />
                             <Boton texto="Eliminar" variante="danger" className="btn-sm" onClick={() => alEliminar(p)} />
@@ -51,7 +46,7 @@ function TablaProductos(props) {
                 )}
             </tbody>
         </Table>
-    )
+    );
 }
 
 export default TablaProductos;
