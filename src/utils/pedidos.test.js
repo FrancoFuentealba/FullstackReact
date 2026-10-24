@@ -1,14 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { revisarItems, calcularTotalPedido, filtrarPorUsuario } from './pedidos';
+import { revisarItems, calcularTotalPedido, filtrarPorUsuario, ESTADOS_PEDIDO, ETIQUETAS_ESTADO } from './pedidos';
 
-// Catálogo ACTUAL (lo que hay hoy en la tienda).
+// Catálogo ACTUAL.
 const catalogo = [
     { codigo: 'GTR-001', nombre: 'Guitarra', precio: 450000, stock: 3 },
     { codigo: 'PED-001', nombre: 'Pedal', precio: 50000, stock: 1 },
     { codigo: 'BAT-001', nombre: 'Batería', precio: 439000, stock: 0 },
 ];
 
-// El carrito guarda una copia del producto de cuando se agregó (puede estar desactualizada).
+// El carrito guarda una copia del producto de cuando se agregó.
 const enCarrito = (producto, cantidad) => ({ producto, cantidad });
 
 describe('revisarItems', () => {
@@ -83,3 +83,14 @@ describe('filtrarPorUsuario', () => {
         expect(filtrarPorUsuario(pedidos, '')).toEqual([]);
     });
 });
+
+
+describe('ETIQUETAS_ESTADO', () => {
+    it('tiene un texto legible para cada etapa del pedido', () => {
+        for (const estado of ESTADOS_PEDIDO) {
+            expect(ETIQUETAS_ESTADO[estado]).toBeTruthy();
+        }
+        expect(ETIQUETAS_ESTADO.preparacion).toBe('En preparación');
+    });
+});
+

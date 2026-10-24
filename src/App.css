@@ -1168,3 +1168,50 @@
     border-radius: 8px;
     font-size: 0.9rem;
 }
+
+/* -------------------------- Panel de administración: menú, avisos y tablas -------------------------- */
+.admin-menu {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.admin-menu .nav-link {
+    color: #FFFFFF;
+    border-radius: 8px;
+}
+
+.admin-menu .nav-link.active {
+    background-color: #FF6B00;
+    color: #FFFFFF;
+}
+
+.admin-encabezado-seccion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.admin-encabezado-seccion .admin-titulo-seccion {
+    margin-bottom: 0;
+}
+
+.admin-confirmacion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.tabla-admin {
+    margin-top: 1.5rem;
+}
+
+.tabla-pedidos-lineas {
+    margin: 0;
+    padding-left: 1rem;
+    font-size: 0.9rem;
+}

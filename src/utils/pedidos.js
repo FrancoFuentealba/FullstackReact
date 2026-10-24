@@ -1,14 +1,19 @@
-// Lógica de los pedidos como FUNCIONES PURAS (sin React ni localStorage): se prueban solas.
+// Lógica de los pedidos
 import { precioFinal } from './ofertas';
-// Etapas de un pedido, en orden. Coinciden con las claves de la molécula EstadoPedido.
+// Etapas de un pedido, en orden
 export const ESTADOS_PEDIDO = ['preparacion', 'despachado', 'entregado'];
+
+// Texto que ve la persona para cada etapa.
+export const ETIQUETAS_ESTADO = {
+    preparacion: 'En preparación',
+    despachado: 'Despachado',
+    entregado: 'Entregado',
+};
 
 // Revisa los items del carrito contra los productos ACTUALES del catálogo.
 // El carrito guarda una copia del producto de cuando se agregó; puede estar desactualizada
 // (otro cliente compró, el administrador cambió el precio o eliminó el producto).
-// Devuelve:
-//   lineas    → lo que sí se puede vender, con el PRECIO ACTUAL
-//   problemas → mensajes de lo que no se puede vender (producto eliminado o sin stock suficiente)
+
 export function revisarItems(items, productos) {
     const lineas = [];
     const problemas = [];
@@ -38,12 +43,12 @@ export function revisarItems(items, productos) {
     return { lineas, problemas };
 }
 
-// Suma los subtotales de las líneas de un pedido.
+// Suma los subtotales de las líneas de un pedido
 export function calcularTotalPedido(lineas) {
     return lineas.reduce((suma, linea) => suma + linea.subtotal, 0);
 }
 
-// Deja solo los pedidos de un cliente (compara el correo sin distinguir mayúsculas).
+// Deja solo los pedidos de un cliente
 export function filtrarPorUsuario(pedidos, email) {
     if (!email) return [];
     const buscado = String(email).trim().toLowerCase();
