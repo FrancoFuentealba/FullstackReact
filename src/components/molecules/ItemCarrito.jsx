@@ -5,7 +5,7 @@ import Boton from '../atoms/Boton';
 import { precioFinal } from '../../utils/ofertas';
 
 function ItemCarrito(props) {
-    const { nombre, marca, modelo, precio, imagen } = props.producto;
+    const { nombre, marca, modelo, imagen } = props.producto;
     const precioUnitario = precioFinal(props.producto);
     const cantidad = props.cantidad ?? 1;
 

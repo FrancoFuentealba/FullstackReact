@@ -927,3 +927,244 @@
         min-width: 0;
     }
 }
+
+/* -------------------------- Login y registro -------------------------- */
+.login-pie {
+    text-align: center;
+    color: #B3B3B3;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+/* -------------------------- Navbar con sesión -------------------------- */
+.navbar-saludo {
+    color: #B3B3B3;
+    font-size: 0.95rem;
+    margin: 0 10px;
+    align-self: center;
+}
+
+.nav-link-salir {
+    color: #FF6B00 !important;
+    border: 2px solid #FF6B00;
+    border-radius: 25px;
+    padding: 6px 18px !important;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link-salir:hover {
+    background-color: #FF6B00;
+    color: #FFFFFF !important;
+}
+
+@media (max-width: 991px) {
+    .nav-link-salir {
+        margin-top: 15px;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .navbar-saludo {
+        margin: 10px 0;
+    }
+}
+/* -------------------------- Checkout y resultado de compra -------------------------- */
+.checkout-contenedor {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.checkout-titulo {
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-aviso {
+    color: #B3B3B3;
+    margin-bottom: 1rem;
+}
+
+.resultado-compra {
+    max-width: 560px;
+    margin: 3rem auto;
+    padding: 32px;
+    text-align: center;
+    background-color: #1E1E1E;
+    border: 1px solid #333333;
+    border-radius: 12px;
+}
+
+.resultado-compra-exito {
+    border-top: 4px solid #198754;
+}
+
+.resultado-compra-error {
+    border-top: 4px solid #dc3545;
+}
+
+.resultado-compra-icono {
+    font-size: 3rem;
+    margin-bottom: 8px;
+}
+
+.resultado-compra-titulo {
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.resultado-compra-texto {
+    color: #E0E0E0;
+}
+
+.resultado-compra-nota {
+    color: #B3B3B3;
+    font-size: 0.9rem;
+}
+
+.resultado-compra-datos {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 16px;
+    margin: 24px 0;
+    padding: 16px;
+    text-align: left;
+    background-color: #2A2A2A;
+    border-radius: 8px;
+}
+
+.resultado-compra-datos dt {
+    color: #B3B3B3;
+    font-weight: 400;
+}
+
+.resultado-compra-datos dd {
+    margin: 0;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: right;
+}
+
+.resultado-compra-datos .precio-normal {
+    color: #FF6B00;
+}
+
+.resultado-compra-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+/* -------------------------- Mis pedidos -------------------------- */
+.mis-pedidos-contenedor {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.mis-pedidos-titulo {
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+}
+
+.mis-pedidos-aviso {
+    color: #B3B3B3;
+    margin-bottom: 1rem;
+}
+
+.pedido-tarjeta {
+    background-color: #1E1E1E;
+    border: 1px solid #FF6B00;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+}
+
+.pedido-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #2A2A2A;
+    border-bottom: 1px solid #333333;
+}
+
+.pedido-numero {
+    color: #FF6B00;
+}
+
+.pedido-fecha {
+    color: #B3B3B3;
+    font-size: 0.9rem;
+}
+
+.pedido-cuerpo {
+    padding: 20px;
+}
+
+.pedido-lineas {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.pedido-linea {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #FFFFFF;
+    border-bottom: 1px solid #2A2A2A;
+}
+
+.pedido-total {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0 0;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.pedido-total .precio-normal {
+    color: #FF6B00;
+}
+/* -------------------------- Panel de administración -------------------------- */
+.admin-contenedor {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.admin-titulo-panel {
+    color: #FF6B00;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #333333;
+}
+
+.admin-contenido {
+    color: #FFFFFF;
+}
+
+.admin-titulo-seccion {
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.admin-aviso {
+    color: #B3B3B3;
+}
+/* -------------------------- Aviso de permiso en el login -------------------------- */
+.login-aviso-permiso {
+    margin-bottom: 1rem;
+    padding: 10px 14px;
+    color: #FFFFFF;
+    background-color: rgba(220, 53, 69, 0.2);
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}

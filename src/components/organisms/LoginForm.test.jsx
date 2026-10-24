@@ -45,4 +45,10 @@ describe('FormularioLogin', () => {
 
         expect(onEnviar).toHaveBeenCalledWith({ email: 'ana@correo.cl', clave: '123456' });
     });
+
+    it('muestra el error que entrega la página', () => {
+        render(<FormularioLogin onEnviar={() => {}} error="Correo o contraseña incorrectos" />);
+
+        expect(screen.getByText('Correo o contraseña incorrectos')).toBeInTheDocument();
+    });
 });

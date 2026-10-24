@@ -3,7 +3,7 @@ import { obtenerProducto } from './productoService';
 import { crearPedido, listarPedidos, obtenerPedido, actualizarEstadoPedido } from './pedidoService';
 
 // Pruebas de integración: pedidoService + productoService + localStorage real.
-// GTR-001 (Guitarra, $450.000) parte con stock 5; BAT-001 está agotada.
+// GTR-001 (Guitarra, $450.000 con 15% de descuento = $382.500) parte con stock 5; BAT-001 está agotada.
 describe('pedidoService', () => {
     beforeEach(() => {
         localStorage.clear();

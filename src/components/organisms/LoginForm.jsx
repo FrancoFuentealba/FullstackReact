@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Alert } from 'react-bootstrap';
 import CampoFormulario from '../molecules/CampoFormulario';
 import Boton from '../atoms/Boton';
 import { validarEmail, validarClave } from '../../utils/validaciones';
@@ -13,7 +12,6 @@ function LoginForm(props) {
     function alEnviar(evento) {
         evento.preventDefault();
 
-      
         const nuevos = {
             email: validarEmail(email),
             clave: validarClave(clave),
@@ -47,6 +45,10 @@ function LoginForm(props) {
                 onChange={(e) => setClave(e.target.value)}
                 error={errores.clave}
             />
+
+            {props.error && (
+                <Alert variant="danger" className="mt-2">{props.error}</Alert>
+            )}
 
             <Boton tipo="submit" texto="Iniciar sesión" className="w-100" />
         </Form>
