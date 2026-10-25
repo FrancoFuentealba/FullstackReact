@@ -1,19 +1,24 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import { ProductosProvider } from '../context/ProductosContext';
 import PaginaAdminProductos from './AdminProductos';
 import { obtenerProducto } from '../services/productoService';
 
-
+// Prueba de integración de la página: AuthContext + ProductosContext + service + localStorage reales.
+// La página va DENTRO de <Routes>, igual que en App.jsx: así, cuando PlantillaAdmin redirige a /login,
+// la ruta cambia y la página se desmonta. (Sin <Routes>, el <Navigate> se repetiría sin fin.)
 function mostrarPagina() {
     return render(
         <MemoryRouter initialEntries={['/admin/productos']}>
             <AuthProvider>
                 <ProductosProvider>
-                    <PaginaAdminProductos />
+                    <Routes>
+                        <Route path="/admin/productos" element={<PaginaAdminProductos />} />
+                        <Route path="/login" element={<p>Pantalla de login</p>} />
+                    </Routes>
                 </ProductosProvider>
             </AuthProvider>
         </MemoryRouter>
@@ -36,11 +41,12 @@ describe('PaginaAdminProductos', () => {
         expect(screen.getByText('GTR-001')).toBeInTheDocument();
     });
 
-    it('no muestra el panel a un cliente', () => {
+    it('manda a un cliente al login en vez de mostrarle el panel', () => {
         entrarComo('cliente');
 
         mostrarPagina();
 
+        expect(screen.getByText('Pantalla de login')).toBeInTheDocument();
         expect(screen.queryByText('Panel de administración')).not.toBeInTheDocument();
     });
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import { ProductosProvider } from '../context/ProductosContext';
 import { CarritoProvider } from '../context/CarritoContext';
@@ -17,7 +17,10 @@ function mostrarPagina() {
                 <ProductosProvider>
                     <CarritoProvider>
                         <PedidosProvider>
-                            <PaginaAdminPedidos />
+                            <Routes>
+                                <Route path="/admin/pedidos" element={<PaginaAdminPedidos />} />
+                                <Route path="/login" element={<p>Pantalla de login</p>} />
+                            </Routes>
                         </PedidosProvider>
                     </CarritoProvider>
                 </ProductosProvider>
