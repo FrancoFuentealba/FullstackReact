@@ -91,3 +91,95 @@ export function actualizarEstadoPedido(id, estado) {
 export function reiniciarPedidos() {
     guardar([]);
 }
+
+
+// Envía una compra a la API. El backend vuelve a validar productos,
+// precios y stock; el frontend no envía el total calculado.
+export async function crearPedidoDesdeAPI({ items, cliente, token, email }) {
+    if (!token) {
+        throw new Error('Inicia sesión antes de confirmar la compra');
+    }
+
+    const respuesta = await fetch('/api/pedidos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            cliente: {
+                nombre: cliente?.nombre,
+                direccion: cliente?.direccion,
+            },
+            items: items.map((item) => ({
+                codigo: item.producto.codigo,
+                cantidad: item.cantidad,
+            })),
+        }),
+    });
+
+    const resultado = await respuesta.json().catch(() => ({}));
+
+    if (!respuesta.ok) {
+        throw new Error(resultado.error || 'No se pudo registrar la compra');
+    }
+
+    const pedido = resultado.pedido;
+
+    return {
+        id: pedido.id,
+        fecha: pedido.fecha,
+        estado: pedido.estado,
+        usuario: email,
+        cliente: {
+            nombre: cliente.nombre,
+            direccion: cliente.direccion,
+        },
+        lineas: pedido.lineas.map((linea) => ({
+            codigo: linea.codigo,
+            nombre: linea.nombre,
+            precio: linea.precio_unitario_clp,
+            cantidad: linea.cantidad,
+            subtotal: linea.subtotal_clp,
+        })),
+        total: pedido.total_clp,
+    };
+}
+
+// Consulta solo los pedidos del usuario autenticado.
+export async function listarMisPedidosDesdeAPI(token, email) {
+    if (!token) {
+        throw new Error('Inicia sesión para consultar tus pedidos');
+    }
+
+    const respuesta = await fetch('/api/pedidos/mios', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const resultado = await respuesta.json().catch(() => ({}));
+
+    if (!respuesta.ok) {
+        throw new Error(resultado.error || 'No se pudieron cargar tus pedidos');
+    }
+
+    return (resultado.pedidos ?? []).map((pedido) => ({
+        id: String(pedido.id),
+        fecha: pedido.fecha,
+        estado: pedido.estado,
+        total: Number(pedido.total_clp),
+        usuario: email,
+        cliente: {
+            nombre: pedido.nombre_destinatario,
+            direccion: pedido.direccion_entrega,
+        },
+        lineas: pedido.lineas.map((linea) => ({
+            codigo: linea.codigo,
+            nombre: linea.nombre,
+            cantidad: Number(linea.cantidad),
+            precio: Number(linea.precio_unitario_clp),
+            subtotal: Number(linea.subtotal_clp),
+        })),
+    }));
+}

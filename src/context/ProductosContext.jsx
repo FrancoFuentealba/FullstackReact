@@ -26,6 +26,12 @@ export function ProductosProvider({ children }) {
         setProductos(productoService.listarProductos());
     }
 
+    async function recargarDesdeAPI() {
+        const lista = await productoService.listarProductosDesdeAPI();
+        setProductos(lista);
+        return lista;
+    }
+
     function crear(datos) {
         try {
             const producto = productoService.crearProducto(datos);
@@ -53,7 +59,7 @@ export function ProductosProvider({ children }) {
     }
 
     return (
-        <ProductosContext.Provider value={{ productos, crear, actualizar, eliminar, recargar, reiniciar }}>
+        <ProductosContext.Provider value={{ productos, crear, actualizar, eliminar, recargar, recargarDesdeAPI, reiniciar }}>
             {children}
         </ProductosContext.Provider>
     );

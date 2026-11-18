@@ -16,8 +16,8 @@ function PaginaCheckout() {
     const { usuario } = useAuth();
     const { confirmarCompra } = usePedidos();
 
-    function alPagar(cliente) {
-        const resultado = confirmarCompra(cliente);
+    async function alPagar(cliente) {
+        const resultado = await confirmarCompra(cliente);
 
         if (resultado.ok) {
             navigate('/compra-exitosa', { state: { pedido: resultado.pedido } });

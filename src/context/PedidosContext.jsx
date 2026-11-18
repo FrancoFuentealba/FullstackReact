@@ -1,10 +1,6 @@
-// PedidosContext: el puente entre pedidoService y las pantallas.
-// Su función principal es confirmarCompra: crea el pedido, baja el stock, vacía el carrito
-// y deja la lista de productos al día, todo en una sola llamada.
-// Necesita estar DENTRO de AuthProvider, ProductosProvider y CarritoProvider (ver App.jsx).
-
 import { createContext, useContext, useState } from 'react';
 import * as pedidoService from '../services/pedidoService';
+import { obtenerToken } from '../services/authService';
 import { filtrarPorUsuario } from '../utils/pedidos';
 import { useAuth } from './AuthContext';
 import { useCarrito } from './CarritoContext';
@@ -15,46 +11,65 @@ const PedidosContext = createContext(null);
 export function PedidosProvider({ children }) {
     const { usuario } = useAuth();
     const { items, vaciar } = useCarrito();
-    const { recargar: recargarProductos } = useProductos();
-    const [pedidos, setPedidos] = useState(() => pedidoService.listarPedidos());
+    const { recargarDesdeAPI } = useProductos();
+    const [pedidos, setPedidos] = useState([]);
 
-    // Recibe { nombre, direccion, tarjetaFinal } (lo que entrega FormularioCheckout).
-    // Devuelve { ok: true, pedido } o { ok: false, error } (por ejemplo, "Guitarra: solo quedan 2 unidades").
-    function confirmarCompra(cliente) {
+    async function confirmarCompra(cliente) {
+        let pedido;
+
         try {
-            const pedido = pedidoService.crearPedido({ items, cliente, usuario: usuario?.email ?? null });
-            setPedidos(pedidoService.listarPedidos());
-            recargarProductos(); // el stock cambió, el catálogo debe mostrarlo
-            vaciar();
-            return { ok: true, pedido };
+            pedido = await pedidoService.crearPedidoDesdeAPI({
+                items,
+                cliente,
+                token: obtenerToken(),
+                email: usuario?.email ?? null,
+            });
         } catch (error) {
-            recargarProductos(); // si falló por stock, se muestran los datos actuales
+            try {
+                await recargarDesdeAPI();
+            } catch {
+                // Conserva el error original de la compra.
+            }
+
             return { ok: false, error: error.message };
         }
+
+        setPedidos((actuales) => [pedido, ...actuales]);
+        vaciar();
+
+        try {
+            await recargarDesdeAPI();
+        } catch (error) {
+            console.error('La compra se guardó, pero no se pudo actualizar el catálogo:', error);
+        }
+
+        return { ok: true, pedido };
     }
 
-    // Para el administrador. Devuelve el pedido actualizado, o null si el id no existe.
-    function cambiarEstado(id, estado) {
-        const pedido = pedidoService.actualizarEstadoPedido(id, estado);
-        setPedidos(pedidoService.listarPedidos());
-        return pedido;
+    function cambiarEstado() {
+        return null; // Se conectará al endpoint administrativo en el siguiente paso.
     }
 
     const valor = {
-        pedidos,                                          // todos (panel de administración)
-        misPedidos: filtrarPorUsuario(pedidos, usuario?.email), // solo los del cliente con sesión
+        pedidos,
+        misPedidos: filtrarPorUsuario(pedidos, usuario?.email),
         confirmarCompra,
         cambiarEstado,
     };
 
-    return <PedidosContext.Provider value={valor}>{children}</PedidosContext.Provider>;
+    return (
+        <PedidosContext.Provider value={valor}>
+            {children}
+        </PedidosContext.Provider>
+    );
 }
 
-// Desde cualquier página: const { misPedidos, confirmarCompra } = usePedidos()
 export function usePedidos() {
     const contexto = useContext(PedidosContext);
+
     if (!contexto) {
         throw new Error('usePedidos debe usarse dentro de un PedidosProvider');
     }
+
     return contexto;
 }
