@@ -1,4 +1,5 @@
 import * as productoService from '../services/productoService';
+import { obtenerToken } from '../services/authService';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const ProductosContext = createContext(null);
@@ -32,34 +33,50 @@ export function ProductosProvider({ children }) {
         return lista;
     }
 
-    function crear(datos) {
+    async function crear(datos) {
         try {
-            const producto = productoService.crearProducto(datos);
-            recargar();
+            const producto = await productoService.crearProductoEnAPI(datos, obtenerToken());
+            await recargarDesdeAPI();
             return { ok: true, producto };
         } catch (error) {
             return { ok: false, error: error.message };
         }
     }
 
-    function actualizar(codigo, cambios) {
-        const producto = productoService.actualizarProducto(codigo, cambios);
-        recargar();
-        return producto;
+    async function actualizar(codigo, cambios) {
+        try {
+            const producto = await productoService.actualizarProductoEnAPI(
+                codigo,
+                cambios,
+                obtenerToken(),
+            );
+            await recargarDesdeAPI();
+            return { ok: true, producto };
+        } catch (error) {
+            return { ok: false, error: error.message };
+        }
     }
 
-    function eliminar(codigo) {
-        productoService.eliminarProducto(codigo);
-        recargar();
-    }
-
-    function reiniciar() {
-        productoService.reiniciarProductos();
-        recargar();
+    async function eliminar(codigo) {
+        try {
+            await productoService.eliminarProductoEnAPI(codigo, obtenerToken());
+            await recargarDesdeAPI();
+            return { ok: true };
+        } catch (error) {
+            return { ok: false, error: error.message };
+        }
     }
 
     return (
-        <ProductosContext.Provider value={{ productos, crear, actualizar, eliminar, recargar, recargarDesdeAPI, reiniciar }}>
+        <ProductosContext.Provider value={{
+            productos,
+            crear,
+            actualizar,
+            eliminar,
+            recargar,
+            recargarDesdeAPI,
+            reiniciar: recargarDesdeAPI,
+        }}>
             {children}
         </ProductosContext.Provider>
     );

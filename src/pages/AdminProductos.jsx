@@ -9,14 +9,15 @@ import { useTituloPagina } from '../hooks/useTituloPagina';
 
 function PaginaAdminProductos() {
     useTituloPagina('Admin · Productos');
+
     const { productos, crear, actualizar, eliminar } = useProductos();
-
     const [formularioAbierto, setFormularioAbierto] = useState(false);
-    const [productoEditado, setProductoEditado] = useState(null);  
+    const [productoEditado, setProductoEditado] = useState(null);
     const [productoPorEliminar, setProductoPorEliminar] = useState(null);
-    const [aviso, setAviso] = useState(null);                        
+    const [aviso, setAviso] = useState(null);
+    const [guardando, setGuardando] = useState(false);
 
-    const categorias = [...new Set(productos.map((p) => p.categoria))];
+    const categorias = [...new Set(productos.map((producto) => producto.categoria))];
 
     function abrirNuevo() {
         setProductoEditado(null);
@@ -37,34 +38,55 @@ function PaginaAdminProductos() {
         setProductoEditado(null);
     }
 
-    function guardar(datos) {
-        if (productoEditado) {
-            const actualizado = actualizar(productoEditado.codigo, datos);
-            setAviso(actualizado
-                ? { tipo: 'success', texto: `Producto ${actualizado.codigo} actualizado.` }
-                : { tipo: 'danger', texto: 'El producto ya no existe.' });
-            cerrarFormulario();
-            return;
-        }
+    async function guardar(datos) {
+        setGuardando(true);
 
-        const resultado = crear(datos);
+        const resultado = productoEditado
+            ? await actualizar(productoEditado.codigo, datos)
+            : await crear(datos);
+
+        setGuardando(false);
+
         if (!resultado.ok) {
-            
             setAviso({ tipo: 'danger', texto: resultado.error });
             return;
         }
-        setAviso({ tipo: 'success', texto: `Producto ${resultado.producto.codigo} creado.` });
+
+        setAviso({
+            tipo: 'success',
+            texto: `Producto ${resultado.producto.codigo} ${
+                productoEditado ? 'actualizado' : 'creado'
+            }.`,
+        });
+
         cerrarFormulario();
     }
 
     function pedirConfirmacion(codigo) {
-        setProductoPorEliminar(productos.find((p) => p.codigo === codigo) ?? null);
+        setProductoPorEliminar(
+            productos.find((producto) => producto.codigo === codigo) ?? null,
+        );
         setAviso(null);
     }
 
-    function confirmarEliminacion() {
-        eliminar(productoPorEliminar.codigo);
-        setAviso({ tipo: 'success', texto: `Producto ${productoPorEliminar.codigo} eliminado.` });
+    async function confirmarEliminacion() {
+        setGuardando(true);
+
+        const codigo = productoPorEliminar.codigo;
+        const resultado = await eliminar(codigo);
+
+        setGuardando(false);
+
+        if (!resultado.ok) {
+            setAviso({ tipo: 'danger', texto: resultado.error });
+            setProductoPorEliminar(null);
+            return;
+        }
+
+        setAviso({
+            tipo: 'success',
+            texto: `Producto ${codigo} retirado del catálogo.`,
+        });
         setProductoPorEliminar(null);
     }
 
@@ -72,17 +94,31 @@ function PaginaAdminProductos() {
         <PlantillaAdmin>
             <div className="admin-encabezado-seccion">
                 <h2 className="admin-titulo-seccion">Productos</h2>
-                {!formularioAbierto && <Boton texto="Nuevo producto" onClick={abrirNuevo} />}
+                {!formularioAbierto && (
+                    <Boton texto="Nuevo producto" onClick={abrirNuevo} />
+                )}
             </div>
 
             {aviso && <Alert variant={aviso.tipo}>{aviso.texto}</Alert>}
 
             {productoPorEliminar && (
                 <Alert variant="warning" className="admin-confirmacion">
-                    <span>¿Eliminar "{productoPorEliminar.nombre}"? Esta acción no se puede deshacer.</span>
+                    <span>¿Retirar "{productoPorEliminar.nombre}" del catálogo?</span>
                     <span className="admin-confirmacion-botones">
-                        <Boton texto="Sí, eliminar" variante="danger" className="btn-sm me-2" onClick={confirmarEliminacion} />
-                        <Boton texto="Cancelar" variante="secondary" className="btn-sm" onClick={() => setProductoPorEliminar(null)} />
+                        <Boton
+                            texto="Sí, eliminar"
+                            variante="danger"
+                            className="btn-sm me-2"
+                            onClick={confirmarEliminacion}
+                            disabled={guardando}
+                        />
+                        <Boton
+                            texto="Cancelar"
+                            variante="secondary"
+                            className="btn-sm"
+                            onClick={() => setProductoPorEliminar(null)}
+                            disabled={guardando}
+                        />
                     </span>
                 </Alert>
             )}

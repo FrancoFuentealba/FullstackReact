@@ -1,71 +1,94 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from '../context/AuthContext';
+import PaginaAdminProductos from './AdminProductos';
 
-const authMocks = vi.hoisted(() => ({ useAuth: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+    productos: [],
+    useAuth: vi.fn(),
+    crear: vi.fn(),
+    actualizar: vi.fn(),
+    eliminar: vi.fn(),
+}));
 
 vi.mock('../context/AuthContext', () => ({
-    AuthProvider: ({ children }) => children,
-    useAuth: authMocks.useAuth,
+    useAuth: mocks.useAuth,
 }));
-import { ProductosProvider } from '../context/ProductosContext';
-import PaginaAdminProductos from './AdminProductos';
-import { obtenerProducto } from '../services/productoService';
 
-// Prueba de integración de la página: AuthContext + ProductosContext + service + localStorage reales.
-// La página va DENTRO de <Routes>, igual que en App.jsx: así, cuando PlantillaAdmin redirige a /login,
-// la ruta cambia y la página se desmonta. (Sin <Routes>, el <Navigate> se repetiría sin fin.)
+vi.mock('../context/ProductosContext', () => ({
+    useProductos: () => ({
+        productos: mocks.productos,
+        crear: mocks.crear,
+        actualizar: mocks.actualizar,
+        eliminar: mocks.eliminar,
+    }),
+}));
+
 function mostrarPagina() {
     return render(
         <MemoryRouter initialEntries={['/admin/productos']}>
-            <AuthProvider>
-                <ProductosProvider>
-                    <Routes>
-                        <Route path="/admin/productos" element={<PaginaAdminProductos />} />
-                        <Route path="/login" element={<p>Pantalla de login</p>} />
-                    </Routes>
-                </ProductosProvider>
-            </AuthProvider>
-        </MemoryRouter>
+            <Routes>
+                <Route path="/admin/productos" element={<PaginaAdminProductos />} />
+                <Route path="/login" element={<p>Pantalla de login</p>} />
+            </Routes>
+        </MemoryRouter>,
     );
 }
 
-const entrarComo = (rol) => {
-    authMocks.useAuth.mockReturnValue({
-        usuario: { nombre: 'Usuario', email: 'usuario@correo.cl', rol },
-        estaLogueado: true,
-        esAdmin: rol === 'admin',
-        iniciar: vi.fn(),
-        registrar: vi.fn(),
-        cerrar: vi.fn(),
-    });
+const productoBase = {
+    codigo: 'GTR-001',
+    categoria: 'Guitarras',
+    nombre: 'Guitarra de prueba',
+    marca: 'Fender',
+    modelo: 'Player',
+    stock: 5,
+    precio: 450000,
+    descuento: 15,
+    imagen: '/img/guitarra.jpg',
 };
 
-describe('PaginaAdminProductos', () => {
+describe('PaginaAdminProductos conectada al contexto API', () => {
     beforeEach(() => {
-        localStorage.clear();
-        entrarComo('admin');
+        vi.clearAllMocks();
+        mocks.useAuth.mockReturnValue({
+            usuario: { nombre: 'Admin', email: 'admin@example.com', rol: 'admin' },
+            esAdmin: true,
+            cerrar: vi.fn(),
+        });
+        mocks.productos = [{ ...productoBase }];
+        mocks.crear.mockResolvedValue({
+            ok: true,
+            producto: { ...productoBase, codigo: 'TST-001' },
+        });
+        mocks.actualizar.mockResolvedValue({
+            ok: true,
+            producto: { ...productoBase, stock: 9 },
+        });
+        mocks.eliminar.mockResolvedValue({ ok: true });
     });
 
-    it('muestra el panel y la tabla con los productos del catálogo', () => {
+    it('muestra el panel y los productos recibidos del contexto', () => {
         mostrarPagina();
 
         expect(screen.getByText('Panel de administración')).toBeInTheDocument();
         expect(screen.getByText('GTR-001')).toBeInTheDocument();
     });
 
-    it('manda a un cliente al login en vez de mostrarle el panel', () => {
-        entrarComo('cliente');
+    it('manda a un cliente al login en vez de mostrarle el panel', async () => {
+        mocks.useAuth.mockReturnValue({
+            usuario: { nombre: 'Cliente', email: 'cliente@example.com', rol: 'cliente' },
+            esAdmin: false,
+            cerrar: vi.fn(),
+        });
 
         mostrarPagina();
 
-        expect(screen.getByText('Pantalla de login')).toBeInTheDocument();
+        expect(await screen.findByText('Pantalla de login')).toBeInTheDocument();
         expect(screen.queryByText('Panel de administración')).not.toBeInTheDocument();
     });
 
-    it('crea un producto nuevo y lo deja en el catálogo', async () => {
+    it('envía un producto nuevo al contexto y muestra confirmación', async () => {
         mostrarPagina();
 
         await userEvent.click(screen.getByRole('button', { name: 'Nuevo producto' }));
@@ -73,16 +96,28 @@ describe('PaginaAdminProductos', () => {
         await userEvent.type(screen.getByLabelText('Nombre'), 'Producto de prueba');
         await userEvent.type(screen.getByLabelText('Marca'), 'Marca X');
         await userEvent.type(screen.getByLabelText('Modelo'), 'Modelo Y');
-        await userEvent.selectOptions(screen.getByLabelText('Categoría'), 'Audio');
+        await userEvent.selectOptions(screen.getByLabelText('Categoría'), 'Guitarras');
         await userEvent.type(screen.getByLabelText('Precio'), '15000');
         await userEvent.type(screen.getByLabelText('Stock'), '3');
         await userEvent.click(screen.getByRole('button', { name: 'Guardar Producto' }));
 
-        expect(screen.getByText('Producto TST-001 creado.')).toBeInTheDocument();
-        expect(obtenerProducto('TST-001').stock).toBe(3);
+        await waitFor(() => {
+            expect(mocks.crear).toHaveBeenCalledWith(expect.objectContaining({
+                codigo: 'TST-001',
+                nombre: 'Producto de prueba',
+                precio: 15000,
+                stock: 3,
+            }));
+        });
+        expect(await screen.findByText('Producto TST-001 creado.')).toBeInTheDocument();
     });
 
-    it('muestra el error cuando el código ya existe y no crea nada', async () => {
+    it('muestra el error de duplicado que devuelve la API', async () => {
+        mocks.crear.mockResolvedValue({
+            ok: false,
+            error: 'Ya existe el producto GTR-001',
+        });
+
         mostrarPagina();
 
         await userEvent.click(screen.getByRole('button', { name: 'Nuevo producto' }));
@@ -90,38 +125,44 @@ describe('PaginaAdminProductos', () => {
         await userEvent.type(screen.getByLabelText('Nombre'), 'Repetido');
         await userEvent.type(screen.getByLabelText('Marca'), 'Marca X');
         await userEvent.type(screen.getByLabelText('Modelo'), 'Modelo Y');
-        await userEvent.selectOptions(screen.getByLabelText('Categoría'), 'Audio');
+        await userEvent.selectOptions(screen.getByLabelText('Categoría'), 'Guitarras');
         await userEvent.type(screen.getByLabelText('Precio'), '15000');
         await userEvent.type(screen.getByLabelText('Stock'), '3');
         await userEvent.click(screen.getByRole('button', { name: 'Guardar Producto' }));
 
-        expect(screen.getByText('Ya existe un producto con el código GTR-001')).toBeInTheDocument();
-        expect(obtenerProducto('GTR-001').nombre).not.toBe('Repetido');
+        expect(await screen.findByText('Ya existe el producto GTR-001')).toBeInTheDocument();
     });
 
-    it('edita el stock de un producto existente', async () => {
+    it('envía cambios de un producto existente al contexto', async () => {
         mostrarPagina();
 
-        await userEvent.click(screen.getAllByRole('button', { name: 'Editar' })[0]); // GTR-001
+        await userEvent.click(screen.getByRole('button', { name: 'Editar' }));
         await userEvent.clear(screen.getByLabelText('Stock'));
         await userEvent.type(screen.getByLabelText('Stock'), '9');
         await userEvent.click(screen.getByRole('button', { name: 'Guardar Producto' }));
 
-        expect(screen.getByText('Producto GTR-001 actualizado.')).toBeInTheDocument();
-        expect(obtenerProducto('GTR-001').stock).toBe(9);
+        await waitFor(() => {
+            expect(mocks.actualizar).toHaveBeenCalledWith(
+                'GTR-001',
+                expect.objectContaining({ stock: 9 }),
+            );
+        });
+        expect(await screen.findByText('Producto GTR-001 actualizado.')).toBeInTheDocument();
     });
 
-    it('pide confirmación antes de eliminar y solo elimina si se confirma', async () => {
+    it('pide confirmación antes de retirar el producto', async () => {
         mostrarPagina();
 
-        await userEvent.click(screen.getAllByRole('button', { name: 'Eliminar' })[0]);
+        await userEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
         await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
-        expect(obtenerProducto('GTR-001')).not.toBeNull(); // cancelar no borra nada
+        expect(mocks.eliminar).not.toHaveBeenCalled();
 
-        await userEvent.click(screen.getAllByRole('button', { name: 'Eliminar' })[0]);
+        await userEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
         await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
 
-        expect(obtenerProducto('GTR-001')).toBeNull();
-        expect(screen.getByText('Producto GTR-001 eliminado.')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(mocks.eliminar).toHaveBeenCalledWith('GTR-001');
+        });
+        expect(await screen.findByText('Producto GTR-001 retirado del catálogo.')).toBeInTheDocument();
     });
 });
