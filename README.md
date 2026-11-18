@@ -1,115 +1,78 @@
 # AudioMax · Sonido Vivo
 
-**Nombre del equipo:** Los Androides
-
-| Integrante | Correo |
-|---|---|
-| Cristóbal Aguilera | cri.aguileraa@duocuc.cl |
-| Franco Fuentealba Arce | fr.fuentealbaa@duocuc.cl |
-| Aaron Hernández | aa.hernandezn@duocuc.cl |
-
-**Asignatura:** DSY1104 · Desarrollo Fullstack II · Evaluación Parcial 2
-
+**Equipo:** Los Androides
+**Integrantes:** Cristóbal Aguilera, Franco Fuentealba Arce y Aaron Hernández
+**Asignatura:** DSY1104 · Desarrollo Fullstack II · 2026
 **Caso:** Sonido Vivo (AudioMax)
 
-## Descripción del caso
+## Repositorios
 
-Sitio web que vende instrumentos y accesorios musicales para músicos y profesionales. La plataforma soluciona la dificultad de encontrar instrumentos en un solo sitio: ofrece un catálogo con filtros por categoría, búsqueda, ofertas, un carrito de compras y un flujo de compra con pago simulado. Además incluye un panel de administración para gestionar el inventario y los pedidos.
+- Frontend React: [FullstackReact](https://github.com/FrancoFuentealba/FullstackReact)
+- Backend Node.js: [sonidovivo-backend](https://github.com/aaronhernandez2006/sonidovivo-backend)
+- Documentación interactiva del API, cuando el backend esté ejecutándose: `/api/docs`. Su contrato OpenAPI está versionado en `src/openapi.json` dentro del repositorio backend.
 
-## Funcionalidades
+## Descripción y funcionalidades
 
-**Cliente**
-- Catálogo, categorías, ofertas con descuento y buscador de productos.
-- Detalle de cada producto (`/producto/:id`).
-- Carrito de compras que se conserva al recargar la página, con tope según el stock disponible.
-- Registro e inicio de sesión.
-- Checkout con validación de datos y compra exitosa o fallida (por ejemplo, si el producto se agotó).
-- Mis pedidos, con la etapa de cada pedido (En preparación, Despachado, Entregado).
+Sitio web para vender instrumentos y accesorios musicales. Incluye catálogo, filtros por categoría, búsqueda y ofertas; detalle de productos; carrito; registro e inicio de sesión; checkout de pago simulado; historial de pedidos; y paneles de administración de inventario y pedidos.
 
-**Administrador**
-- Gestión de productos: crear, editar y eliminar (con confirmación).
-- Gestión de pedidos: cambiar la etapa de cada pedido.
-- El panel solo es accesible con el rol `admin`.
+El frontend consulta el catálogo, autentica usuarios y envía compras e historial al backend. El stock y los precios definitivos se validan/calculan en servidor. El backend es responsable de persistir usuarios, catálogo y pedidos en PostgreSQL.
 
-## Tecnologías utilizadas
+## Tecnologías
 
-React 19 · Vite · React Bootstrap · React Router DOM · Vitest y Testing Library
+React 19, Vite, React Bootstrap, React Router DOM, Vitest, Testing Library, Node.js, Express, PostgreSQL en AWS RDS y JWT. La descripción de arquitectura, configuración, controles y rutas implementadas está en el [README del backend](https://github.com/aaronhernandez2006/sonidovivo-backend#readme).
 
-## Cómo ejecutar el proyecto
+## Cómo ejecutar el frontend
+
+Requiere Node.js y npm. La API debe estar ejecutándose para que catálogo, login, compras e historial puedan comunicarse con el backend.
 
 ```bash
-npm install        # instala las dependencias
-npm run dev        # servidor de desarrollo
-npm run build      # genera la versión de producción
-npm run test:run   # ejecuta todas las pruebas una vez
-npm run test:cov   # pruebas + informe de cobertura 
+npm ci
+npm run dev
+npm run test:run
+npm run build
 ```
 
-### Usuarios de prueba
+Vite usa el proxy `/api` definido en `vite.config.js` durante el desarrollo. En producción, la configuración del host web debe enrutar `/api` al servidor backend y usar HTTPS. No incluir valores secretos en Vite ni en variables `VITE_*`, porque esas variables pueden acabar en el bundle público.
 
-| Rol | Correo | Clave |
-|---|---|---|
-| Administrador | admin@audiomax.cl | admin123 |
-| Cliente | cliente@audiomax.cl | cliente123 |
+## Usuarios y credenciales
 
-También se puede crear una cuenta de cliente desde `/registro`.
+No se publican credenciales de prueba en este README. Registra una cuenta cliente desde `/registro` y úsala para iniciar sesión. El alta pública siempre asigna el rol `cliente`; las cuentas `admin` se provisionan mediante un procedimiento restringido en backend/base de datos. No almacenar ni compartir contraseñas o tokens en Git, capturas, consola o informes.
 
-## Estructura del proyecto
+El token de acceso se conserva en memoria por la sesión de página. Al recargar, se debe iniciar sesión de nuevo. El carrito del frontend puede persistir por separado; eso no equivale a persistir la autenticación.
 
-El proyecto sigue **Atomic Design** y separa la lógica de la interfaz:
+## Estructura
 
 ```text
-AudioMax/
-├── public/                    # Recursos estáticos (imágenes en public/img)
-├── src/
-│   ├── components/
-│   │   ├── atoms/             # Piezas mínimas: Boton, CampoTexto, Precio, Selector...
-│   │   ├── molecules/         # Combinaciones: TarjetaProducto, ItemCarrito, EstadoPedido...
-│   │   ├── organisms/         # Bloques completos: NavbarAudioMax, Carrito, TablaProductos...
-│   │   └── templates/         # Estructuras de página: PlantillaPublica, PlantillaAdmin
-│   ├── pages/                 # Páginas (una por ruta): Inicio, Catalogo, Checkout, AdminProductos...
-│   ├── context/               # Estado compartido: Carrito, Productos, Auth, Pedidos
-│   ├── services/              # Datos y reglas con localStorage: productoService, pedidoService, authService
-│   ├── hooks/                 # Hooks propios: useTituloPagina
-│   ├── utils/                 # Funciones puras: validaciones, carrito, pedidos, ofertas, busqueda, stock
-│   ├── data/                  # Datos iniciales: productos y usuarios de ejemplo
-│   ├── App.jsx                # Providers y rutas
-│   └── main.jsx               # Punto de entrada
-├── vite.config.js             # Configuración de Vite y de Vitest
-└── package.json               # Dependencias y scripts
+src/
+├── components/       # Atomic Design: atoms, molecules, organisms y templates
+├── pages/            # Catálogo, detalle, checkout, historial y administración
+├── context/          # Estado compartido: carrito, productos, autenticación y pedidos
+├── services/         # Llamadas de API
+├── hooks/            # Hooks propios
+├── utils/            # Validaciones y funciones reutilizables
+└── App.jsx           # Providers y rutas
 ```
 
-Cada archivo de prueba (`*.test.js` / `*.test.jsx`) está junto al archivo que prueba.
+Las pruebas `*.test.js` y `*.test.jsx` están junto al módulo relacionado. Vitest y Testing Library cubren utilidades, servicios, contextos, componentes y páginas.
 
-### Rutas principales
+## Rutas principales del frontend
 
-| Ruta | Página |
+| Ruta | Función |
 |---|---|
 | `/` | Inicio |
-| `/catalogo` · `/categorias` · `/categorias/:nombre` | Catálogo y categorías |
-| `/ofertas` · `/buscar?q=` | Ofertas y resultados de búsqueda |
-| `/producto/:id` | Detalle de un producto |
-| `/carrito` · `/checkout` | Carrito y pago |
-| `/compra-exitosa` · `/compra-fallida` | Resultado de la compra |
-| `/login` · `/registro` | Autenticación |
-| `/mis-pedidos` | Pedidos del cliente |
-| `/admin/productos` · `/admin/pedidos` | Panel de administración |
+| `/catalogo`, `/categorias`, `/categorias/:nombre` | Catálogo y categorías |
+| `/ofertas`, `/buscar?q=` | Ofertas y búsqueda |
+| `/producto/:id` | Detalle de producto |
+| `/carrito`, `/checkout` | Carrito y compra |
+| `/compra-exitosa`, `/compra-fallida` | Resultado de la compra |
+| `/login`, `/registro` | Sesión y registro |
+| `/mis-pedidos` | Historial propio |
+| `/admin/productos`, `/admin/pedidos` | Administración |
 
-## Pruebas unitarias
+## Pruebas y estado
 
-Se usa **Vitest** con **Testing Library**. Resultado de la última ejecución de `npm run test:cov`:
+Verificación en la copia de trabajo preparada para esta entrega: `npm run test:run` aprobó 124 pruebas en 21 archivos; `npm run build` finalizó correctamente; y `npm audit` reportó cero vulnerabilidades después de aplicar actualizaciones compatibles sin forzar versiones mayores. Vuelve a ejecutar los comandos después de cualquier cambio local. La verificación real de endpoints, roles y base de datos se describe en el [README del backend](https://github.com/aaronhernandez2006/sonidovivo-backend#avance-y-resultados-comprobados).
 
-- **21 archivos de prueba y 128 pruebas, todas aprobadas.**
-- **Cobertura total: 79,4 %** de sentencias (utils 100 %, hooks 100 %, services 95 %, context 93 %).
+## Material académico
 
-Se prueban funciones puras (carrito, validaciones, pedidos, ofertas, búsqueda), servicios con `localStorage`, contextos, componentes y las páginas de administración.
-
-## Notas
-
-- **No hay backend:** los datos (productos, pedidos, usuarios y sesión) se guardan en el `localStorage` del navegador. Por esa razón las claves se almacenan como texto; esto es solo para el proyecto académico y no es una práctica válida en un sistema real.
-- **Pago simulado:** el checkout valida los datos pero no cobra nada. Del número de tarjeta solo se guardan los últimos 4 dígitos.
-- **Control de versiones:** los commits con el usuario `ubuntu` corresponden a Cristóbal Aguilera (su cuenta anterior fue bloqueada).
-
-## Documentación
-
-Material complementario del proyecto (ERS y otros documentos): [Carpeta de Google Drive del equipo](https://drive.google.com/drive/u/2/folders/1_5g77gu0gb3D_mR7W476sDRTItrswFoy)
+ERS y documentos del equipo: [carpeta Google Drive](https://drive.google.com/drive/u/2/folders/1_5g77gu0gb3D_mR7W476sDRTItrswFoy). Comprueben que el docente tenga acceso de lectura y agreguen un enlace directo al ERD desde el README backend.
