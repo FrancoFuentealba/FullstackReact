@@ -1,8 +1,15 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
+
+const authMocks = vi.hoisted(() => ({ useAuth: vi.fn() }));
+
+vi.mock('../context/AuthContext', () => ({
+    AuthProvider: ({ children }) => children,
+    useAuth: authMocks.useAuth,
+}));
 import { ProductosProvider } from '../context/ProductosContext';
 import { CarritoProvider } from '../context/CarritoContext';
 import { PedidosProvider } from '../context/PedidosContext';
@@ -32,7 +39,14 @@ function mostrarPagina() {
 describe('PaginaAdminPedidos', () => {
     beforeEach(() => {
         localStorage.clear();
-        localStorage.setItem('sesion', JSON.stringify({ nombre: 'Admin', email: 'admin@audiomax.cl', rol: 'admin' }));
+        authMocks.useAuth.mockReturnValue({
+            usuario: { nombre: 'Admin', email: 'admin@audiomax.cl', rol: 'admin' },
+            estaLogueado: true,
+            esAdmin: true,
+            iniciar: vi.fn(),
+            registrar: vi.fn(),
+            cerrar: vi.fn(),
+        });
     });
 
     it('muestra un mensaje cuando todavía no hay pedidos', () => {

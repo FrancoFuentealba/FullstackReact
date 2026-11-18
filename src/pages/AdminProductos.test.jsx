@@ -1,8 +1,15 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
+
+const authMocks = vi.hoisted(() => ({ useAuth: vi.fn() }));
+
+vi.mock('../context/AuthContext', () => ({
+    AuthProvider: ({ children }) => children,
+    useAuth: authMocks.useAuth,
+}));
 import { ProductosProvider } from '../context/ProductosContext';
 import PaginaAdminProductos from './AdminProductos';
 import { obtenerProducto } from '../services/productoService';
@@ -25,8 +32,16 @@ function mostrarPagina() {
     );
 }
 
-const entrarComo = (rol) =>
-    localStorage.setItem('sesion', JSON.stringify({ nombre: 'Usuario', email: 'usuario@correo.cl', rol }));
+const entrarComo = (rol) => {
+    authMocks.useAuth.mockReturnValue({
+        usuario: { nombre: 'Usuario', email: 'usuario@correo.cl', rol },
+        estaLogueado: true,
+        esAdmin: rol === 'admin',
+        iniciar: vi.fn(),
+        registrar: vi.fn(),
+        cerrar: vi.fn(),
+    });
+};
 
 describe('PaginaAdminProductos', () => {
     beforeEach(() => {

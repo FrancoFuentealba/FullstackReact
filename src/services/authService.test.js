@@ -1,60 +1,114 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { registrarUsuario, iniciarSesion, cerrarSesion, obtenerSesion } from './authService';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+    cerrarSesion,
+    iniciarSesion,
+    obtenerSesion,
+    obtenerToken,
+    registrarUsuario,
+} from './authService';
 
-describe('authService (usuarios y sesión)', () => {
+function respuesta(body, status = 200) {
+    return {
+        ok: status >= 200 && status < 300,
+        status,
+        json: async () => body,
+    };
+}
+
+describe('authService con API', () => {
     beforeEach(() => {
-        localStorage.clear();
+        cerrarSesion();
+        vi.stubGlobal('fetch', vi.fn());
     });
 
-    it('registra un cliente nuevo sin devolver su clave', () => {
-        const usuario = registrarUsuario({ nombre: 'Ana', email: ' Ana@Correo.cl ', clave: '123456' });
-
-        expect(usuario).toEqual({ nombre: 'Ana', email: 'ana@correo.cl', rol: 'cliente' });
+    afterEach(() => {
+        vi.unstubAllGlobals();
+        cerrarSesion();
     });
 
-    it('rechaza registrar un correo que ya existe, sin distinguir mayúsculas', () => {
-        registrarUsuario({ nombre: 'Ana', email: 'ana@correo.cl', clave: '123456' });
+    it('registra un cliente mediante la API y normaliza el correo', async () => {
+        const usuario = {
+            id: '1',
+            nombre: 'Ana',
+            email: 'ana@correo.cl',
+            rol: 'cliente',
+        };
 
-        expect(() => registrarUsuario({ nombre: 'Otra', email: 'ANA@correo.cl', clave: '654321' }))
-            .toThrow('Ya existe una cuenta');
+        fetch.mockResolvedValue(respuesta({ usuario }, 201));
+
+        const resultado = await registrarUsuario({
+            nombre: ' Ana ',
+            email: ' Ana@Correo.cl ',
+            clave: 'ClaveDePrueba123',
+        });
+
+        expect(resultado).toEqual(usuario);
+        expect(fetch).toHaveBeenCalledWith('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nombre: 'Ana',
+                email: 'ana@correo.cl',
+                password: 'ClaveDePrueba123',
+            }),
+        });
     });
 
-    it('rechaza un registro con datos obligatorios vacíos', () => {
-        expect(() => registrarUsuario({ nombre: '', email: 'a@b.cl', clave: '123456' }))
-            .toThrow('son obligatorios');
-    });
+    it('inicia sesión y mantiene el token solo en memoria', async () => {
+        const usuario = {
+            id: '2',
+            nombre: 'Ana',
+            email: 'ana@correo.cl',
+            rol: 'cliente',
+        };
 
-    it('inicia sesión con el administrador de ejemplo y guarda la sesión', () => {
-        const usuario = iniciarSesion('admin@audiomax.cl', 'admin123');
+        fetch.mockResolvedValue(respuesta({
+            accessToken: 'token-ficticio',
+            usuario,
+        }));
 
-        expect(usuario.rol).toBe('admin');
-        expect(usuario.clave).toBeUndefined(); // la clave nunca sale del servicio
+        const resultado = await iniciarSesion(' Ana@Correo.cl ', 'ClaveDePrueba123');
+
+        expect(resultado).toEqual(usuario);
         expect(obtenerSesion()).toEqual(usuario);
+        expect(obtenerToken()).toBe('token-ficticio');
+        expect(fetch).toHaveBeenCalledWith('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: 'ana@correo.cl',
+                password: 'ClaveDePrueba123',
+            }),
+        });
     });
 
-    it('un cliente recién registrado puede iniciar sesión', () => {
-        registrarUsuario({ nombre: 'Ana', email: 'ana@correo.cl', clave: '123456' });
+    it('devuelve el error de la API si falla el login', async () => {
+        fetch.mockResolvedValue(respuesta({
+            error: 'Correo o contraseña incorrectos',
+        }, 401));
 
-        expect(iniciarSesion('ana@correo.cl', '123456').rol).toBe('cliente');
-    });
+        await expect(iniciarSesion('ana@correo.cl', 'incorrecta'))
+            .rejects.toThrow('Correo o contraseña incorrectos');
 
-    it('rechaza una clave incorrecta con el mismo mensaje que un correo inexistente', () => {
-        expect(() => iniciarSesion('admin@audiomax.cl', 'mala')).toThrow('Correo o contraseña incorrectos');
-        expect(() => iniciarSesion('nadie@correo.cl', 'admin123')).toThrow('Correo o contraseña incorrectos');
         expect(obtenerSesion()).toBeNull();
+        expect(obtenerToken()).toBeNull();
     });
 
-    it('cierra la sesión', () => {
-        iniciarSesion('admin@audiomax.cl', 'admin123');
+    it('limpia usuario y token al cerrar sesión', async () => {
+        fetch.mockResolvedValue(respuesta({
+            accessToken: 'token-ficticio',
+            usuario: {
+                id: '2',
+                nombre: 'Ana',
+                email: 'ana@correo.cl',
+                rol: 'cliente',
+            },
+        }));
 
+        await iniciarSesion('ana@correo.cl', 'ClaveDePrueba123');
         cerrarSesion();
 
         expect(obtenerSesion()).toBeNull();
-    });
-
-    it('ignora una sesión guardada con texto dañado', () => {
-        localStorage.setItem('sesion', '{no es json');
-
-        expect(obtenerSesion()).toBeNull();
+        expect(obtenerToken()).toBeNull();
     });
 });

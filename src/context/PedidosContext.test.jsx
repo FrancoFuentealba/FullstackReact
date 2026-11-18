@@ -1,9 +1,27 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { AuthProvider, useAuth } from './AuthContext';
 import { ProductosProvider, useProductos } from './ProductosContext';
 import { CarritoProvider, useCarrito } from './CarritoContext';
 import { PedidosProvider, usePedidos } from './PedidosContext';
+
+const authState = vi.hoisted(() => ({ usuario: null }));
+
+vi.mock('../services/authService', () => ({
+    obtenerSesion: () => authState.usuario,
+    iniciarSesion: async (email) => {
+        authState.usuario = {
+            nombre: 'Usuario de prueba',
+            email,
+            rol: 'cliente',
+        };
+        return authState.usuario;
+    },
+    registrarUsuario: vi.fn(),
+    cerrarSesion: () => {
+        authState.usuario = null;
+    },
+}));
 
 
 const wrapper = ({ children }) => (
@@ -27,6 +45,7 @@ const stockDe = (resultado, codigo) => resultado.current.productos.productos.fin
 describe('PedidosContext', () => {
     beforeEach(() => {
         localStorage.clear();
+        authState.usuario = null;
     });
 
     it('confirmarCompra crea el pedido, baja el stock y vacía el carrito', () => {
@@ -60,11 +79,13 @@ describe('PedidosContext', () => {
         expect(result.current.pedidos.pedidos).toEqual([]);
     });
 
-    it('misPedidos muestra solo los pedidos del cliente con sesión iniciada', () => {
+    it('misPedidos muestra solo los pedidos del cliente con sesión iniciada', async () => {
         const { result } = renderHook(useTodo, { wrapper });
         const guitarra = result.current.productos.productos.find((p) => p.codigo === 'GTR-001');
 
-        act(() => { result.current.auth.iniciar('cliente@audiomax.cl', 'cliente123'); });
+        await act(async () => {
+            await result.current.auth.iniciar('cliente@audiomax.cl', 'ClavePrueba123');
+        });
         act(() => result.current.carrito.agregar(guitarra));
         act(() => { result.current.pedidos.confirmarCompra(cliente); });
 

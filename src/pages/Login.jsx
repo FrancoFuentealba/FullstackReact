@@ -7,15 +7,15 @@ import { useAuth } from '../context/AuthContext';
 import { useTituloPagina } from '../hooks/useTituloPagina';
 
 function PaginaLogin() {
-    useTituloPagina('Iniciar Sesion')
+    useTituloPagina('Iniciar Sesion');
     const navigate = useNavigate();
     const { state } = useLocation();
     const aviso = state?.aviso;
     const { iniciar } = useAuth();
     const [error, setError] = useState('');
 
-    function alIniciarSesion(datos) {
-        const resultado = iniciar(datos.email, datos.clave);
+    async function alIniciarSesion(datos) {
+        const resultado = await iniciar(datos.email, datos.clave);
 
         if (!resultado.ok) {
             setError(resultado.error);

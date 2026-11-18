@@ -12,16 +12,22 @@ function PaginaRegistro() {
     const { registrar, iniciar } = useAuth();
     const [error, setError] = useState('');
 
-    function alRegistrar(datos) {
-        const registro = registrar(datos);
+    async function alRegistrar(datos) {
+        const registro = await registrar(datos);
 
         if (!registro.ok) {
             setError(registro.error);
             return;
         }
 
-        // la cuenta ya existe: entramos directo con los mismos datos
-        iniciar(datos.email, datos.clave);
+        const entrada = await iniciar(datos.email, datos.clave);
+
+        if (!entrada.ok) {
+            setError(entrada.error);
+            return;
+        }
+
+        setError('');
         navigate('/');
     }
 
