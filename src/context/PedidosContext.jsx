@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import * as pedidoService from '../services/pedidoService';
 import { obtenerToken } from '../services/authService';
 import { filtrarPorUsuario } from '../utils/pedidos';
@@ -13,6 +13,54 @@ export function PedidosProvider({ children }) {
     const { items, vaciar } = useCarrito();
     const { recargarDesdeAPI } = useProductos();
     const [pedidos, setPedidos] = useState([]);
+    const [cargandoMisPedidos, setCargandoMisPedidos] = useState(false);
+    const [errorMisPedidos, setErrorMisPedidos] = useState('');
+
+    useEffect(() => {
+        let vigente = true;
+
+        async function cargarPedidos() {
+            if (!usuario) {
+                setPedidos([]);
+                setErrorMisPedidos('');
+                setCargandoMisPedidos(false);
+                return;
+            }
+
+            const token = obtenerToken();
+
+            if (!token) {
+                setPedidos([]);
+                setErrorMisPedidos('Tu sesión ya no está disponible. Inicia sesión nuevamente.');
+                setCargandoMisPedidos(false);
+                return;
+            }
+
+            setCargandoMisPedidos(true);
+            setErrorMisPedidos('');
+
+            try {
+                const lista = usuario.rol === 'admin'
+                    ? await pedidoService.listarPedidosAdminDesdeAPI(token)
+                    : await pedidoService.listarMisPedidosDesdeAPI(token, usuario.email);
+
+                if (vigente) setPedidos(lista);
+            } catch (error) {
+                if (vigente) {
+                    setPedidos([]);
+                    setErrorMisPedidos(error.message);
+                }
+            } finally {
+                if (vigente) setCargandoMisPedidos(false);
+            }
+        }
+
+        cargarPedidos();
+
+        return () => {
+            vigente = false;
+        };
+    }, [usuario?.id, usuario?.email, usuario?.rol]);
 
     async function confirmarCompra(cliente) {
         let pedido;
@@ -46,13 +94,32 @@ export function PedidosProvider({ children }) {
         return { ok: true, pedido };
     }
 
-    function cambiarEstado() {
-        return null; // Se conectará al endpoint administrativo en el siguiente paso.
+    async function cambiarEstado(id, estado) {
+        try {
+            const token = obtenerToken();
+            const actualizado = await pedidoService.actualizarEstadoPedidoEnAPI(
+                id,
+                estado,
+                token,
+            );
+
+            setPedidos((actuales) => actuales.map((pedido) => (
+                String(pedido.id) === String(id)
+                    ? { ...pedido, estado: actualizado.estado }
+                    : pedido
+            )));
+
+            return { ok: true };
+        } catch (error) {
+            return { ok: false, error: error.message };
+        }
     }
 
     const valor = {
         pedidos,
         misPedidos: filtrarPorUsuario(pedidos, usuario?.email),
+        cargandoMisPedidos,
+        errorMisPedidos,
         confirmarCompra,
         cambiarEstado,
     };

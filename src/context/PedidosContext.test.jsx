@@ -1,109 +1,174 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { AuthProvider, useAuth } from './AuthContext';
-import { ProductosProvider, useProductos } from './ProductosContext';
-import { CarritoProvider, useCarrito } from './CarritoContext';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { PedidosProvider, usePedidos } from './PedidosContext';
 
-const authState = vi.hoisted(() => ({ usuario: null }));
-
-vi.mock('../services/authService', () => ({
-    obtenerSesion: () => authState.usuario,
-    iniciarSesion: async (email) => {
-        authState.usuario = {
-            nombre: 'Usuario de prueba',
-            email,
-            rol: 'cliente',
-        };
-        return authState.usuario;
-    },
-    registrarUsuario: vi.fn(),
-    cerrarSesion: () => {
-        authState.usuario = null;
-    },
+const estado = vi.hoisted(() => ({
+    usuario: null,
+    token: 'token-ficticio',
+    items: [],
 }));
 
+const mocks = vi.hoisted(() => ({
+    listarMisPedidosDesdeAPI: vi.fn(),
+    listarPedidosAdminDesdeAPI: vi.fn(),
+    actualizarEstadoPedidoEnAPI: vi.fn(),
+    crearPedidoDesdeAPI: vi.fn(),
+    recargarDesdeAPI: vi.fn(),
+    vaciar: vi.fn(),
+}));
+
+vi.mock('../services/pedidoService', () => ({
+    listarMisPedidosDesdeAPI: mocks.listarMisPedidosDesdeAPI,
+    listarPedidosAdminDesdeAPI: mocks.listarPedidosAdminDesdeAPI,
+    actualizarEstadoPedidoEnAPI: mocks.actualizarEstadoPedidoEnAPI,
+    crearPedidoDesdeAPI: mocks.crearPedidoDesdeAPI,
+}));
+
+vi.mock('../services/authService', () => ({
+    obtenerToken: () => estado.token,
+}));
+
+vi.mock('./AuthContext', () => ({
+    useAuth: () => ({ usuario: estado.usuario }),
+}));
+
+vi.mock('./CarritoContext', () => ({
+    useCarrito: () => ({ items: estado.items, vaciar: mocks.vaciar }),
+}));
+
+vi.mock('./ProductosContext', () => ({
+    useProductos: () => ({ recargarDesdeAPI: mocks.recargarDesdeAPI }),
+}));
+
+const pedido = {
+    id: '12',
+    fecha: '2026-11-18T12:00:00.000Z',
+    estado: 'preparacion',
+    usuario: 'ana@correo.cl',
+    total: 15900,
+    cliente: { nombre: 'Ana Pérez', direccion: 'Calle 1' },
+    lineas: [{
+        codigo: 'ACC-001',
+        nombre: 'Afinador',
+        cantidad: 1,
+        precio: 15900,
+        subtotal: 15900,
+    }],
+};
+
+const cliente = {
+    nombre: 'Ana Pérez',
+    direccion: 'Calle 1',
+    tarjetaFinal: '4242',
+};
 
 const wrapper = ({ children }) => (
-    <AuthProvider>
-        <ProductosProvider>
-            <CarritoProvider>
-                <PedidosProvider>{children}</PedidosProvider>
-            </CarritoProvider>
-        </ProductosProvider>
-    </AuthProvider>
+    <PedidosProvider>{children}</PedidosProvider>
 );
 
-// Un solo hook que junta todo lo que la prueba necesita mirar.
-function useTodo() {
-    return { auth: useAuth(), productos: useProductos(), carrito: useCarrito(), pedidos: usePedidos() };
-}
-
-const cliente = { nombre: 'Ana Pérez', direccion: 'Av. Siempre Viva 123', tarjetaFinal: '4242' };
-const stockDe = (resultado, codigo) => resultado.current.productos.productos.find((p) => p.codigo === codigo).stock;
-
-describe('PedidosContext', () => {
+describe('PedidosContext conectado a la API', () => {
     beforeEach(() => {
-        localStorage.clear();
-        authState.usuario = null;
-    });
-
-    it('confirmarCompra crea el pedido, baja el stock y vacía el carrito', () => {
-        const { result } = renderHook(useTodo, { wrapper });
-        const guitarra = result.current.productos.productos.find((p) => p.codigo === 'GTR-001');
-        act(() => result.current.carrito.agregar(guitarra));
-        act(() => result.current.carrito.agregar(guitarra));
-
-        let respuesta;
-        act(() => { respuesta = result.current.pedidos.confirmarCompra(cliente); });
-
-        expect(respuesta.ok).toBe(true);
-        expect(respuesta.pedido.total).toBe(765000);
-        expect(stockDe(result, 'GTR-001')).toBe(3);          // el catálogo ya muestra el stock nuevo
-        expect(result.current.carrito.items).toEqual([]);    // el carrito quedó vacío
-        expect(result.current.pedidos.pedidos).toHaveLength(1);
-    });
-
-    it('si no alcanza el stock devuelve el error y NO vacía el carrito', () => {
-        const { result } = renderHook(useTodo, { wrapper });
-        const guitarra = result.current.productos.productos.find((p) => p.codigo === 'GTR-001');
-        act(() => result.current.carrito.agregar(guitarra));
-        act(() => result.current.productos.actualizar('GTR-001', { stock: 0 })); // alguien más compró todo
-
-        let respuesta;
-        act(() => { respuesta = result.current.pedidos.confirmarCompra(cliente); });
-
-        expect(respuesta.ok).toBe(false);
-        expect(respuesta.error).toContain('agotado');
-        expect(result.current.carrito.items).toHaveLength(1);
-        expect(result.current.pedidos.pedidos).toEqual([]);
-    });
-
-    it('misPedidos muestra solo los pedidos del cliente con sesión iniciada', async () => {
-        const { result } = renderHook(useTodo, { wrapper });
-        const guitarra = result.current.productos.productos.find((p) => p.codigo === 'GTR-001');
-
-        await act(async () => {
-            await result.current.auth.iniciar('cliente@audiomax.cl', 'ClavePrueba123');
+        vi.clearAllMocks();
+        estado.usuario = null;
+        estado.token = 'token-ficticio';
+        estado.items = [{
+            producto: { codigo: 'ACC-001', nombre: 'Afinador' },
+            cantidad: 1,
+        }];
+        mocks.listarMisPedidosDesdeAPI.mockResolvedValue([]);
+        mocks.listarPedidosAdminDesdeAPI.mockResolvedValue([]);
+        mocks.crearPedidoDesdeAPI.mockResolvedValue(pedido);
+        mocks.actualizarEstadoPedidoEnAPI.mockResolvedValue({
+            id: '12',
+            estado: 'entregado',
+            total_clp: 15900,
         });
-        act(() => result.current.carrito.agregar(guitarra));
-        act(() => { result.current.pedidos.confirmarCompra(cliente); });
-
-        expect(result.current.pedidos.misPedidos).toHaveLength(1);
-        expect(result.current.pedidos.misPedidos[0].usuario).toBe('cliente@audiomax.cl');
-
-        act(() => result.current.auth.cerrar());
-        expect(result.current.pedidos.misPedidos).toEqual([]); // sin sesión no se ve ninguno
+        mocks.recargarDesdeAPI.mockResolvedValue([]);
     });
 
-    it('cambiarEstado actualiza la etapa del pedido', () => {
-        const { result } = renderHook(useTodo, { wrapper });
-        const guitarra = result.current.productos.productos.find((p) => p.codigo === 'GTR-001');
-        act(() => result.current.carrito.agregar(guitarra));
-        act(() => { result.current.pedidos.confirmarCompra(cliente); });
+    it('envía la compra a la API, vacía el carrito y añade la respuesta', async () => {
+        estado.usuario = {
+            id: '3',
+            nombre: 'Ana Pérez',
+            email: 'ana@correo.cl',
+            rol: 'cliente',
+        };
 
-        act(() => { result.current.pedidos.cambiarEstado('PED-0001', 'entregado'); });
+        const { result } = renderHook(() => usePedidos(), { wrapper });
 
-        expect(result.current.pedidos.pedidos[0].estado).toBe('entregado');
+        await waitFor(() => {
+            expect(mocks.listarMisPedidosDesdeAPI).toHaveBeenCalledWith(
+                'token-ficticio',
+                'ana@correo.cl',
+            );
+        });
+
+        let respuesta;
+        await act(async () => {
+            respuesta = await result.current.confirmarCompra(cliente);
+        });
+
+        expect(respuesta).toEqual({ ok: true, pedido });
+        expect(mocks.crearPedidoDesdeAPI).toHaveBeenCalledWith({
+            items: estado.items,
+            cliente,
+            token: 'token-ficticio',
+            email: 'ana@correo.cl',
+        });
+        expect(mocks.vaciar).toHaveBeenCalledOnce();
+        expect(mocks.recargarDesdeAPI).toHaveBeenCalled();
+        expect(result.current.pedidos).toEqual([pedido]);
+    });
+
+    it('si la API rechaza la compra, informa el error y conserva el carrito', async () => {
+        mocks.crearPedidoDesdeAPI.mockRejectedValue(
+            new Error('Stock insuficiente para Afinador'),
+        );
+
+        const { result } = renderHook(() => usePedidos(), { wrapper });
+
+        let respuesta;
+        await act(async () => {
+            respuesta = await result.current.confirmarCompra(cliente);
+        });
+
+        expect(respuesta).toEqual({
+            ok: false,
+            error: 'Stock insuficiente para Afinador',
+        });
+        expect(mocks.vaciar).not.toHaveBeenCalled();
+        expect(result.current.pedidos).toEqual([]);
+    });
+
+    it('carga desde la API los pedidos del cliente autenticado', async () => {
+        estado.usuario = {
+            id: '3',
+            nombre: 'Ana Pérez',
+            email: 'ana@correo.cl',
+            rol: 'cliente',
+        };
+        mocks.listarMisPedidosDesdeAPI.mockResolvedValue([pedido]);
+
+        const { result } = renderHook(() => usePedidos(), { wrapper });
+
+        await waitFor(() => {
+            expect(result.current.misPedidos).toEqual([pedido]);
+        });
+    });
+
+    it('envía el cambio de estado al servicio administrativo', async () => {
+        const { result } = renderHook(() => usePedidos(), { wrapper });
+
+        let respuesta;
+        await act(async () => {
+            respuesta = await result.current.cambiarEstado('12', 'entregado');
+        });
+
+        expect(respuesta).toEqual({ ok: true });
+        expect(mocks.actualizarEstadoPedidoEnAPI).toHaveBeenCalledWith(
+            '12',
+            'entregado',
+            'token-ficticio',
+        );
     });
 });

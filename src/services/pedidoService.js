@@ -183,3 +183,62 @@ export async function listarMisPedidosDesdeAPI(token, email) {
         })),
     }));
 }
+
+// Devuelve todos los pedidos para el panel administrativo.
+// La API verifica que el token pertenezca a un administrador.
+export async function listarPedidosAdminDesdeAPI(token) {
+    if (!token) {
+        throw new Error('Inicia sesión como administrador');
+    }
+
+    const respuesta = await fetch('/api/pedidos/admin', {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const resultado = await respuesta.json().catch(() => ({}));
+
+    if (!respuesta.ok) {
+        throw new Error(resultado.error || 'No se pudieron cargar los pedidos');
+    }
+
+    return (resultado.pedidos ?? []).map((pedido) => ({
+        id: String(pedido.id),
+        fecha: pedido.fecha,
+        estado: pedido.estado,
+        usuario: pedido.usuario,
+        total: Number(pedido.total_clp),
+        cliente: {
+            nombre: pedido.nombre_destinatario,
+            direccion: pedido.direccion_entrega,
+        },
+        lineas: pedido.lineas.map((linea) => ({
+            codigo: linea.codigo,
+            nombre: linea.nombre,
+            cantidad: Number(linea.cantidad),
+            precio: Number(linea.precio_unitario_clp),
+            subtotal: Number(linea.subtotal_clp),
+        })),
+    }));
+}
+
+// Actualiza el estado de un pedido. La API aplica el control de rol.
+export async function actualizarEstadoPedidoEnAPI(id, estado, token) {
+    if (!token) {
+        throw new Error('Inicia sesión como administrador');
+    }
+
+    const respuesta = await fetch(`/api/pedidos/${encodeURIComponent(id)}/estado`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ estado }),
+    });
+    const resultado = await respuesta.json().catch(() => ({}));
+
+    if (!respuesta.ok) {
+        throw new Error(resultado.error || 'No se pudo actualizar el pedido');
+    }
+
+    return resultado.pedido;
+}

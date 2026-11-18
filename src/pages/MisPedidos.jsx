@@ -11,10 +11,9 @@ import { useTituloPagina } from '../hooks/useTituloPagina';
 function PaginaMisPedidos() {
     useTituloPagina('Mis pedidos');
     const navigate = useNavigate();
-    const { usuario } = useAuth();
-    const { misPedidos } = usePedidos();
+    const { usuario, cerrar } = useAuth();
+    const { misPedidos, cargandoMisPedidos, errorMisPedidos } = usePedidos();
 
-    // Guardia 1: hay que iniciar sesión
     if (!usuario) {
         return (
             <PlantillaPublica>
@@ -27,7 +26,34 @@ function PaginaMisPedidos() {
         );
     }
 
-    // Guardia 2: todavía no ha comprado nada
+    if (cargandoMisPedidos) {
+        return (
+            <PlantillaPublica>
+                <Container className="mis-pedidos-contenedor" aria-live="polite">
+                    <h2 className="mis-pedidos-titulo">Cargando tus pedidos…</h2>
+                </Container>
+            </PlantillaPublica>
+        );
+    }
+
+    if (errorMisPedidos) {
+        return (
+            <PlantillaPublica>
+                <Container className="mis-pedidos-contenedor">
+                    <h2 className="mis-pedidos-titulo">No pudimos cargar tus pedidos</h2>
+                    <p className="mis-pedidos-aviso">{errorMisPedidos}</p>
+                    <Boton
+                        texto="Volver a iniciar sesión"
+                        onClick={() => {
+                            cerrar();
+                            navigate('/login');
+                        }}
+                    />
+                </Container>
+            </PlantillaPublica>
+        );
+    }
+
     if (misPedidos.length === 0) {
         return (
             <PlantillaPublica>
@@ -40,8 +66,9 @@ function PaginaMisPedidos() {
         );
     }
 
-    // Del más reciente al más antiguo (copia con [...] para no modificar el contexto)
-    const ordenados = [...misPedidos].sort((a, b) => b.fecha.localeCompare(a.fecha));
+    const ordenados = [...misPedidos].sort(
+        (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+    );
 
     return (
         <PlantillaPublica>

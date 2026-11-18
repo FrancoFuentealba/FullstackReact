@@ -1,72 +1,132 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from '../context/AuthContext';
+import { MemoryRouter } from 'react-router-dom';
+import { PedidosProvider } from '../context/PedidosContext';
+import PaginaAdminPedidos from './AdminPedidos';
 
-const authMocks = vi.hoisted(() => ({ useAuth: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+    usuario: {
+        id: '1',
+        nombre: 'Admin',
+        email: 'admin@audiomax.cl',
+        rol: 'admin',
+    },
+    listarPedidosAdminDesdeAPI: vi.fn(),
+    actualizarEstadoPedidoEnAPI: vi.fn(),
+    crearPedidoDesdeAPI: vi.fn(),
+    listarMisPedidosDesdeAPI: vi.fn(),
+    vaciar: vi.fn(),
+    recargarDesdeAPI: vi.fn(),
+}));
 
 vi.mock('../context/AuthContext', () => ({
     AuthProvider: ({ children }) => children,
-    useAuth: authMocks.useAuth,
+    useAuth: () => ({
+        usuario: mocks.usuario,
+        esAdmin: mocks.usuario?.rol === 'admin',
+        cerrar: vi.fn(),
+    }),
 }));
-import { ProductosProvider } from '../context/ProductosContext';
-import { CarritoProvider } from '../context/CarritoContext';
-import { PedidosProvider } from '../context/PedidosContext';
-import PaginaAdminPedidos from './AdminPedidos';
-import { crearPedido, obtenerPedido } from '../services/pedidoService';
-import { obtenerProducto } from '../services/productoService';
+
+vi.mock('../context/ProductosContext', () => ({
+    ProductosProvider: ({ children }) => children,
+    useProductos: () => ({ recargarDesdeAPI: mocks.recargarDesdeAPI }),
+}));
+
+vi.mock('../context/CarritoContext', () => ({
+    CarritoProvider: ({ children }) => children,
+    useCarrito: () => ({ items: [], vaciar: mocks.vaciar }),
+}));
+
+vi.mock('../services/authService', () => ({
+    obtenerToken: () => 'token-admin-ficticio',
+}));
+
+vi.mock('../services/pedidoService', () => ({
+    listarPedidosAdminDesdeAPI: mocks.listarPedidosAdminDesdeAPI,
+    actualizarEstadoPedidoEnAPI: mocks.actualizarEstadoPedidoEnAPI,
+    crearPedidoDesdeAPI: mocks.crearPedidoDesdeAPI,
+    listarMisPedidosDesdeAPI: mocks.listarMisPedidosDesdeAPI,
+}));
 
 function mostrarPagina() {
     return render(
         <MemoryRouter initialEntries={['/admin/pedidos']}>
-            <AuthProvider>
-                <ProductosProvider>
-                    <CarritoProvider>
-                        <PedidosProvider>
-                            <Routes>
-                                <Route path="/admin/pedidos" element={<PaginaAdminPedidos />} />
-                                <Route path="/login" element={<p>Pantalla de login</p>} />
-                            </Routes>
-                        </PedidosProvider>
-                    </CarritoProvider>
-                </ProductosProvider>
-            </AuthProvider>
-        </MemoryRouter>
+            <PedidosProvider>
+                <PaginaAdminPedidos />
+            </PedidosProvider>
+        </MemoryRouter>,
     );
 }
 
-describe('PaginaAdminPedidos', () => {
+const pedidoPrueba = {
+    id: 'PED-DB-1',
+    fecha: '2026-11-18T12:00:00.000Z',
+    estado: 'preparacion',
+    usuario: 'ana@example.com',
+    total: 15900,
+    cliente: {
+        nombre: 'Ana Pérez',
+        direccion: 'Calle 1',
+    },
+    lineas: [{
+        codigo: 'ACC-001',
+        nombre: 'Afinador Cromático de Clip',
+        cantidad: 1,
+        precio: 15900,
+        subtotal: 15900,
+    }],
+};
+
+describe('PaginaAdminPedidos conectada a la API', () => {
     beforeEach(() => {
-        localStorage.clear();
-        authMocks.useAuth.mockReturnValue({
-            usuario: { nombre: 'Admin', email: 'admin@audiomax.cl', rol: 'admin' },
-            estaLogueado: true,
-            esAdmin: true,
-            iniciar: vi.fn(),
-            registrar: vi.fn(),
-            cerrar: vi.fn(),
+        vi.clearAllMocks();
+        mocks.usuario = {
+            id: '1',
+            nombre: 'Admin',
+            email: 'admin@audiomax.cl',
+            rol: 'admin',
+        };
+        mocks.listarPedidosAdminDesdeAPI.mockResolvedValue([]);
+        mocks.actualizarEstadoPedidoEnAPI.mockResolvedValue({
+            id: '1',
+            fecha: pedidoPrueba.fecha,
+            estado: 'entregado',
+            total_clp: 15900,
         });
     });
 
-    it('muestra un mensaje cuando todavía no hay pedidos', () => {
+    it('muestra un mensaje cuando la API no tiene pedidos', async () => {
         mostrarPagina();
 
-        expect(screen.getByText('Aún no hay pedidos.')).toBeInTheDocument();
+        expect(await screen.findByText('Aún no hay pedidos.')).toBeInTheDocument();
+        expect(mocks.listarPedidosAdminDesdeAPI)
+            .toHaveBeenCalledWith('token-admin-ficticio');
     });
 
-    it('lista los pedidos y deja cambiar su estado', async () => {
-        crearPedido({
-            items: [{ producto: obtenerProducto('GTR-001'), cantidad: 1 }],
-            cliente: { nombre: 'Ana Pérez', direccion: 'Calle 1', tarjetaFinal: '4242' },
-            usuario: 'ana@correo.cl',
-        });
+    it('lista pedidos de la API y actualiza el estado mediante el servicio', async () => {
+        mocks.listarPedidosAdminDesdeAPI.mockResolvedValue([pedidoPrueba]);
+
         mostrarPagina();
-        expect(screen.getByText('PED-0001')).toBeInTheDocument();
 
-        await userEvent.selectOptions(screen.getByLabelText('Estado del pedido PED-0001'), 'entregado');
+        expect(await screen.findByText('PED-DB-1')).toBeInTheDocument();
 
-        expect(obtenerPedido('PED-0001').estado).toBe('entregado');
-        expect(screen.getByText('El pedido PED-0001 ahora está "Entregado".')).toBeInTheDocument();
+        await userEvent.selectOptions(
+            screen.getByLabelText('Estado del pedido PED-DB-1'),
+            'entregado',
+        );
+
+        await waitFor(() => {
+            expect(mocks.actualizarEstadoPedidoEnAPI).toHaveBeenCalledWith(
+                'PED-DB-1',
+                'entregado',
+                'token-admin-ficticio',
+            );
+        });
+
+        expect(await screen.findByText(
+            'El pedido PED-DB-1 ahora está "Entregado".',
+        )).toBeInTheDocument();
     });
 });

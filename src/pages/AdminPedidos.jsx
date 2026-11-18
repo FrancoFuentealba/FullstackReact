@@ -8,16 +8,31 @@ import { ETIQUETAS_ESTADO } from '../utils/pedidos';
 
 function PaginaAdminPedidos() {
     useTituloPagina('Admin · Pedidos');
-    const { pedidos, cambiarEstado } = usePedidos();
+
+    const {
+        pedidos,
+        cambiarEstado,
+        cargandoMisPedidos,
+        errorMisPedidos,
+    } = usePedidos();
+
     const [aviso, setAviso] = useState(null);
+    const ordenados = [...pedidos].sort(
+        (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+    );
 
-    const ordenados = [...pedidos].sort((a, b) => b.fecha.localeCompare(a.fecha));
+    async function alCambiarEstado(id, estado) {
+        const resultado = await cambiarEstado(id, estado);
 
-    function alCambiarEstado(id, estado) {
-        const pedido = cambiarEstado(id, estado);
-        setAviso(pedido
-            ? { tipo: 'success', texto: `El pedido ${id} ahora está "${ETIQUETAS_ESTADO[estado]}".` }
-            : { tipo: 'danger', texto: `El pedido ${id} no existe.` });
+        setAviso(resultado.ok
+            ? {
+                tipo: 'success',
+                texto: `El pedido ${id} ahora está "${ETIQUETAS_ESTADO[estado]}".`,
+            }
+            : {
+                tipo: 'danger',
+                texto: resultado.error || `No se pudo actualizar el pedido ${id}.`,
+            });
     }
 
     return (
@@ -25,8 +40,10 @@ function PaginaAdminPedidos() {
             <h2 className="admin-titulo-seccion">Pedidos</h2>
 
             {aviso && <Alert variant={aviso.tipo}>{aviso.texto}</Alert>}
-
-            <TablaPedidos pedidos={ordenados} onCambiarEstado={alCambiarEstado} />
+            {errorMisPedidos && <Alert variant="danger">{errorMisPedidos}</Alert>}
+            {cargandoMisPedidos
+                ? <p role="status">Cargando pedidos…</p>
+                : <TablaPedidos pedidos={ordenados} onCambiarEstado={alCambiarEstado} />}
         </PlantillaAdmin>
     );
 }
