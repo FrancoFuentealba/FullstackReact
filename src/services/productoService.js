@@ -104,3 +104,21 @@ export function reiniciarProductos() {
     guardar(iniciales);
     return iniciales;
 }
+export async function listarProductosDesdeAPI() {
+    const respuesta = await fetch('/api/productos');
+
+    if (!respuesta.ok) {
+        throw new Error('No se pudieron cargar los productos');
+    }
+
+    const productos = await respuesta.json();
+
+    // Adapta los nombres de PostgreSQL al formato que ya usa el frontend.
+    return productos.map((producto) => ({
+        ...producto,
+        precio: producto.precio_clp,
+        descuento: producto.descuento_pct,
+        imagen: producto.imagen_url,
+    }));
+}
+

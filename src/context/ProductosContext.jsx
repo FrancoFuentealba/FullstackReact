@@ -1,18 +1,31 @@
-import { createContext, useContext, useState } from "react";
 import * as productoService from '../services/productoService';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const ProductosContext = createContext(null);
 
 export function ProductosProvider({ children }) {
-
     const [productos, setProductos] = useState(() => productoService.listarProductos());
 
-    // vuelve a leer los datos del service
+    useEffect(() => {
+        let vigente = true;
+
+        productoService.listarProductosDesdeAPI()
+            .then((lista) => {
+                if (vigente) setProductos(lista);
+            })
+            .catch((error) => {
+                console.error('No se pudo cargar el catálogo desde la API:', error);
+            });
+
+        return () => {
+            vigente = false;
+        };
+    }, []);
+
     function recargar() {
         setProductos(productoService.listarProductos());
     }
 
-    // muestra { ok: true, producto } o { ok: false, error } para que la pagian muestre el mensaje del service
     function crear(datos) {
         try {
             const producto = productoService.crearProducto(datos);
@@ -23,7 +36,6 @@ export function ProductosProvider({ children }) {
         }
     }
 
-    // muestra el producto actualizado
     function actualizar(codigo, cambios) {
         const producto = productoService.actualizarProducto(codigo, cambios);
         recargar();
@@ -47,11 +59,12 @@ export function ProductosProvider({ children }) {
     );
 }
 
-// useProductos es un hook 
 export function useProductos() {
     const contexto = useContext(ProductosContext);
+
     if (!contexto) {
         throw new Error('useProductos debe usarse dentro de un ProductosProvider');
     }
+
     return contexto;
 }
