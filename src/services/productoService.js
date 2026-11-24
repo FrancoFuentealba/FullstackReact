@@ -96,3 +96,14 @@ export async function eliminarProductoEnAPI(codigo, token) {
         { method: 'DELETE' },
     );
 }
+
+// Cambia solo el stock (admin y vendedor). PATCH /api/v1/productos/:codigo/stock
+export async function actualizarStockEnAPI(codigo, stock, token) {
+    const resultado = await solicitarAPI(
+        `${API}/productos/${encodeURIComponent(codigo)}/stock`,
+        token,
+        { method: 'PATCH', body: JSON.stringify({ stock: Number(stock) }) },
+    );
+
+    return productoDesdeAPI(resultado.producto);
+}

@@ -40,7 +40,7 @@ export function PedidosProvider({ children }) {
             setErrorMisPedidos('');
 
             try {
-                const lista = usuario.rol === 'admin'
+                const lista = (usuario.rol === 'admin' || usuario.rol === 'vendedor')
                     ? await pedidoService.listarPedidosAdminDesdeAPI(token)
                     : await pedidoService.listarMisPedidosDesdeAPI(token, usuario.email);
 

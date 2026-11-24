@@ -91,7 +91,7 @@ function PaginaAdminProductos() {
     }
 
     return (
-        <PlantillaAdmin>
+        <PlantillaAdmin roles={['admin']}>
             <div className="admin-encabezado-seccion">
                 <h2 className="admin-titulo-seccion">Productos</h2>
                 {!formularioAbierto && (

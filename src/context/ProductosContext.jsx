@@ -53,6 +53,16 @@ export function ProductosProvider({ children }) {
         }
     }
 
+    async function actualizarStock(codigo, stock) {
+        try {
+            const producto = await productoService.actualizarStockEnAPI(codigo, stock, obtenerToken());
+            await recargarDesdeAPI();
+            return { ok: true, producto };
+        } catch (error) {
+            return { ok: false, error: error.message };
+        }
+    }
+
     async function eliminar(codigo) {
         try {
             await productoService.eliminarProductoEnAPI(codigo, obtenerToken());
@@ -69,6 +79,7 @@ export function ProductosProvider({ children }) {
             crear,
             actualizar,
             eliminar,
+            actualizarStock,
             recargar: recargarDesdeAPI,
             recargarDesdeAPI,
             reiniciar: recargarDesdeAPI,

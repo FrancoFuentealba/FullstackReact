@@ -25,6 +25,21 @@ describe('AuthContext conectado a la API', () => {
         expect(result.current.esAdmin).toBe(false);
     });
 
+    it('inicia sesión como vendedor: es personal pero no administrador', async () => {
+        const usuario = { id: '2', nombre: 'Vera', email: 'vendedor@audiomax.cl', rol: 'vendedor' };
+        authService.iniciarSesion.mockResolvedValue(usuario);
+
+        const { result } = renderHook(() => useAuth(), { wrapper });
+
+        await act(async () => {
+            await result.current.iniciar('vendedor@audiomax.cl', 'ClavePrueba123');
+        });
+
+        expect(result.current.esVendedor).toBe(true);
+        expect(result.current.esPersonal).toBe(true);
+        expect(result.current.esAdmin).toBe(false);
+    });
+
     it('inicia sesión como administrador', async () => {
         const usuario = {
             id: '1',
