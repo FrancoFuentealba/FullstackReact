@@ -1,4 +1,13 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const mocks = vi.hoisted(() => ({ post: vi.fn() }));
+
+// Se reemplaza solo la instancia de Axios; obtenerMensajeError y pedir son los reales.
+vi.mock('./api.js', async (original) => ({
+    ...(await original()),
+    api: { post: mocks.post },
+}));
+
 import {
     cerrarSesion,
     iniciarSesion,
@@ -7,34 +16,16 @@ import {
     registrarUsuario,
 } from './authService';
 
-function respuesta(body, status = 200) {
-    return {
-        ok: status >= 200 && status < 300,
-        status,
-        json: async () => body,
-    };
-}
+const usuario = { id: '2', nombre: 'Ana', email: 'ana@correo.cl', rol: 'cliente' };
 
-describe('authService con API', () => {
+describe('authService con Axios', () => {
     beforeEach(() => {
         cerrarSesion();
-        vi.stubGlobal('fetch', vi.fn());
+        mocks.post.mockReset();
     });
 
-    afterEach(() => {
-        vi.unstubAllGlobals();
-        cerrarSesion();
-    });
-
-    it('registra un cliente mediante la API y normaliza el correo', async () => {
-        const usuario = {
-            id: '1',
-            nombre: 'Ana',
-            email: 'ana@correo.cl',
-            rol: 'cliente',
-        };
-
-        fetch.mockResolvedValue(respuesta({ usuario }, 201));
+    it('registra un cliente enviando el DTO normalizado', async () => {
+        mocks.post.mockResolvedValue({ data: { usuario } });
 
         const resultado = await registrarUsuario({
             nombre: ' Ana ',
@@ -43,49 +34,38 @@ describe('authService con API', () => {
         });
 
         expect(resultado).toEqual(usuario);
-        expect(fetch).toHaveBeenCalledWith('/api/v1/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nombre: 'Ana',
-                email: 'ana@correo.cl',
-                password: 'ClaveDePrueba123',
-            }),
+        expect(mocks.post).toHaveBeenCalledWith('/auth/register', {
+            nombre: 'Ana',
+            email: 'ana@correo.cl',
+            password: 'ClaveDePrueba123',
         });
     });
 
-    it('inicia sesión y mantiene el token solo en memoria', async () => {
-        const usuario = {
-            id: '2',
-            nombre: 'Ana',
-            email: 'ana@correo.cl',
-            rol: 'cliente',
-        };
+    it('rechaza el registro si faltan datos, sin llamar a la API', async () => {
+        await expect(registrarUsuario({ nombre: '', email: '', clave: '' }))
+            .rejects.toThrow('Nombre, correo y contraseña son obligatorios');
+        expect(mocks.post).not.toHaveBeenCalled();
+    });
 
-        fetch.mockResolvedValue(respuesta({
-            accessToken: 'token-ficticio',
-            usuario,
-        }));
+    it('inicia sesión y guarda token y usuario en sessionStorage', async () => {
+        mocks.post.mockResolvedValue({ data: { accessToken: 'token-ficticio', usuario } });
 
         const resultado = await iniciarSesion(' Ana@Correo.cl ', 'ClaveDePrueba123');
 
         expect(resultado).toEqual(usuario);
         expect(obtenerSesion()).toEqual(usuario);
         expect(obtenerToken()).toBe('token-ficticio');
-        expect(fetch).toHaveBeenCalledWith('/api/v1/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: 'ana@correo.cl',
-                password: 'ClaveDePrueba123',
-            }),
+        expect(mocks.post).toHaveBeenCalledWith('/auth/login', {
+            email: 'ana@correo.cl',
+            password: 'ClaveDePrueba123',
         });
+        expect(JSON.parse(sessionStorage.getItem('sesion')).token).toBe('token-ficticio');
     });
 
-    it('devuelve el error de la API si falla el login', async () => {
-        fetch.mockResolvedValue(respuesta({
-            error: 'Correo o contraseña incorrectos',
-        }, 401));
+    it('devuelve el mensaje de la API si falla el login', async () => {
+        mocks.post.mockRejectedValue({
+            response: { status: 401, data: { error: 'Correo o contraseña incorrectos' } },
+        });
 
         await expect(iniciarSesion('ana@correo.cl', 'incorrecta'))
             .rejects.toThrow('Correo o contraseña incorrectos');
@@ -94,21 +74,24 @@ describe('authService con API', () => {
         expect(obtenerToken()).toBeNull();
     });
 
-    it('limpia usuario y token al cerrar sesión', async () => {
-        fetch.mockResolvedValue(respuesta({
-            accessToken: 'token-ficticio',
-            usuario: {
-                id: '2',
-                nombre: 'Ana',
-                email: 'ana@correo.cl',
-                rol: 'cliente',
-            },
-        }));
+    it('limpia la sesión al cerrar sesión', async () => {
+        mocks.post.mockResolvedValue({ data: { accessToken: 'token-ficticio', usuario } });
 
         await iniciarSesion('ana@correo.cl', 'ClaveDePrueba123');
         cerrarSesion();
 
         expect(obtenerSesion()).toBeNull();
         expect(obtenerToken()).toBeNull();
+        expect(sessionStorage.getItem('sesion')).toBeNull();
+    });
+
+    it('cierra la sesión sola cuando el token ya expiró', async () => {
+        const carga = btoa(JSON.stringify({ exp: Math.floor(Date.now() / 1000) - 10 }));
+        mocks.post.mockResolvedValue({ data: { accessToken: `a.${carga}.c`, usuario } });
+
+        await iniciarSesion('ana@correo.cl', 'ClaveDePrueba123');
+
+        expect(obtenerToken()).toBeNull();
+        expect(obtenerSesion()).toBeNull();
     });
 });
