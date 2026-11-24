@@ -43,7 +43,7 @@ describe('authService con API', () => {
         });
 
         expect(resultado).toEqual(usuario);
-        expect(fetch).toHaveBeenCalledWith('/api/auth/register', {
+        expect(fetch).toHaveBeenCalledWith('/api/v1/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -72,7 +72,7 @@ describe('authService con API', () => {
         expect(resultado).toEqual(usuario);
         expect(obtenerSesion()).toEqual(usuario);
         expect(obtenerToken()).toBe('token-ficticio');
-        expect(fetch).toHaveBeenCalledWith('/api/auth/login', {
+        expect(fetch).toHaveBeenCalledWith('/api/v1/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

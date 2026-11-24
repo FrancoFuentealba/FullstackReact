@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ProductosContext = createContext(null);
 
 export function ProductosProvider({ children }) {
-    const [productos, setProductos] = useState(() => productoService.listarProductos());
+    const [productos, setProductos] = useState([]);
 
     useEffect(() => {
         let vigente = true;
@@ -22,10 +22,6 @@ export function ProductosProvider({ children }) {
             vigente = false;
         };
     }, []);
-
-    function recargar() {
-        setProductos(productoService.listarProductos());
-    }
 
     async function recargarDesdeAPI() {
         const lista = await productoService.listarProductosDesdeAPI();
@@ -73,7 +69,7 @@ export function ProductosProvider({ children }) {
             crear,
             actualizar,
             eliminar,
-            recargar,
+            recargar: recargarDesdeAPI,
             recargarDesdeAPI,
             reiniciar: recargarDesdeAPI,
         }}>
