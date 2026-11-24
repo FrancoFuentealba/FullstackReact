@@ -23,7 +23,8 @@ function PaginaLogin() {
         }
 
         setError('');
-        navigate(resultado.usuario.rol === 'admin' ? '/admin/productos' : '/');
+        const rol = resultado.usuario.rol;
+        navigate(rol === 'admin' ? '/admin/productos' : rol === 'vendedor' ? '/admin/pedidos' : '/');
     }
 
     return (

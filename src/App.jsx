@@ -20,6 +20,7 @@ import PaginaCompraFallida from './pages/CompraFallida';
 import PaginaMisPedidos from './pages/MisPedidos';
 import PaginaAdminProductos from './pages/AdminProductos';
 import PaginaAdminPedidos from './pages/AdminPedidos';
+import PaginaAdminInventario from './pages/AdminInventario';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                   <Route path="/registro" element={<PaginaRegistro />} />
                   <Route path="/mis-pedidos" element={<PaginaMisPedidos />} />
                   <Route path="/admin/productos" element={<PaginaAdminProductos />} />
+                  <Route path="/admin/inventario" element={<PaginaAdminInventario />} />
                   <Route path="/admin/pedidos" element={<PaginaAdminPedidos />} />
                   <Route path="*" element={<NoEncontrado />} />
                 </Routes>

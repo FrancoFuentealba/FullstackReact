@@ -8,19 +8,19 @@ export function ProductosProvider({ children }) {
     const [productos, setProductos] = useState([]);
 
     useEffect(() => {
-        let vigente = true;
+        // AbortController: si el componente se desmonta, se cancela la petición en curso.
+        const controlador = new AbortController();
 
-        productoService.listarProductosDesdeAPI()
+        productoService.listarProductosDesdeAPI(controlador.signal)
             .then((lista) => {
-                if (vigente) setProductos(lista);
+                if (!controlador.signal.aborted) setProductos(lista);
             })
             .catch((error) => {
+                if (controlador.signal.aborted) return;
                 console.error('No se pudo cargar el catálogo desde la API:', error);
             });
 
-        return () => {
-            vigente = false;
-        };
+        return () => controlador.abort();
     }, []);
 
     async function recargarDesdeAPI() {
@@ -53,6 +53,16 @@ export function ProductosProvider({ children }) {
         }
     }
 
+    async function actualizarStock(codigo, stock) {
+        try {
+            const producto = await productoService.actualizarStockEnAPI(codigo, stock, obtenerToken());
+            await recargarDesdeAPI();
+            return { ok: true, producto };
+        } catch (error) {
+            return { ok: false, error: error.message };
+        }
+    }
+
     async function eliminar(codigo) {
         try {
             await productoService.eliminarProductoEnAPI(codigo, obtenerToken());
@@ -69,6 +79,7 @@ export function ProductosProvider({ children }) {
             crear,
             actualizar,
             eliminar,
+            actualizarStock,
             recargar: recargarDesdeAPI,
             recargarDesdeAPI,
             reiniciar: recargarDesdeAPI,

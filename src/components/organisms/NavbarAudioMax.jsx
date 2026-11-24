@@ -5,6 +5,7 @@ function NavbarAudioMax(props) {
     const cantidad = props.cantidadCarrito ?? 0;
     const usuario = props.usuario || null;
     const esAdmin = usuario?.rol === 'admin';
+    const esVendedor = usuario?.rol === 'vendedor';
     const primerNombre = usuario ? usuario.nombre.split(' ')[0] : '';
 
     function ir(evento, ruta) {
@@ -47,6 +48,8 @@ function NavbarAudioMax(props) {
 
                                 {esAdmin ? (
                                     <Nav.Link href="/admin/productos" onClick={(e) => ir(e, '/admin/productos')} className="nav-link-audiomax">Admin</Nav.Link>
+                                ) : esVendedor ? (
+                                    <Nav.Link href="/admin/pedidos" onClick={(e) => ir(e, '/admin/pedidos')} className="nav-link-audiomax">Panel de ventas</Nav.Link>
                                 ) : (
                                     <Nav.Link href="/mis-pedidos" onClick={(e) => ir(e, '/mis-pedidos')} className="nav-link-audiomax">Mis pedidos</Nav.Link>
                                 )}

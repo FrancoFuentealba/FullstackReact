@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import NavbarAudioMax from './NavbarAudioMax';
 
 const cliente = { nombre: 'Ana Pérez', email: 'ana@correo.cl', rol: 'cliente' };
+const vendedor = { nombre: 'Vera Vendedora', email: 'vendedor@audiomax.cl', rol: 'vendedor' };
 const admin = { nombre: 'Administrador AudioMax', email: 'admin@audiomax.cl', rol: 'admin' };
 
 describe('NavbarAudioMax', () => {
@@ -27,6 +28,14 @@ describe('NavbarAudioMax', () => {
         render(<NavbarAudioMax usuario={admin} />);
 
         expect(screen.getByRole('link', { name: 'Admin' })).toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: 'Mis pedidos' })).not.toBeInTheDocument();
+    });
+
+    it('un vendedor ve Panel de ventas y no ve Admin ni Mis pedidos', () => {
+        render(<NavbarAudioMax usuario={vendedor} />);
+
+        expect(screen.getByRole('link', { name: 'Panel de ventas' })).toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: 'Admin' })).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: 'Mis pedidos' })).not.toBeInTheDocument();
     });
 

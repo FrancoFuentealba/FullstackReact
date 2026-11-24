@@ -35,6 +35,9 @@ export function AuthProvider({ children }) {
         usuario,
         estaLogueado: usuario !== null,
         esAdmin: usuario?.rol === 'admin',
+        esVendedor: usuario?.rol === 'vendedor',
+        // admin y vendedor entran al panel interno; cada uno ve solo lo que su rol permite
+        esPersonal: usuario?.rol === 'admin' || usuario?.rol === 'vendedor',
         iniciar,
         registrar,
         cerrar,
