@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { crearLoginRequestDto, crearRegistroRequestDto } from './auth.dto.js';
 import { crearProductoRequestDto, productoDesdeApiDto } from './producto.dto.js';
+import { usuarioDesdeApiDto, actualizarUsuarioRequestDto } from './usuario.dto.js';
 import { crearPedidoRequestDto, pedidoDesdeApiDto } from './pedido.dto.js';
 
 describe('DTO', () => {
@@ -37,5 +38,14 @@ describe('DTO', () => {
         });
         expect(pedido).toMatchObject({ id: '7', total: 300, usuario: 'a@b.cl' });
         expect(pedido.lineas[0]).toMatchObject({ cantidad: 2, precio: 150, subtotal: 300 });
+    });
+
+    it('usuario: la salida usa id texto y la entrada solo envía lo que cambia', () => {
+        expect(usuarioDesdeApiDto({ id: 3, nombre: 'Ana', email: 'a@b.cl', rol: 'cliente', activo: true, creado_en: 'f' }))
+            .toEqual({ id: '3', nombre: 'Ana', email: 'a@b.cl', rol: 'cliente', activo: true, creadoEn: 'f' });
+
+        expect(actualizarUsuarioRequestDto({ activo: true })).toEqual({ activo: true });
+        expect(actualizarUsuarioRequestDto({ nombre: ' Ana ', email: ' A@B.cl ', rol: 'vendedor' }))
+            .toEqual({ nombre: 'Ana', email: 'a@b.cl', rol: 'vendedor' });
     });
 });

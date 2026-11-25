@@ -21,6 +21,8 @@ import PaginaMisPedidos from './pages/MisPedidos';
 import PaginaAdminProductos from './pages/AdminProductos';
 import PaginaAdminPedidos from './pages/AdminPedidos';
 import PaginaAdminInventario from './pages/AdminInventario';
+import PaginaAdminUsuarios from './pages/AdminUsuarios';
+import RutaProtegida from './components/templates/RutaProtegida';
 
 function App() {
   return (
@@ -38,16 +40,17 @@ function App() {
                   <Route path="/buscar" element={<PaginaBuscar />} />
                   <Route path="/ofertas" element={<PaginaOfertas />} />
                   <Route path="/producto/:id" element={<PaginaDetalleProducto />} />
-                  <Route path="/checkout" element={<PaginaCheckout />} />
+                  <Route path="/checkout" element={<RutaProtegida><PaginaCheckout /></RutaProtegida>} />
                   <Route path="/compra-exitosa" element={<PaginaCompraExitosa />} />
                   <Route path="/compra-fallida" element={<PaginaCompraFallida />} />
                   <Route path="/carrito" element={<PaginaCarrito />} />
                   <Route path="/login" element={<PaginaLogin />} />
                   <Route path="/registro" element={<PaginaRegistro />} />
-                  <Route path="/mis-pedidos" element={<PaginaMisPedidos />} />
-                  <Route path="/admin/productos" element={<PaginaAdminProductos />} />
-                  <Route path="/admin/inventario" element={<PaginaAdminInventario />} />
-                  <Route path="/admin/pedidos" element={<PaginaAdminPedidos />} />
+                  <Route path="/mis-pedidos" element={<RutaProtegida><PaginaMisPedidos /></RutaProtegida>} />
+                  <Route path="/admin/productos" element={<RutaProtegida roles={['admin']}><PaginaAdminProductos /></RutaProtegida>} />
+                  <Route path="/admin/usuarios" element={<RutaProtegida roles={['admin']}><PaginaAdminUsuarios /></RutaProtegida>} />
+                  <Route path="/admin/inventario" element={<RutaProtegida roles={['admin', 'vendedor']}><PaginaAdminInventario /></RutaProtegida>} />
+                  <Route path="/admin/pedidos" element={<RutaProtegida roles={['admin', 'vendedor']}><PaginaAdminPedidos /></RutaProtegida>} />
                   <Route path="*" element={<NoEncontrado />} />
                 </Routes>
               </div>

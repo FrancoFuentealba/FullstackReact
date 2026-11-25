@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 // Qué roles ven cada sección del panel (el backend vuelve a validarlo con 401/403).
 const SECCIONES = [
     { ruta: '/admin/productos', texto: 'Productos', roles: ['admin'] },
+    { ruta: '/admin/usuarios', texto: 'Usuarios', roles: ['admin'] },
     { ruta: '/admin/inventario', texto: 'Inventario', roles: ['admin', 'vendedor'] },
     { ruta: '/admin/pedidos', texto: 'Pedidos', roles: ['admin', 'vendedor'] },
 ];
