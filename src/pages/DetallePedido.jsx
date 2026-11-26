@@ -92,7 +92,7 @@ function PaginaDetallePedido() {
                                 <Precio valor={pedido.total} />
                             </p>
 
-                            <Boton texto="Volver" variante="outline-secondary" onClick={() => navigate(volver)} />
+                            <Boton texto="Volver" variante="outline-light" onClick={() => navigate(volver)} />
                         </div>
                     </article>
                 )}

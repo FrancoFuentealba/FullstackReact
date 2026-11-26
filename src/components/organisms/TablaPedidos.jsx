@@ -56,7 +56,7 @@ function TablaPedidos(props) {
                             />
                         </td>
                         <td>
-                            <a className="btn btn-sm btn-outline-light" href={`/pedidos/${pedido.id}`}>
+                            <a className="btn btn-sm btn-warning" href={`/pedidos/${pedido.id}`}>
                                 Ver detalle
                             </a>
                         </td>
