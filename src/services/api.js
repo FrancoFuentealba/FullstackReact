@@ -48,7 +48,9 @@ export async function pedir(peticion) {
         return respuesta.data;
     } catch (error) {
         if (axios.isCancel(error)) throw error;
-        throw new Error(obtenerMensajeError(error));
+        const fallo = new Error(obtenerMensajeError(error));
+        fallo.status = error.response?.status;
+        throw fallo;
     }
 }
 

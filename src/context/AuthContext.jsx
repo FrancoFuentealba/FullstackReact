@@ -1,11 +1,21 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import * as authService from '../services/authService';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    // El token se mantiene solo en memoria; al recargar habrá que iniciar sesión otra vez.
+    // La sesión vive en sessionStorage (ver services/sesion.js) y sobrevive a recargar la página.
     const [usuario, setUsuario] = useState(() => authService.obtenerSesion());
+
+    useEffect(() => {
+        // Si la sesión se cierra o cambia por su cuenta (token vencido, 401, rol modificado), la pantalla se entera.
+        const desuscribir = authService.alCambiarSesion((actual) => setUsuario(actual));
+
+        // Al abrir o recargar, se confirma con el servidor que la cuenta sigue activa y con el mismo rol.
+        authService.verificarSesion();
+
+        return desuscribir;
+    }, []);
 
     async function iniciar(email, clave) {
         try {

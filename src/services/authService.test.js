@@ -1,14 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ post: vi.fn() }));
+const mocks = vi.hoisted(() => ({ post: vi.fn(), get: vi.fn() }));
 
 // Se reemplaza solo la instancia de Axios; obtenerMensajeError y pedir son los reales.
 vi.mock('./api.js', async (original) => ({
     ...(await original()),
-    api: { post: mocks.post },
+    api: { post: mocks.post, get: mocks.get },
 }));
 
 import {
+    alCambiarSesion,
+    verificarSesion,
     cerrarSesion,
     iniciarSesion,
     obtenerSesion,
@@ -22,6 +24,7 @@ describe('authService con Axios', () => {
     beforeEach(() => {
         cerrarSesion();
         mocks.post.mockReset();
+        mocks.get.mockReset();
     });
 
     it('registra un cliente enviando el DTO normalizado', async () => {
@@ -93,5 +96,52 @@ describe('authService con Axios', () => {
 
         expect(obtenerToken()).toBeNull();
         expect(obtenerSesion()).toBeNull();
+    });
+
+    describe('verificarSesion (al recargar la página)', () => {
+        async function entrarComoCliente() {
+            mocks.post.mockResolvedValue({ data: { accessToken: 'token-ficticio', usuario } });
+            await iniciarSesion('ana@correo.cl', 'ClaveDePrueba123');
+        }
+
+        it('si un administrador cambió el rol, actualiza los datos guardados', async () => {
+            await entrarComoCliente();
+            mocks.get.mockResolvedValue({ data: { usuario: { ...usuario, rol: 'vendedor' } } });
+
+            const actual = await verificarSesion();
+
+            expect(mocks.get).toHaveBeenCalledWith('/usuarios/2', expect.any(Object));
+            expect(actual.rol).toBe('vendedor');
+            expect(obtenerSesion().rol).toBe('vendedor');
+            expect(JSON.parse(sessionStorage.getItem('sesion')).usuario.rol).toBe('vendedor');
+        });
+
+        it('si la cuenta fue desactivada (401), cierra la sesión y avisa a la interfaz', async () => {
+            await entrarComoCliente();
+            const aviso = vi.fn();
+            const desuscribir = alCambiarSesion(aviso);
+            mocks.get.mockRejectedValue({ response: { status: 401, data: { error: 'Token inválido o vencido' } } });
+
+            await verificarSesion();
+
+            expect(obtenerToken()).toBeNull();
+            expect(obtenerSesion()).toBeNull();
+            expect(aviso).toHaveBeenCalledWith(null);
+            desuscribir();
+        });
+
+        it('si no hay conexión, conserva la sesión', async () => {
+            await entrarComoCliente();
+            mocks.get.mockRejectedValue({ request: {} });
+
+            await verificarSesion();
+
+            expect(obtenerSesion()).toEqual(usuario);
+        });
+
+        it('sin sesión no llama a la API', async () => {
+            expect(await verificarSesion()).toBeNull();
+            expect(mocks.get).not.toHaveBeenCalled();
+        });
     });
 });

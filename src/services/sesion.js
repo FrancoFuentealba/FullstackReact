@@ -24,6 +24,19 @@ function leer() {
 
 let { token: tokenActual, usuario: usuarioActual } = leer();
 
+// La interfaz se suscribe para enterarse cuando la sesión se cierra o cambia por su cuenta
+// (token vencido, cuenta desactivada, rol modificado), y así no queda mostrando datos viejos.
+const oyentes = new Set();
+
+export function alCambiarSesion(oyente) {
+    oyentes.add(oyente);
+    return () => oyentes.delete(oyente);
+}
+
+function avisar() {
+    oyentes.forEach((oyente) => oyente(usuarioActual));
+}
+
 export function guardarSesion(token, usuario) {
     tokenActual = token;
     usuarioActual = usuario;
@@ -36,6 +49,14 @@ export function cerrarSesion() {
     tokenActual = null;
     usuarioActual = null;
     try { sessionStorage.removeItem(CLAVE_SESION); } catch { /* nada que borrar */ }
+    avisar();
+}
+
+// Reemplaza los datos del usuario guardados (por ejemplo, si un administrador le cambió el rol).
+export function actualizarUsuarioSesion(usuario) {
+    if (!tokenActual) return;
+    guardarSesion(tokenActual, usuario);
+    avisar();
 }
 
 function vencida() {

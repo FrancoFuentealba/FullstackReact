@@ -8,6 +8,8 @@ vi.mock('../services/authService', () => ({
     iniciarSesion: vi.fn(),
     registrarUsuario: vi.fn(),
     cerrarSesion: vi.fn(),
+    alCambiarSesion: vi.fn(() => () => {}),
+    verificarSesion: vi.fn(),
 }));
 
 const wrapper = ({ children }) => <AuthProvider>{children}</AuthProvider>;
