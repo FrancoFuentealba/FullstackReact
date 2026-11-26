@@ -22,6 +22,7 @@ import PaginaAdminProductos from './pages/AdminProductos';
 import PaginaAdminPedidos from './pages/AdminPedidos';
 import PaginaAdminInventario from './pages/AdminInventario';
 import PaginaAdminUsuarios from './pages/AdminUsuarios';
+import PaginaDetallePedido from './pages/DetallePedido';
 import RutaProtegida from './components/templates/RutaProtegida';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
                   <Route path="/carrito" element={<PaginaCarrito />} />
                   <Route path="/login" element={<PaginaLogin />} />
                   <Route path="/registro" element={<PaginaRegistro />} />
+                  <Route path="/pedidos/:id" element={<RutaProtegida><PaginaDetallePedido /></RutaProtegida>} />
                   <Route path="/mis-pedidos" element={<RutaProtegida><PaginaMisPedidos /></RutaProtegida>} />
                   <Route path="/admin/productos" element={<RutaProtegida roles={['admin']}><PaginaAdminProductos /></RutaProtegida>} />
                   <Route path="/admin/usuarios" element={<RutaProtegida roles={['admin']}><PaginaAdminUsuarios /></RutaProtegida>} />
