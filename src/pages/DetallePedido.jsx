@@ -10,7 +10,7 @@ import { obtenerToken } from '../services/authService';
 import { obtenerPedidoDesdeAPI } from '../services/pedidoService';
 import { useTituloPagina } from '../hooks/useTituloPagina';
 
-// Detalle de un pedido: GET /api/v1/pedidos/:id. La API decide quién puede verlo (dueño, vendedor o admin).
+// Detalle de un pedido GET /api/v1/pedidos/:id. La API decide quién puede verlo (dueño, vendedor o admin).
 function PaginaDetallePedido() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -92,7 +92,7 @@ function PaginaDetallePedido() {
                                 <Precio valor={pedido.total} />
                             </p>
 
-                            <Boton texto="Volver" variante="outline-secondary" onClick={() => navigate(volver)} />
+                            <Boton texto="Volver" variante="outline-light" onClick={() => navigate(volver)} />
                         </div>
                     </article>
                 )}

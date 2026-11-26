@@ -1215,3 +1215,12 @@
     padding-left: 1rem;
     font-size: 0.9rem;
 }
+/* Texto y precios claros dentro de las tarjetas oscuras de pedido */
+.pedido-cuerpo {
+    color: #FFFFFF;
+}
+
+.pedido-linea .precio-normal {
+    color: #FFFFFF;
+    font-size: 1rem;
+}

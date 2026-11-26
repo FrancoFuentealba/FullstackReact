@@ -105,7 +105,7 @@ function PaginaMisPedidos() {
 
                             <Boton
                                 texto="Ver detalle"
-                                variante="outline-secondary"
+                                variante="outline-light"
                                 className="btn-sm"
                                 onClick={() => navigate(`/pedidos/${pedido.id}`)}
                             />
