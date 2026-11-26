@@ -23,6 +23,7 @@ function TablaPedidos(props) {
                     <th>Productos</th>
                     <th>Total</th>
                     <th>Estado</th>
+                    <th>Detalle</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,11 +55,16 @@ function TablaPedidos(props) {
                                 onChange={(evento) => alCambiar(pedido.id, evento)}
                             />
                         </td>
+                        <td>
+                            <a className="btn btn-sm btn-outline-light" href={`/pedidos/${pedido.id}`}>
+                                Ver detalle
+                            </a>
+                        </td>
                     </tr>
                 ))}
                 {pedidos.length === 0 && (
                     <tr>
-                        <td colSpan={6} className="text-center">Aún no hay pedidos.</td>
+                        <td colSpan={7} className="text-center">Aún no hay pedidos.</td>
                     </tr>
                 )}
             </tbody>

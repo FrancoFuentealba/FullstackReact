@@ -49,3 +49,12 @@ export async function actualizarEstadoPedidoEnAPI(id, estado, token) {
     ));
     return resultado.pedido;
 }
+
+// Detalle de un pedido (GET /pedidos/:id). El dueño, un vendedor o un administrador pueden verlo;
+// la API responde 403 a otro cliente y 404 si el pedido no existe.
+export async function obtenerPedidoDesdeAPI(id, token) {
+    exigirToken(token, 'Inicia sesión para consultar el pedido');
+
+    const resultado = await pedir(api.get(`/pedidos/${encodeURIComponent(id)}`, conToken(token)));
+    return pedidoDesdeApiDto(resultado.pedido);
+}

@@ -102,6 +102,13 @@ function PaginaMisPedidos() {
                                 <span>Total</span>
                                 <Precio valor={pedido.total} />
                             </p>
+
+                            <Boton
+                                texto="Ver detalle"
+                                variante="outline-secondary"
+                                className="btn-sm"
+                                onClick={() => navigate(`/pedidos/${pedido.id}`)}
+                            />
                         </div>
                     </article>
                 ))}
